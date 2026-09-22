@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/dashboard/edits.schema.json",
+  "title": "Manager edits",
+  "description": "Только пометки PM. Подменить число метрики здесь нельзя. Build файл не переписывает.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["teamId", "revision", "projectReleases", "projectNotes"],
+  "properties": {
+    "teamId": { "type": "string" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "projectReleases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["epicId", "release"],
+        "properties": {
+          "epicId": { "type": "string" },
+          "release": { "type": "string" }
+        }
+      }
+    },
+    "projectNotes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["epicId", "text", "author", "at"],
+        "properties": {
+          "epicId": { "type": "string" },
+          "text": { "type": "string" },
+          "author": { "type": "string" },
+          "at": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

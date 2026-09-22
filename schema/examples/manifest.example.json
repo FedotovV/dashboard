@@ -1,0 +1,14 @@
+{
+  "teamId": "payments-card",
+  "ruleHash": "wf-1",
+  "catalogVersion": 1,
+  "timings": [
+    {
+      "issueId": "10001",
+      "terminal": false,
+      "formulaVersion": 1,
+      "ruleHash": "wf-1",
+      "changelogComplete": true
+    }
+  ]
+}

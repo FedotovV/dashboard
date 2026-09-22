@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/dashboard/canonical.schema.json",
+  "title": "Canonical bundle",
+  "description": "Выход коннектора и вход движка метрик. Категорию статуса сюда не кладут: её назначает движок по workflow.statusMap.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["bundleId", "asOf", "sourceWatermark", "issues", "statusChanges", "memberships", "sprints", "links"],
+  "properties": {
+    "bundleId": { "type": "string", "minLength": 1 },
+    "asOf": { "type": "string", "format": "date-time" },
+    "sourceWatermark": { "type": "string" },
+    "issues": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/issue" }
+    },
+    "statusChanges": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/statusChange" }
+    },
+    "memberships": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/membership" }
+    },
+    "sprints": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sprint" }
+    },
+    "links": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/link" }
+    },
+    "resources": { "type": "array" },
+    "posts": { "type": "array" }
+  },
+  "$defs": {
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "key", "summary", "type", "projectKey", "status", "created"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "key": { "type": "string", "minLength": 1 },
+        "previousKeys": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "summary": { "type": "string" },
+        "type": { "type": "string" },
+        "projectKey": { "type": "string" },
+        "status": { "type": "string" },
+        "assigneeAccountId": { "type": ["string", "null"] },
+        "priority": { "type": ["string", "null"] },
+        "storyPoints": { "type": ["number", "null"] },
+        "storyPointsAtAdd": {
+          "type": ["number", "null"],
+          "description": "Оценка на момент addedAt. null — burndown не считается."
+        },
+        "dueDate": { "type": ["string", "null"], "format": "date" },
+        "resolutionAt": { "type": ["string", "null"], "format": "date-time" },
+        "created": { "type": "string", "format": "date-time" },
+        "labels": { "type": "array", "items": { "type": "string" } },
+        "parentId": { "type": ["string", "null"] },
+        "subtask": { "type": "boolean" }
+      }
+    },
+    "statusChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["issueId", "status", "enteredAt"],
+      "properties": {
+        "issueId": { "type": "string" },
+        "status": { "type": "string" },
+        "enteredAt": { "type": "string", "format": "date-time" },
+        "exitedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "membership": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["issueId", "sprintId", "addedAt"],
+      "properties": {
+        "issueId": { "type": "string" },
+        "sprintId": { "type": "string" },
+        "addedAt": { "type": "string", "format": "date-time" },
+        "removedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "sprint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "state", "start", "end"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "state": { "type": "string", "enum": ["future", "active", "closed"] },
+        "start": { "type": "string", "format": "date" },
+        "end": { "type": "string", "format": "date" }
+      }
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fromId", "toId", "type"],
+      "properties": {
+        "fromId": { "type": "string", "description": "Родитель." },
+        "toId": { "type": "string", "description": "Потомок." },
+        "type": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+# Cloud, без story points, человек уходит в середине периода, свой набор статусов.
+version: 1
+catalogVersion: 1
+team:
+  id: mobile-core
+  name: Мобильное ядро
+  locale: ru
+  members:
+    - id: smirnov
+      name: Смирнов Пётр
+      jiraAccountId: acc-smirnov
+      allocation: 1
+      activeFrom: "2026-07-01"
+    - id: orlova
+      name: Орлова Мария
+      jiraAccountId: acc-orlova
+      allocation: 0.5
+      activeTo: "2026-08-15"
+  alumni: []
+calendar:
+  timezone: Europe/Moscow
+  workdays: [1, 2, 3, 4, 5]
+  workStart: "09:00"
+  workEnd: "18:00"
+  breakMinutes: 60
+  hoursPerDay: 8
+  holidays: ["2026-07-01"]
+  extraWorkdays: []
+period:
+  id: 2026-Q3
+  start: "2026-07-01"
+  end: "2026-09-30"
+sources:
+  mode: fixture
+  jira:
+    deployment: cloud
+    baseUrl: https://example.atlassian.net
+    boardId: "7"
+    sprintId: "42"
+    authEnv: JIRA_TOKEN
+    fields:
+      storyPoints: null
+      epicLink: customfield_10014
+workflow:
+  usesDueDate: false
+  statusMap:
+    - { status: "Бэклог", category: todo, role: queue }
+    - { status: "В работе", category: indeterminate, role: active }
+    - { status: "Готово", category: done, role: terminal }
+taxonomy:
+  priority: [project, tech]
+  epics:
+    project: ["MOB-1"]
+    tech: []
+  linkTypes: ["Child-Issue"]
+  rules: []
+  otherSubtype:
+    prodLabel: ops
+scope:
+  issueTypes: ["Story", "Bug"]
+  projectKeys: ["MOB"]
+  countSubtasks: false
+ui:
+  hide: ["burndown"]

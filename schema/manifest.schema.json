@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/dashboard/manifest.schema.json",
+  "title": "Collect manifest",
+  "description": "Память инкремента. Тайминг задачи запечатан только вместе с хешем правил и пока статус остаётся terminal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["teamId", "ruleHash", "catalogVersion", "timings"],
+  "properties": {
+    "teamId": { "type": "string" },
+    "ruleHash": {
+      "type": "string",
+      "description": "Хеш calendar + workflow + taxonomy + scope + версии формул."
+    },
+    "catalogVersion": { "type": "integer", "minimum": 1 },
+    "timings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["issueId", "terminal", "formulaVersion", "ruleHash"],
+        "properties": {
+          "issueId": { "type": "string" },
+          "terminal": { "type": "boolean" },
+          "formulaVersion": { "type": "integer", "minimum": 1 },
+          "ruleHash": { "type": "string" },
+          "changelogComplete": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}
