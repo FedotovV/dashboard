@@ -1,0 +1,387 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/dashboard/team.schema.json",
+  "title": "Team dashboard configuration",
+  "description": "Конфиг одной команды. Секреты не входят. v1 не читает confluence, gitlab, messenger, links, planning: поля допустимы как пометки, движок их игнорирует.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "catalogVersion", "team", "calendar", "period", "sources", "workflow", "taxonomy", "scope"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "catalogVersion": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Версия docs/metric-catalog.md. Неизвестную версию build отклоняет."
+    },
+    "team": { "$ref": "#/$defs/team" },
+    "calendar": { "$ref": "#/$defs/calendar" },
+    "period": { "$ref": "#/$defs/period" },
+    "sources": { "$ref": "#/$defs/sources" },
+    "workflow": { "$ref": "#/$defs/workflow" },
+    "taxonomy": { "$ref": "#/$defs/taxonomy" },
+    "scope": { "$ref": "#/$defs/scope" },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Не используется в v1.",
+      "properties": {
+        "channel": { "type": "string" },
+        "howto": { "type": "string" },
+        "component": { "type": "string" },
+        "boardUrl": { "type": "string" },
+        "teamPageUrl": { "type": "string" }
+      }
+    },
+    "planning": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Не используется в v1.",
+      "properties": {
+        "targets": { "type": "array", "items": { "type": "object" } }
+      }
+    },
+    "ui": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hide": {
+          "type": "array",
+          "uniqueItems": true,
+          "description": "Можно скрыть только диагностические блоки. insights, kpis, risks, allIssues, warnings, teamStats не входят в список.",
+          "items": {
+            "type": "string",
+            "enum": ["burndown", "personLoad", "statusHours", "projects"]
+          }
+        }
+      }
+    },
+    "metrics": { "$ref": "#/$defs/metrics" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "sources": {
+            "type": "object",
+            "properties": {
+              "jira": {
+                "type": "object",
+                "properties": { "deployment": { "const": "cloud" } },
+                "required": ["deployment"]
+              }
+            },
+            "required": ["jira"]
+          }
+        },
+        "required": ["sources"]
+      },
+      "then": {
+        "properties": {
+          "team": {
+            "properties": {
+              "members": {
+                "items": { "required": ["id", "name", "jiraAccountId"] }
+              },
+              "alumni": {
+                "items": { "required": ["id", "name", "jiraAccountId"] }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "team": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "members"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "name": { "type": "string", "minLength": 1 },
+        "locale": { "type": "string", "enum": ["ru"], "default": "ru" },
+        "pm": { "type": "string" },
+        "teamLead": { "type": "string" },
+        "members": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/member" }
+        },
+        "alumni": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/member" }
+        }
+      }
+    },
+    "member": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "jiraUsername": { "type": "string" },
+        "jiraAccountId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Обязателен при sources.jira.deployment = cloud."
+        },
+        "role": { "type": "string" },
+        "allocation": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1,
+          "description": "Доля ставки в ёмкости. 1 = полный день."
+        },
+        "featureLeadOf": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "activeFrom": { "type": "string", "format": "date" },
+        "activeTo": { "type": "string", "format": "date" },
+        "absences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["start", "end"],
+            "properties": {
+              "start": { "type": "string", "format": "date" },
+              "end": { "type": "string", "format": "date" }
+            }
+          }
+        }
+      }
+    },
+    "calendar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timezone", "workdays", "workStart", "workEnd", "hoursPerDay"],
+      "properties": {
+        "timezone": { "type": "string", "minLength": 1 },
+        "workdays": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "integer", "minimum": 1, "maximum": 7 },
+          "description": "ISO: 1 понедельник … 7 воскресенье."
+        },
+        "workStart": { "type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$" },
+        "workEnd": { "type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$" },
+        "breakMinutes": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0,
+          "description": "(workEnd − workStart) − breakMinutes = hoursPerDay. Иначе build отклоняет конфиг."
+        },
+        "hoursPerDay": { "type": "number", "exclusiveMinimum": 0, "maximum": 24 },
+        "holidays": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "format": "date" }
+        },
+        "extraWorkdays": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "start", "end"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "start": { "type": "string", "format": "date" },
+        "end": { "type": "string", "format": "date" }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["jira"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["fixture", "file", "live"],
+          "default": "fixture"
+        },
+        "jira": { "$ref": "#/$defs/jira" },
+        "confluence": { "type": "object" },
+        "gitlab": { "type": "object" },
+        "messenger": { "type": "object" }
+      }
+    },
+    "jira": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["deployment"],
+      "properties": {
+        "deployment": {
+          "type": "string",
+          "enum": ["cloud", "server"],
+          "description": "cloud — /rest/api/3 и accountId. server — /rest/api/2 и username."
+        },
+        "baseUrl": { "type": "string" },
+        "boardId": { "type": "string" },
+        "sprintId": {
+          "type": "string",
+          "description": "Пусто — активный спринт доски. Для воспроизводимого build sprintId обязателен."
+        },
+        "authEnv": { "type": "string" },
+        "fields": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "storyPoints": { "type": ["string", "null"] },
+            "epicLink": { "type": "string" }
+          }
+        }
+      }
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["usesDueDate", "statusMap"],
+      "properties": {
+        "usesDueDate": { "type": "boolean" },
+        "statusMap": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["status", "category", "role"],
+            "properties": {
+              "status": { "type": "string", "minLength": 1 },
+              "category": {
+                "type": "string",
+                "enum": ["todo", "indeterminate", "done"]
+              },
+              "role": {
+                "type": "string",
+                "enum": ["queue", "active", "wait", "terminal", "hold"],
+                "description": "active входит в cycle time. wait — ожидание. hold — блокер, часы цикла не копит. terminal закрывает цикл. queue — ещё не начато."
+              },
+              "outcome": {
+                "type": "string",
+                "enum": ["completed", "canceled"],
+                "default": "completed",
+                "description": "Имеет смысл для terminal. canceled остаётся в знаменателе completion и не считается сделанным."
+              }
+            }
+          }
+        }
+      }
+    },
+    "taxonomy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["priority", "epics"],
+      "properties": {
+        "priority": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "enum": ["project", "tech"] }
+        },
+        "epics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["project", "tech"],
+          "properties": {
+            "project": { "type": "array", "items": { "type": "string" } },
+            "tech": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "linkTypes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["Child-Issue"],
+          "description": "Только иерархия parent→child. Blocks в этот список не входит."
+        },
+        "rules": {
+          "type": "array",
+          "description": "Применяются только если задача не в дереве эпиков. Порядок — приоритет.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["category", "when"],
+            "properties": {
+              "category": { "type": "string", "enum": ["project", "tech", "other"] },
+              "when": {
+                "type": "object",
+                "additionalProperties": false,
+                "minProperties": 1,
+                "properties": {
+                  "label": { "type": "string" },
+                  "projectKey": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "otherSubtype": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "prodLabel": { "type": "string" },
+            "techLabel": { "type": "string" }
+          }
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["issueTypes", "countSubtasks"],
+      "properties": {
+        "issueTypes": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "projectKeys": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "countSubtasks": { "type": "boolean" }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Только параметры. Смысл формулы меняется новой версией в каталоге, не этим файлом.",
+      "properties": {
+        "cycleTime": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": { "type": "integer", "minimum": 1 },
+            "minStaySeconds": { "type": "integer", "minimum": 0, "default": 900 }
+          }
+        },
+        "hygiene": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": { "type": "integer", "minimum": 1 },
+            "highPriorities": { "type": "array", "items": { "type": "string" } },
+            "maxAgeDays": { "type": "integer", "minimum": 1, "default": 90 }
+          }
+        },
+        "classification": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": { "type": "integer", "minimum": 1 },
+            "unknownWarnPct": { "type": "number", "minimum": 0, "maximum": 100, "default": 15 }
+          }
+        }
+      }
+    }
+  }
+}

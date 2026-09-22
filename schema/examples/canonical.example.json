@@ -1,0 +1,63 @@
+{
+  "bundleId": "example-1",
+  "asOf": "2026-09-10T09:00:00Z",
+  "sourceWatermark": "fixture",
+  "issues": [
+    {
+      "id": "10001",
+      "key": "CARD-101",
+      "summary": "Показать срок на карточке",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "ivanov",
+      "priority": "High",
+      "storyPoints": 3,
+      "storyPointsAtAdd": 3,
+      "dueDate": "2026-09-12",
+      "resolutionAt": null,
+      "created": "2026-09-01T07:00:00Z",
+      "labels": [],
+      "parentId": "CARD-10",
+      "subtask": false
+    }
+  ],
+  "statusChanges": [
+    {
+      "issueId": "10001",
+      "status": "To Do",
+      "enteredAt": "2026-09-01T07:00:00Z",
+      "exitedAt": "2026-09-02T07:00:00Z"
+    },
+    {
+      "issueId": "10001",
+      "status": "In Progress",
+      "enteredAt": "2026-09-02T07:00:00Z",
+      "exitedAt": null
+    }
+  ],
+  "memberships": [
+    {
+      "issueId": "10001",
+      "sprintId": "s-current",
+      "addedAt": "2026-09-01T07:00:00Z",
+      "removedAt": null
+    }
+  ],
+  "sprints": [
+    {
+      "id": "s-current",
+      "name": "Спринт 12",
+      "state": "active",
+      "start": "2026-09-01",
+      "end": "2026-09-14"
+    }
+  ],
+  "links": [
+    {
+      "fromId": "CARD-10",
+      "toId": "10001",
+      "type": "Child-Issue"
+    }
+  ]
+}

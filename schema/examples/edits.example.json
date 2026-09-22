@@ -1,0 +1,15 @@
+{
+  "teamId": "payments-card",
+  "revision": 1,
+  "projectReleases": [
+    { "epicId": "CARD-10", "release": "2026-Q3" }
+  ],
+  "projectNotes": [
+    {
+      "epicId": "CARD-10",
+      "text": "Ждём дизайн пустого состояния",
+      "author": "ПМ команды",
+      "at": "2026-09-10T09:00:00Z"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/dashboard/snapshot.schema.json",
+  "title": "Dashboard snapshot",
+  "description": "То, что рисует UI. Повторный build пишет новый файл и не меняет байты предыдущего слепка.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "snapshotId",
+    "teamId",
+    "asOf",
+    "timezone",
+    "catalogVersion",
+    "metricVersions",
+    "inputHashes",
+    "coverage",
+    "sprint"
+  ],
+  "properties": {
+    "snapshotId": { "type": "string", "minLength": 1 },
+    "teamId": { "type": "string" },
+    "asOf": { "type": "string", "format": "date-time" },
+    "timezone": { "type": "string" },
+    "catalogVersion": { "type": "integer", "minimum": 1 },
+    "metricVersions": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 1 }
+    },
+    "inputHashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calendar", "workflow", "taxonomy", "scope"],
+      "properties": {
+        "calendar": { "type": "string" },
+        "workflow": { "type": "string" },
+        "taxonomy": { "type": "string" },
+        "scope": { "type": "string" }
+      }
+    },
+    "coverage": { "$ref": "#/$defs/coverage" },
+    "sprint": { "$ref": "#/$defs/sprintView" },
+    "period": { "$ref": "#/$defs/periodView" }
+  },
+  "$defs": {
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timing", "unknownPct", "storyPoints", "assigneeMatchPct", "membership"],
+      "properties": {
+        "timing": { "type": "string", "enum": ["full", "partial", "none"] },
+        "unknownPct": { "type": ["number", "null"] },
+        "storyPoints": { "type": "string", "enum": ["off", "partial", "full"] },
+        "assigneeMatchPct": { "type": ["number", "null"] },
+        "membership": { "type": "string", "enum": ["complete", "incomplete"] }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "unit", "value", "excluded", "warnings", "params"],
+      "properties": {
+        "id": { "type": "string" },
+        "version": { "type": "integer", "minimum": 1 },
+        "unit": { "type": "string" },
+        "value": { "type": ["number", "null"] },
+        "population": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ключи задач, вошедшие в число."
+        },
+        "excluded": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["issueKey", "reason"],
+            "properties": {
+              "issueKey": { "type": "string" },
+              "reason": { "type": "string" }
+            }
+          }
+        },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "params": { "type": "object" }
+      }
+    },
+    "sprintView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "start", "end", "metrics", "issues"],
+      "properties": {
+        "id": { "type": "string" },
+        "start": { "type": "string", "format": "date" },
+        "end": { "type": "string", "format": "date" },
+        "metrics": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/metric" }
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["key", "summary", "status", "scope"],
+            "properties": {
+              "key": { "type": "string" },
+              "summary": { "type": "string" },
+              "status": { "type": "string" },
+              "assigneeId": { "type": ["string", "null"] },
+              "storyPoints": { "type": ["number", "null"] },
+              "scope": { "type": "string", "enum": ["committed", "added", "removed"] },
+              "blockerReasons": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "periodView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "start", "end", "metrics"],
+      "properties": {
+        "id": { "type": "string" },
+        "start": { "type": "string", "format": "date" },
+        "end": { "type": "string", "format": "date" },
+        "metrics": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/metric" }
+        }
+      }
+    }
+  }
+}

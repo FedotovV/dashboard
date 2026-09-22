@@ -1,0 +1,82 @@
+version: 1
+catalogVersion: 1
+team:
+  id: payments-card
+  name: Платёжная карта
+  locale: ru
+  pm: ПМ команды
+  teamLead: Тимлид команды
+  members:
+    - id: ivanov
+      name: Иванов Иван
+      jiraUsername: ivanov
+      role: dev
+      allocation: 1
+      featureLeadOf: ["CARD-10"]
+    - id: petrova
+      name: Петрова Анна
+      jiraUsername: petrova
+      role: dev
+      allocation: 1
+      featureLeadOf: ["CARD-20"]
+      absences:
+        - start: "2026-08-03"
+          end: "2026-08-14"
+  alumni: []
+calendar:
+  timezone: Europe/Moscow
+  workdays: [1, 2, 3, 4, 5]
+  workStart: "10:00"
+  workEnd: "18:00"
+  breakMinutes: 0
+  hoursPerDay: 8
+  holidays: ["2026-08-01"]
+  extraWorkdays: []
+period:
+  id: 2026-Q3
+  start: "2026-07-01"
+  end: "2026-09-30"
+sources:
+  mode: fixture
+  jira:
+    deployment: server
+    baseUrl: https://jira.example.com
+    boardId: "100"
+    sprintId: "s-current"
+    authEnv: JIRA_TOKEN
+    fields:
+      storyPoints: customfield_10016
+      epicLink: customfield_10014
+workflow:
+  usesDueDate: true
+  statusMap:
+    - { status: "To Do", category: todo, role: queue }
+    - { status: "In Progress", category: indeterminate, role: active }
+    - { status: "Review", category: indeterminate, role: wait }
+    - { status: "On-hold", category: indeterminate, role: hold }
+    - { status: Done, category: done, role: terminal }
+    - { status: Canceled, category: done, role: terminal, outcome: canceled }
+taxonomy:
+  priority: [project, tech]
+  epics:
+    project: ["CARD-10"]
+    tech: ["CARD-20"]
+  linkTypes: ["Child-Issue"]
+  rules:
+    - category: tech
+      when: { label: tech-debt }
+  otherSubtype:
+    prodLabel: prod_op
+    techLabel: other_tech
+scope:
+  issueTypes: ["Story", "Task", "Bug"]
+  projectKeys: ["CARD"]
+  countSubtasks: false
+metrics:
+  cycleTime:
+    minStaySeconds: 900
+  hygiene:
+    highPriorities: ["Critical", "High", "Major"]
+    maxAgeDays: 90
+  classification:
+    unknownWarnPct: 15

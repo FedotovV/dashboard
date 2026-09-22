@@ -1,0 +1,52 @@
+{
+  "snapshotId": "payments-card-2026-09-10T12:00:00+03:00",
+  "teamId": "payments-card",
+  "asOf": "2026-09-10T09:00:00Z",
+  "timezone": "Europe/Moscow",
+  "catalogVersion": 1,
+  "metricVersions": {
+    "sprintFlow": 1,
+    "completionVsCommitted": 1
+  },
+  "inputHashes": {
+    "calendar": "cal-1",
+    "workflow": "wf-1",
+    "taxonomy": "tax-1",
+    "scope": "scope-1"
+  },
+  "coverage": {
+    "timing": "full",
+    "unknownPct": 0,
+    "storyPoints": "full",
+    "assigneeMatchPct": 100,
+    "membership": "complete"
+  },
+  "sprint": {
+    "id": "s-current",
+    "start": "2026-09-01",
+    "end": "2026-09-14",
+    "metrics": [
+      {
+        "id": "sprintFlow",
+        "version": 1,
+        "unit": "issues",
+        "value": 1,
+        "population": ["CARD-101"],
+        "excluded": [],
+        "warnings": [],
+        "params": {}
+      }
+    ],
+    "issues": [
+      {
+        "key": "CARD-101",
+        "summary": "Показать срок на карточке",
+        "status": "In Progress",
+        "assigneeId": "ivanov",
+        "storyPoints": 3,
+        "scope": "committed",
+        "blockerReasons": []
+      }
+    ]
+  }
+}
