@@ -1,0 +1,118 @@
+# Пример одной команды. Числа и ключи вымышлены.
+# Живой референс отличается только значениями этого файла, не формулами.
+version: 1
+catalogVersion: 1
+team:
+  id: payments-card
+  name: Платёжная карта
+  locale: ru
+  pm: ПМ команды
+  teamLead: Тимлид команды
+  members:
+    - id: ivanov
+      name: Иванов Иван
+      jiraUsername: ivanov
+      role: dev
+      featureLeadOf: ["CARD-10"]
+    - id: petrova
+      name: Петрова Анна
+      jiraUsername: petrova
+      role: dev
+      featureLeadOf: ["CARD-20"]
+  alumni: []
+calendar:
+  timezone: Europe/Moscow
+  workdays: [1, 2, 3, 4, 5]
+  workStart: "10:00"
+  workEnd: "18:00"
+  hoursPerDay: 8
+period:
+  id: 2026-Q3
+  start: "2026-07-01"
+  end: "2026-09-30"
+sources:
+  mode: fixture
+  jira:
+    deployment: server
+    baseUrl: https://jira.example.com
+    boardId: "100"
+    authEnv: JIRA_TOKEN
+    fields:
+      storyPoints: customfield_10016
+      epicLink: customfield_10014
+  confluence:
+    deployment: server
+    baseUrl: https://confluence.example.com
+    teamPageId: "42"
+    authEnv: CONFLUENCE_TOKEN
+  gitlab:
+    baseUrl: https://gitlab.example.com
+    group: payments/card
+    authEnv: GITLAB_TOKEN
+  messenger:
+    kind: mattermost
+    baseUrl: https://chat.example.com
+    planningChannelId: planning-q
+    authEnv: CHAT_TOKEN
+workflow:
+  nonWorkingStatuses: ["Backlog", "To Do", "Open", "Closed", "Canceled"]
+  terminalStatuses: ["Closed", "Canceled"]
+  onHoldStatuses: ["On-hold"]
+taxonomy:
+  priority: [project, tech]
+  techMode: epics
+  epics:
+    project: ["CARD-10"]
+    tech: ["CARD-20"]
+  linkTypes: ["Child-Issue", "Blocks"]
+  otherSubtype:
+    prodLabel: prod_op
+planning:
+  targets:
+    - team: Платёжная карта
+      manager: ПМ команды
+      deadline: "2026-09-15"
+links:
+  channel: https://chat.example.com/payments-card
+  howto: https://confluence.example.com/pages/viewpage.action?pageId=42
+  component: payments-card
+  boardUrl: https://jira.example.com/secure/RapidBoard.jspa?rapidView=100
+  teamPageUrl: https://confluence.example.com/pages/viewpage.action?pageId=42
+ui:
+  tabs: [sprint, team]
+  widgets:
+    sprint:
+      - insights
+      - kpis
+      - donut
+      - cycle
+      - devLoad
+      - risks
+      - types
+      - burndown
+      - dueDate
+      - allIssues
+    team:
+      - teamStats
+      - warnings
+      - projects
+      - donutTasks
+      - donutTime
+      - otherSplit
+      - manhours
+      - origin
+      - sprintDonut
+      - velocity
+      - sprintTime
+      - resources
+      - planning
+metrics:
+  cycleTime:
+    minStaySeconds: 900
+  hygiene:
+    highPriorities: ["Critical", "High", "Major"]
+    maxAgeDays: 90
+  velocity:
+    thresholds:
+      low: 50
+      high: 80

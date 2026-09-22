@@ -1,0 +1,386 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/dashboard/team.schema.json",
+  "title": "Team dashboard configuration",
+  "description": "Входной контракт одной команды. Секреты сюда не входят: только имя переменной окружения authEnv.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "team", "calendar", "period", "sources", "workflow", "taxonomy"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "catalogVersion": {
+      "type": "integer",
+      "const": 1,
+      "description": "Версия docs/metric-catalog.md, под которую собран этот файл."
+    },
+    "team": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "members"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "name": { "type": "string", "minLength": 1 },
+        "locale": { "type": "string", "enum": ["ru"], "default": "ru" },
+        "pm": { "type": "string" },
+        "teamLead": { "type": "string" },
+        "members": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/member" }
+        },
+        "alumni": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/member" }
+        }
+      }
+    },
+    "calendar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timezone", "workdays", "workStart", "workEnd", "hoursPerDay"],
+      "properties": {
+        "timezone": { "type": "string", "minLength": 1 },
+        "workdays": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "integer", "minimum": 1, "maximum": 7 },
+          "description": "ISO weekday: 1 понедельник … 7 воскресенье."
+        },
+        "workStart": { "type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$" },
+        "workEnd": { "type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$" },
+        "hoursPerDay": { "type": "number", "exclusiveMinimum": 0, "maximum": 24 }
+      }
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "start", "end"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "start": { "type": "string", "format": "date" },
+        "end": { "type": "string", "format": "date" },
+        "capacityHours": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Если не задано, ёмкость = hoursPerDay × рабочие дни × число активных людей."
+        }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["jira"],
+      "properties": {
+        "jira": { "$ref": "#/$defs/jira" },
+        "confluence": { "$ref": "#/$defs/httpSource" },
+        "gitlab": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "baseUrl": { "type": "string" },
+            "group": { "type": "string" },
+            "authEnv": { "type": "string" }
+          }
+        },
+        "messenger": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "properties": {
+            "kind": { "type": "string", "enum": ["mattermost", "slack", "fixture", "file"] },
+            "baseUrl": { "type": "string" },
+            "planningChannelId": { "type": "string" },
+            "authEnv": { "type": "string" }
+          }
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["fixture", "file", "live"],
+          "default": "fixture",
+          "description": "fixture и file работают без сети. live включает коннекторы фазы 4."
+        }
+      }
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nonWorkingStatuses", "terminalStatuses"],
+      "properties": {
+        "nonWorkingStatuses": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "terminalStatuses": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "onHoldStatuses": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["On-hold", "On hold"]
+        }
+      }
+    },
+    "taxonomy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["epics", "priority", "techMode"],
+      "properties": {
+        "priority": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["project", "tech"] },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "techMode": { "type": "string", "enum": ["epics", "label", "project", "none"] },
+        "techLabel": { "type": "string" },
+        "techProjectKey": { "type": "string" },
+        "epics": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "project": { "type": "array", "items": { "type": "string" } },
+            "tech": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "linkTypes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["Child-Issue", "Blocks"]
+        },
+        "otherSubtype": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "prodLabel": { "type": "string", "default": "prod_op" }
+          }
+        }
+      }
+    },
+    "planning": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["team", "manager"],
+            "properties": {
+              "team": { "type": "string" },
+              "manager": { "type": "string" },
+              "deadline": { "type": "string", "format": "date" }
+            }
+          }
+        }
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Ручные строки блока «Ресурсы». Выгрузка Confluence дополняет список, при совпадении подписи побеждает конфиг.",
+      "properties": {
+        "channel": { "type": "string" },
+        "howto": { "type": "string" },
+        "component": { "type": "string" },
+        "boardUrl": { "type": "string" },
+        "teamPageUrl": { "type": "string" }
+      }
+    },
+    "ui": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tabs": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["sprint", "team"] },
+          "default": ["sprint", "team"]
+        },
+        "widgets": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sprint": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "insights",
+                  "kpis",
+                  "donut",
+                  "cycle",
+                  "devLoad",
+                  "risks",
+                  "types",
+                  "burndown",
+                  "dueDate",
+                  "allIssues"
+                ]
+              }
+            },
+            "team": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "teamStats",
+                  "warnings",
+                  "projects",
+                  "donutTasks",
+                  "donutTime",
+                  "otherSplit",
+                  "manhours",
+                  "origin",
+                  "sprintDonut",
+                  "velocity",
+                  "sprintTime",
+                  "resources",
+                  "planning"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Только переопределения. Полные формулы — в каталоге.",
+      "properties": {
+        "cycleTime": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": { "type": "integer", "minimum": 1 },
+            "minStaySeconds": { "type": "integer", "minimum": 0, "default": 900 }
+          }
+        },
+        "hygiene": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": { "type": "integer", "minimum": 1 },
+            "highPriorities": { "type": "array", "items": { "type": "string" } },
+            "maxAgeDays": { "type": "integer", "minimum": 1, "default": 90 }
+          }
+        },
+        "risk": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": { "type": "integer", "minimum": 1 },
+            "idleMinDays": { "type": "integer", "minimum": 1, "default": 3 },
+            "decisionMinPoints": { "type": "number", "minimum": 0, "default": 5 }
+          }
+        },
+        "forecast": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": { "type": "integer", "minimum": 1 },
+            "unplannedLabel": { "type": "string", "default": "unplanned" }
+          }
+        },
+        "velocity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": { "type": "integer", "minimum": 1 },
+            "thresholds": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "low": { "type": "number", "default": 50 },
+                "high": { "type": "number", "default": 80 }
+              }
+            }
+          }
+        },
+        "classification": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": { "type": "integer", "minimum": 1 },
+            "unknownWarnPct": { "type": "number", "minimum": 0, "maximum": 100, "default": 15 }
+          }
+        },
+        "planning": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": { "type": "integer", "minimum": 1 },
+            "urgentDays": { "type": "integer", "minimum": 0, "default": 3 },
+            "soonDays": { "type": "integer", "minimum": 0, "default": 5 }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "member": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "jiraUsername": { "type": "string" },
+        "role": { "type": "string" },
+        "featureLeadOf": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ключи головных эпиков, где человек указан фича-лидом."
+        },
+        "activeFrom": { "type": "string", "format": "date" },
+        "activeTo": { "type": "string", "format": "date" }
+      }
+    },
+    "httpSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "deployment": { "type": "string", "enum": ["cloud", "server"] },
+        "baseUrl": { "type": "string" },
+        "teamPageId": { "type": "string" },
+        "authEnv": { "type": "string" }
+      }
+    },
+    "jira": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["deployment"],
+      "properties": {
+        "deployment": {
+          "type": "string",
+          "enum": ["cloud", "server"],
+          "description": "cloud — /rest/api/3 и API token. server — Data Center / Server, /rest/api/2 и PAT."
+        },
+        "baseUrl": { "type": "string" },
+        "boardId": { "type": "string" },
+        "sprintId": {
+          "type": "string",
+          "description": "Пусто — брать активный спринт доски в момент collect."
+        },
+        "authEnv": { "type": "string" },
+        "fields": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "storyPoints": {
+              "type": ["string", "null"],
+              "description": "null — команда без SP, burndown и карточка SP скрыты."
+            },
+            "epicLink": { "type": "string" },
+            "sprint": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
