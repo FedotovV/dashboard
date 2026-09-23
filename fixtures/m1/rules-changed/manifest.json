@@ -1,0 +1,13 @@
+{
+  "teamId": "card",
+  "ruleHash": "stale",
+  "catalogVersion": 1,
+  "timings": [
+    {
+      "issueId": "q-1",
+      "terminal": true,
+      "formulaVersion": 1,
+      "ruleHash": "stale"
+    }
+  ]
+}

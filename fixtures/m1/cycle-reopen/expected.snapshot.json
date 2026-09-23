@@ -1,0 +1,65 @@
+{
+  "snapshotId": "card-expected",
+  "teamId": "card",
+  "asOf": "2026-09-08T16:00:00Z",
+  "timezone": "Europe/Moscow",
+  "catalogVersion": 1,
+  "metricVersions": {
+    "cycleTime": 1
+  },
+  "inputHashes": {
+    "calendar": "hand",
+    "workflow": "hand",
+    "taxonomy": "hand",
+    "scope": "hand",
+    "bundle": "hand"
+  },
+  "coverage": {
+    "timing": "full",
+    "unknownPct": 100,
+    "storyPoints": "full",
+    "assigneeMatchPct": 100,
+    "membership": "complete"
+  },
+  "sprint": {
+    "id": "s",
+    "start": "2026-09-07",
+    "end": "2026-09-18",
+    "metrics": [
+      {
+        "id": "cycleTime",
+        "version": 1,
+        "unit": "workdays",
+        "value": 0.5,
+        "excluded": [],
+        "warnings": [],
+        "params": {
+          "minStaySeconds": 900,
+          "nominalSeconds": 28800
+        },
+        "population": [
+          "C-1"
+        ],
+        "detail": {
+          "perIssue": [
+            {
+              "issueKey": "C-1",
+              "seconds": 14400
+            }
+          ]
+        },
+        "explain": "Медиана рабочих дней в роли active до закрытия. Интервал короче 900 с в сумму не входит. Версия 1."
+      }
+    ],
+    "issues": [
+      {
+        "key": "C-1",
+        "summary": "Переоткрытие",
+        "status": "Done",
+        "scope": "committed",
+        "storyPoints": 1,
+        "assigneeId": "dev"
+      }
+    ]
+  }
+}

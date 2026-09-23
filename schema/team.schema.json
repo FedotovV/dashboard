@@ -176,6 +176,11 @@
           "default": 0,
           "description": "(workEnd − workStart) − breakMinutes = hoursPerDay. Иначе build отклоняет конфиг."
         },
+        "breakStart": {
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+          "description": "Начало одного перерыва внутри окна. Если поля нет, перерыв центрируется в [workStart, workEnd)."
+        },
         "hoursPerDay": { "type": "number", "exclusiveMinimum": 0, "maximum": 24 },
         "holidays": {
           "type": "array",

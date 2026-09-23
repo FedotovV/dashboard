@@ -1,0 +1,87 @@
+{
+  "bundleId": "gold",
+  "asOf": "2026-09-08T16:00:00Z",
+  "sourceWatermark": "hand",
+  "issues": [
+    {
+      "id": "old",
+      "key": "OLD",
+      "summary": "Старая",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "new",
+      "key": "NEW",
+      "summary": "Новая",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    }
+  ],
+  "statusChanges": [
+    {
+      "issueId": "old",
+      "status": "In Progress",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": "2026-09-07T09:00:00Z"
+    },
+    {
+      "issueId": "old",
+      "status": "In Progress",
+      "enteredAt": "2026-09-08T07:00:00Z",
+      "exitedAt": "2026-09-08T13:00:00Z"
+    },
+    {
+      "issueId": "new",
+      "status": "In Progress",
+      "enteredAt": "2026-09-08T07:00:00Z",
+      "exitedAt": "2026-09-08T13:00:00Z"
+    }
+  ],
+  "memberships": [
+    {
+      "issueId": "old",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "new",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    }
+  ],
+  "sprints": [
+    {
+      "id": "s",
+      "name": "Спринт",
+      "state": "active",
+      "start": "2026-09-07",
+      "end": "2026-09-18"
+    }
+  ],
+  "links": []
+}

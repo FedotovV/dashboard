@@ -10,7 +10,7 @@
 
 Все инстанты хранятся в UTC. Календарная дата режется только в `calendar.timezone`. Имя слепка и «сегодня» — дата в этой зоне, не в зоне машины.
 
-Рабочий день — день из `workdays` или `extraWorkdays`, и не из `holidays`. Окно `[workStart, workEnd)` минус `breakMinutes`. Инвариант конфига: длина окна минус перерыв равна `hoursPerDay`. Иначе `build` отклоняет файл.
+Рабочий день — день из `workdays` или `extraWorkdays`, и не из `holidays`. Окно `[workStart, workEnd)` минус один непрерывный перерыв `breakMinutes`. Если задан `breakStart`, перерыв — `[breakStart, breakStart + breakMinutes)` и целиком лежит внутри окна. Если поля нет, перерыв центрируется: отступ от `workStart` равен целой половине остатка окна, лишняя минута остаётся после перерыва. Минуты не вычитаются пропорционально из каждого интервала. Инвариант конфига: длина окна минус перерыв равна `hoursPerDay`. Иначе `build` отклоняет файл.
 
 ```
 nominalSeconds = hoursPerDay × 3600
@@ -35,7 +35,7 @@ cycleSeconds = сумма workSeconds по отрезкам до первого 
 value = медиана cycleSeconds / nominalSeconds по задачам category done
 ```
 
-Короче `minStaySeconds` (по умолчанию 900) — автопереход, в сумму не входит, ключ попадает в `excluded` с причиной `shorter-than-min-stay`.
+Короче `minStaySeconds` (по умолчанию 900) — автопереход: этот интервал в сумму не входит. Ключ попадает в `excluded` с причиной `shorter-than-min-stay` только если после отбрасывания таких интервалов у задачи не осталось времени в роли `active`. Если длинный интервал есть, ключ в `population`.
 
 Нет ни одного `statusChanges` — задача в `excluded` (`no-timing`), метрика `null`, если таких большинство (`coverage.timing = none`).
 

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Архитектура v1 — универсальный командный дашборд</title>
+  <style>
+    :root {
+      --paper: #f3efe6;
+      --ink: #1c1915;
+      --muted: #5e584e;
+      --line: #d8d0c3;
+      --card: #fffdf8;
+      --m1: #0d6b4c;
+      --m1-bg: #e6f4ed;
+      --later: #8a6232;
+      --later-bg: #f8f1e6;
+      --done: #3d4a3f;
+      --done-bg: #eceae4;
+      --contract: #1d3d66;
+      --contract-bg: #e7eef6;
+      --file: #3f3a33;
+      --stop: #8c3a32;
+      --shadow: 0 1px 0 rgba(28, 25, 21, 0.04);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(1200px 500px at 10% -10%, #efe6d4 0%, transparent 55%),
+        var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    a { color: var(--contract); }
+    code, .mono {
+      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 0.86em;
+    }
+    h1, h2, h3, h4 {
+      font-family: Palatino, "Palatino Linotype", "Iowan Old Style", Georgia, serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    h1 { font-size: 2.5rem; margin: 0 0 0.4rem; }
+    h2 { font-size: 1.7rem; margin: 0 0 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 0; }
+    p { margin: 0 0 0.75rem; }
+
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 2.2rem 1.4rem 4rem; }
+    header.top { margin-bottom: 1.6rem; }
+    .kicker {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;
+      color: var(--muted); font-size: 0.82rem; letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 0.7rem;
+    }
+    .lead { max-width: 46rem; font-size: 1.08rem; color: var(--ink); }
+
+    .rail { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 1.1rem 0 0; padding: 0; list-style: none; }
+    .rail li {
+      border: 1px solid var(--line); background: var(--card); border-radius: 999px;
+      padding: 0.28rem 0.7rem; font-size: 0.82rem; color: var(--muted);
+    }
+    .rail li strong { color: var(--ink); font-weight: 650; }
+    .rail li.now { background: var(--m1-bg); border-color: #b7dfcc; color: var(--m1); }
+    .rail li.now strong { color: var(--m1); }
+    .rail li.done { background: var(--done-bg); }
+
+    section { margin-top: 2.4rem; }
+    .section-head { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; flex-wrap: wrap; }
+    .section-head p { color: var(--muted); margin: 0; max-width: 40rem; }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 0.45rem 0.9rem; margin: 0.8rem 0 1rem; font-size: 0.82rem; color: var(--muted); }
+    .swatch { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .swatch i { width: 0.7rem; height: 0.7rem; border-radius: 2px; display: inline-block; border: 1px solid var(--line); }
+    .swatch.m1 i { background: var(--m1-bg); border-color: var(--m1); }
+    .swatch.later i { background: var(--later-bg); border-color: var(--later); }
+    .swatch.contract i { background: var(--contract-bg); border-color: var(--contract); }
+    .swatch.file i { background: transparent; border-style: dashed; border-color: var(--file); }
+    .swatch.done i { background: var(--done-bg); border-color: var(--done); }
+
+    .scheme {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1rem 1rem 1.1rem;
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+    }
+    .orch {
+      min-width: 1040px;
+      border: 1.5px dashed var(--m1);
+      border-radius: 14px;
+      padding: 0.75rem 0.75rem 0.9rem;
+      background: linear-gradient(180deg, rgba(13, 107, 76, 0.04), transparent 90px);
+    }
+    .orch-label {
+      display: flex; justify-content: space-between; gap: 1rem; align-items: baseline;
+      margin-bottom: 0.7rem; color: var(--m1); font-size: 0.92rem;
+    }
+    .orch-label span { color: var(--muted); font-size: 0.82rem; }
+    .orch-foot { margin: 0.75rem 0 0; color: var(--muted); font-size: 0.82rem; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 168px 22px 184px 22px 168px 22px 214px 22px 176px;
+      grid-auto-rows: minmax(72px, auto);
+      gap: 8px 0;
+      align-items: stretch;
+    }
+    .c1 { grid-column: 1; } .c2 { grid-column: 2; } .c3 { grid-column: 3; }
+    .c4 { grid-column: 4; } .c5 { grid-column: 5; } .c6 { grid-column: 6; }
+    .r1 { grid-row: 1; } .r2 { grid-row: 2; } .r3 { grid-row: 3; }
+    .r4 { grid-row: 4; } .r5 { grid-row: 5; } .r6 { grid-row: 6; }
+    .to-out { grid-column: 8; grid-row: 3; }
+    .arrow {
+      display: flex; align-items: center; justify-content: center;
+      color: #b4aa9b; font-size: 1.05rem; user-select: none;
+    }
+    .node {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.5rem 0.6rem 0.55rem;
+      background: var(--card);
+    }
+    .node .tag {
+      display: inline-block; font-size: 0.68rem; letter-spacing: 0.06em;
+      text-transform: uppercase; margin-bottom: 0.15rem; color: var(--muted);
+    }
+    .node strong { display: block; font-size: 0.92rem; }
+    .node em { display: block; font-style: normal; color: var(--muted); font-size: 0.75rem; margin-top: 0.12rem; }
+    .node.m1 { background: var(--m1-bg); border-color: #9dcfb8; }
+    .node.m1 .tag { color: var(--m1); }
+    .node.later { background: var(--later-bg); border-color: #ead9c0; }
+    .node.later .tag { color: var(--later); }
+    .node.contract { background: var(--contract-bg); border-color: #c5d4e6; }
+    .node.contract .tag { color: var(--contract); }
+    .node.file { background: transparent; border-style: dashed; }
+    .node.done { background: var(--done-bg); }
+    .node.engine {
+      background: var(--m1-bg);
+      border-color: #9dcfb8;
+      grid-row: 1 / span 6;
+      grid-column: 7;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .node.out {
+      grid-row: 2 / span 3;
+      grid-column: 9;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .node.engine .tag { color: var(--m1); }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.45rem; }
+    .chips span {
+      background: #fff; border: 1px solid #cfe3d8; border-radius: 999px;
+      padding: 0.05rem 0.4rem; font-size: 0.68rem; color: #245c44;
+    }
+
+    .after {
+      min-width: 1040px;
+      display: grid;
+      grid-template-columns: 1fr auto 180px auto 220px;
+      gap: 8px;
+      align-items: center;
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--line);
+    }
+    .after .note { color: var(--muted); font-size: 0.82rem; }
+
+    .modules {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+    }
+    article.mod {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.9rem 0.95rem 0.85rem;
+      box-shadow: var(--shadow);
+      display: flex; flex-direction: column; gap: 0.55rem;
+    }
+    article.mod header { display: flex; flex-direction: column; gap: 0.15rem; }
+    article.mod header .row { display: flex; justify-content: space-between; gap: 0.5rem; align-items: center; }
+    .badge {
+      font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;
+      border-radius: 999px; padding: 0.12rem 0.45rem; border: 1px solid var(--line); color: var(--muted);
+    }
+    .badge.m1 { background: var(--m1-bg); color: var(--m1); border-color: #b7dfcc; }
+    .badge.later { background: var(--later-bg); color: var(--later); border-color: #ead9c0; }
+    .badge.done { background: var(--done-bg); color: var(--done); }
+    article.mod .path { color: var(--muted); font-size: 0.78rem; }
+    dl.io { margin: 0; display: grid; grid-template-columns: 4.6rem 1fr; gap: 0.2rem 0.4rem; font-size: 0.86rem; }
+    dl.io dt { color: var(--muted); }
+    dl.io dd { margin: 0; }
+    .nowline { font-size: 0.82rem; color: var(--m1); margin: 0; }
+
+    table {
+      width: 100%; border-collapse: collapse; background: var(--card);
+      border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+      font-size: 0.92rem;
+    }
+    th, td { text-align: left; padding: 0.55rem 0.7rem; vertical-align: top; border-bottom: 1px solid var(--line); }
+    th { font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 650; background: #faf7f1; }
+    tr:last-child td { border-bottom: 0; }
+
+    .slices { display: grid; gap: 0.55rem; }
+    .slice {
+      display: grid; grid-template-columns: 4.2rem 1fr; gap: 0.7rem;
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 0.75rem 0.85rem;
+    }
+    .slice .n {
+      font-family: Palatino, Georgia, serif; font-size: 1.35rem; color: var(--m1); line-height: 1;
+    }
+    .slice h3 { margin-bottom: 0.2rem; }
+    .slice p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+    .callout {
+      border-left: 3px solid var(--stop); background: #fbf6f3; padding: 0.75rem 0.9rem; border-radius: 0 10px 10px 0;
+      margin-top: 0.8rem;
+    }
+    .callout strong { color: var(--stop); }
+    footer.note { margin-top: 2rem; color: var(--muted); font-size: 0.85rem; }
+    @media (max-width: 980px) {
+      .modules { grid-template-columns: 1fr; }
+      h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="kicker">Универсальный командный дашборд · v1 · одна команда, спринтовая доска</div>
+      <h1>Архитектура и граница модулей</h1>
+      <p class="lead">Одна установка превращает <code>team.yaml</code> и выгрузку в снимок, которому можно верить на разборе. Модуль знает только свой вход и свой выход. Общие файлы ходят через схемы, не через чужой код.</p>
+      <ol class="rail">
+        <li class="done"><strong>M0</strong> контракт</li>
+        <li class="now"><strong>M1</strong> движок — этот шаг</li>
+        <li><strong>M2</strong> экран «Спринт»</li>
+        <li><strong>M3</strong> «Период» и правки</li>
+        <li><strong>M4</strong> один процесс</li>
+        <li><strong>M5</strong> один Jira</li>
+      </ol>
+    </header>
+
+    <section id="scheme">
+      <div class="section-head">
+        <h2>Схема конвейера</h2>
+        <p>Чтение слева направо. Пунктир — оркестратор: единственный, кто знает порядок. Зелёное входит в первый шаг.</p>
+      </div>
+      <div class="legend">
+        <span class="swatch done"><i></i> M0 готово</span>
+        <span class="swatch m1"><i></i> M1, строим сейчас</span>
+        <span class="swatch later"><i></i> M2–M5, не начинаем</span>
+        <span class="swatch contract"><i></i> контракт, не код</span>
+        <span class="swatch file"><i></i> файл</span>
+      </div>
+
+      <div class="scheme">
+        <div class="orch">
+          <div class="orch-label">
+            <strong>Оркестратор · <span class="mono">build</span></strong>
+            <span>collect → metrics → snapshot → apply. В M1 collect — это чтение готового canonical JSON.</span>
+          </div>
+          <div class="flow">
+            <div class="node file r1 c1"><span class="tag">файл</span><strong>team.yaml</strong><em>вход установки</em></div>
+            <div class="arrow r1 c2">→</div>
+            <div class="node m1 r1 c3"><span class="tag">M1 · config</span><strong>загрузка YAML</strong><em>схема и окно дня</em></div>
+            <div class="arrow r1 c4">→</div>
+            <div class="node contract r1 c5"><span class="tag">контракт</span><strong>TeamConfig</strong><em>календарь, роли, хеши</em></div>
+            <div class="arrow r1 c6">→</div>
+
+            <div class="node file m1 r2 c1"><span class="tag">M1 · файл</span><strong>canonical.json</strong><em>фикстура, не генератор</em></div>
+            <div class="arrow r2 c2">→</div>
+            <div class="node m1 r2 c3"><span class="tag">M1 · build</span><strong>чтение bundle</strong><em>коннектора ещё нет</em></div>
+            <div class="arrow r2 c4">→</div>
+            <div class="node contract done r2 c5"><span class="tag">M0</span><strong>canonical bundle</strong><em>issue, status, sprint, link</em></div>
+            <div class="arrow r2 c6">→</div>
+
+            <div class="node file later r3 c1"><span class="tag">M5 · файл</span><strong>ответ Jira</strong><em>raw, ещё не каноника</em></div>
+            <div class="arrow r3 c2">→</div>
+            <div class="node later r3 c3"><span class="tag">M4–M5</span><strong>connectors</strong><em>в M1 каталог не создаём</em></div>
+            <div class="arrow r3 c4">→</div>
+            <div class="node contract r3 c5"><span class="tag">тот же контракт</span><strong>bundle</strong><em>Jira и фикстура сходятся сюда</em></div>
+            <div class="arrow r3 c6">→</div>
+
+            <div class="node file r4 c1"><span class="tag">файлы</span><strong>прошлые слепки</strong><em>бейдж и спарклайн</em></div>
+            <div class="arrow r4 c2">→</div>
+            <div class="node m1 r4 c3"><span class="tag">M1 · build</span><strong>сбор history</strong><em>метрики каталог не открывают</em></div>
+            <div class="arrow r4 c4">→</div>
+            <div class="node contract r4 c5"><span class="tag">аргумент</span><strong>history</strong><em>объект, дыры дней пустые</em></div>
+            <div class="arrow r4 c6">→</div>
+
+            <div class="node file r5 c1"><span class="tag">файл</span><strong>edits.json</strong><em>релиз и заметка эпика</em></div>
+            <div class="arrow r5 c2">→</div>
+            <div class="node m1 r5 c3"><span class="tag">M1 · edits</span><strong>подстановка</strong><em>файл не переписывается</em></div>
+            <div class="arrow r5 c4">→</div>
+            <div class="node contract r5 c5"><span class="tag">после движка</span><strong>пометки PM</strong><em>на результат, не внутрь формул</em></div>
+            <div class="arrow r5 c6">·</div>
+
+            <div class="node file r6 c1"><span class="tag">файл</span><strong>manifest</strong><em>хеш правил, запечатка</em></div>
+            <div class="arrow r6 c2">→</div>
+            <div class="node m1 r6 c3"><span class="tag">M1 · build</span><strong>сверка хеша</strong><em>без приёмки записи нет</em></div>
+            <div class="arrow r6 c4">→</div>
+            <div class="node contract r6 c5"><span class="tag">до движка</span><strong>ruleHash</strong><em>не сошёлся — metrics не вызывается</em></div>
+            <div class="arrow r6 c6">·</div>
+
+            <div class="node engine">
+              <span class="tag">M1 · metrics</span>
+              <strong>Движок формул</strong>
+              <em>Принимает bundle, config, asOf и history. Файлов и сети не открывает.</em>
+              <div class="chips">
+                <span>cycleTime</span><span>waitTime</span><span>sprintFlow</span>
+                <span>scopeChange</span><span>completionVsCommitted</span>
+                <span>hygiene</span><span>blockers</span><span>personLoad</span>
+                <span>burndown</span><span>classification</span><span>statusHours</span>
+                <span>projectList</span><span>coverage</span>
+              </div>
+            </div>
+            <div class="arrow to-out">→</div>
+            <div class="node out m1">
+              <span class="tag">M1 · snapshotstore</span>
+              <strong>Файл слепка</strong>
+              <em>Новый файл дня в TZ команды. Повторный build байты не трогает. Правки уже вшиты. Это вход будущего UI.</em>
+            </div>
+          </div>
+          <p class="orch-foot">В движок входят только TeamConfig, bundle и history. Manifest с другим хешем останавливает build до расчёта. Релиз и заметка эпика накладываются на уже посчитанный результат.</p>
+        </div>
+
+        <div class="after">
+          <div class="note">Дальше оркестратора снимок только читают. Пересчёта внутри GET нет. Кнопки сборки на экране нет.</div>
+          <div class="arrow">→</div>
+          <div class="node later"><span class="tag">M4</span><strong>api</strong><em>GET view · PUT edits с токеном, если не localhost</em></div>
+          <div class="arrow">→</div>
+          <div class="node later"><span class="tag">M2–M3</span><strong>web</strong><em>Спринт, затем Период. Арифметику не повторяет.</em></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="modules">
+      <div class="section-head">
+        <h2>Модули</h2>
+        <p>Граница модуля — что он принимает и чего не знает. Импорт соседнего модуля запрещён. Собирает только оркестратор.</p>
+      </div>
+      <div class="modules">
+        <article class="mod">
+          <header>
+            <div class="row"><h3>Конфиг</h3><span class="badge m1">M1</span></div>
+            <div class="path mono">src/dashboard/config</div>
+          </header>
+          <dl class="io">
+            <dt>Вход</dt><dd>YAML установки</dd>
+            <dt>Выход</dt><dd><code>TeamConfig</code>, хеши правил</dd>
+            <dt>Не знает</dt><dd>JSON Jira, HTTP, виджеты, формулы</dd>
+          </dl>
+          <p class="nowline">Первый шаг: загрузка, схема, инвариант окна дня, хеш.</p>
+        </article>
+
+        <article class="mod">
+          <header>
+            <div class="row"><h3>Каноника</h3><span class="badge done">M0</span></div>
+            <div class="path mono">schema/canonical.schema.json</div>
+          </header>
+          <dl class="io">
+            <dt>Вход</dt><dd>типы сущностей</dd>
+            <dt>Выход</dt><dd>bundle для движка</dd>
+            <dt>Не знает</dt><dd>формулы и роли статусов: роль назначает движок по <code>statusMap</code></dd>
+          </dl>
+          <p class="nowline">В M1 не меняем смысл сущностей. Фикстуры валидируются этой схемой.</p>
+        </article>
+
+        <article class="mod">
+          <header>
+            <div class="row"><h3>Коннекторы</h3><span class="badge later">M4–M5</span></div>
+            <div class="path mono">src/dashboard/connectors</div>
+          </header>
+          <dl class="io">
+            <dt>Вход</dt><dd>raw и кусок <code>sources</code></dd>
+            <dt>Выход</dt><dd>canonical bundle</dd>
+            <dt>Не знает</dt><dd>правки, слепки, KPI</dd>
+          </dl>
+          <p class="nowline">В первом шаге каталог не создаём. Оркестратор читает уже канонический JSON.</p>
+        </article>
+
+        <article class="mod">
+          <header>
+            <div class="row"><h3>Метрики</h3><span class="badge m1">M1</span></div>
+            <div class="path mono">src/dashboard/metrics</div>
+          </header>
+          <dl class="io">
+            <dt>Вход</dt><dd>bundle, config, asOf, history объектом</dd>
+            <dt>Выход</dt><dd>результаты каталога версии 1</dd>
+            <dt>Не знает</dt><dd>файлы, сеть, каталог слепков</dd>
+          </dl>
+          <p class="nowline">Единственная арифметика. Виджет её не повторяет.</p>
+        </article>
+
+        <article class="mod">
+          <header>
+            <div class="row"><h3>Слепки</h3><span class="badge m1">M1</span></div>
+            <div class="path mono">src/dashboard/snapshotstore</div>
+          </header>
+          <dl class="io">
+            <dt>Вход</dt><dd>готовый документ снимка</dd>
+            <dt>Выход</dt><dd>новый файл дня</dd>
+            <dt>Не знает</dt><dd>как пересчитать формулу</dd>
+          </dl>
+          <p class="nowline">Повторный build не меняет байты уже лежащего файла.</p>
+        </article>
+
+        <article class="mod">
+          <header>
+            <div class="row"><h3>Правки</h3><span class="badge m1">M1 чтение</span></div>
+            <div class="path mono">src/dashboard/edits</div>
+          </header>
+          <dl class="io">
+            <dt>Вход</dt><dd><code>edits.json</code> и результаты метрик</dd>
+            <dt>Выход</dt><dd>view: релиз и заметка на эпике</dd>
+            <dt>Не знает</dt><dd>Jira и формулы</dd>
+          </dl>
+          <p class="nowline">Файл после build тот же. Подмены чисел нет. PUT — в M3.</p>
+        </article>
+
+        <article class="mod">
+          <header>
+            <div class="row"><h3>Оркестратор</h3><span class="badge m1">M1 · build</span></div>
+            <div class="path mono">src/dashboard/orchestrator</div>
+          </header>
+          <dl class="io">
+            <dt>Вход</dt><dd>пути к yaml, bundle, edits, manifest, каталогу слепков</dd>
+            <dt>Выход</dt><dd>файл слепка или отказ</dd>
+            <dt>Не знает</dt><dd>внутреннюю арифметику метрик</dd>
+          </dl>
+          <p class="nowline">Единственное место, где модули встречаются.</p>
+        </article>
+
+        <article class="mod">
+          <header>
+            <div class="row"><h3>API</h3><span class="badge later">M3–M4</span></div>
+            <div class="path mono">src/dashboard/api</div>
+          </header>
+          <dl class="io">
+            <dt>Вход</dt><dd>файл слепка и правки</dd>
+            <dt>Выход</dt><dd><code>GET</code> view, <code>PUT</code> edits</dd>
+            <dt>Не знает</dt><dd>формулы. Пересчёт не внутри GET</dd>
+          </dl>
+          <p class="nowline">В M1 процесса serve нет.</p>
+        </article>
+
+        <article class="mod">
+          <header>
+            <div class="row"><h3>Web</h3><span class="badge later">M2–M3</span></div>
+            <div class="path mono">web</div>
+          </header>
+          <dl class="io">
+            <dt>Вход</dt><dd>документ маршрута из снимка</dd>
+            <dt>Выход</dt><dd>экран «Спринт», затем «Период»</dd>
+            <dt>Не знает</dt><dd>арифметику</dd>
+          </dl>
+          <p class="nowline">Экран откроется на снимке M1, не на зашитом JSON.</p>
+        </article>
+
+        <article class="mod">
+          <header>
+            <div class="row"><h3>Фикстуры</h3><span class="badge m1">M1</span></div>
+            <div class="path mono">fixtures/m1</div>
+          </header>
+          <dl class="io">
+            <dt>Вход</dt><dd>ручные canonical и yaml</dd>
+            <dt>Выход</dt><dd>пара к ожидаемому снимку</dd>
+            <dt>Не знает</dt><dd>пакет метрик: ожидаемый снимок пишется по каталогу, не снимается с прогона</dd>
+          </dl>
+          <p class="nowline">Каждый золотой случай — отдельная пара файлов.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contracts">
+      <div class="section-head">
+        <h2>Контракты между модулями</h2>
+        <p>Схемы уже стоят с M0. В начале M1 снимок дополняется полями, без которых движку некуда положить обещанные факты.</p>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Файл</th><th>Кто пишет</th><th>Кто читает</th><th>В первом шаге</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>schema/team.schema.json</code></td>
+            <td>человек и локальная модель по гиду</td>
+            <td>config</td>
+            <td>Необязательный <code>breakStart</code>, чтобы перерыв имел одно положение в дне</td>
+          </tr>
+          <tr>
+            <td><code>schema/canonical.schema.json</code></td>
+            <td>коннектор; в M1 — автор фикстуры</td>
+            <td>metrics</td>
+            <td>Без смены смысла</td>
+          </tr>
+          <tr>
+            <td><code>schema/snapshot.schema.json</code></td>
+            <td>orchestrator после metrics и edits</td>
+            <td>web, история следующего build</td>
+            <td><code>dueDate</code> у задачи, <code>trend</code>, <code>detail</code> у метрики, хеш bundle</td>
+          </tr>
+          <tr>
+            <td><code>schema/edits.schema.json</code></td>
+            <td>PM, позже PUT</td>
+            <td>edits</td>
+            <td>Build файл не переписывает</td>
+          </tr>
+          <tr>
+            <td><code>schema/manifest.schema.json</code></td>
+            <td>orchestrator при приёмке пересчёта</td>
+            <td>orchestrator</td>
+            <td>Расхождение хеша останавливает build</td>
+          </tr>
+          <tr>
+            <td><code>docs/metric-catalog.md</code></td>
+            <td>человек</td>
+            <td>metrics, текст «Как считается»</td>
+            <td>Уточнить положение перерыва и короткое пребывание. Версии формул не меняются</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <strong>Снаружи v1.</strong> Confluence, мессенджер, GitLab, вторая команда, SSO, планировщик, кнопка пересборки, цветовые пороги, <code>riskScore</code> и карточка «утилизация» не появляются ни в схеме, ни в модулях.
+      </div>
+    </section>
+
+    <section id="step">
+      <div class="section-head">
+        <h2>Первый шаг — движок</h2>
+        <p>Подробные входы, выходы и золотые пары — в <a href="m1-plan.md">плане M1</a>. Ниже порядок, в котором этот шаг закрывается.</p>
+      </div>
+      <div class="slices">
+        <article class="slice"><div class="n">0</div><div><h3>Дописать снимок</h3><p>Поля, которые каталог уже обещает, а схема снимка ещё не держит. Примеры и <code>check_contracts.py</code> остаются зелёными. Кода движка ещё нет.</p></div></article>
+        <article class="slice"><div class="n">1</div><div><h3>Конфиг и одна арифметика времени</h3><p>Окно дня, перерыв, праздник, полночь в зоне команды. Неизвестная версия каталога и несходящееся окно отклоняют файл.</p></div></article>
+        <article class="slice"><div class="n">2</div><div><h3>Цикл и срок</h3><p>Сумма роли <code>active</code>, не спан. Короткий заход, возврат в очередь, выход из terminal, due через полночь.</p></div></article>
+        <article class="slice"><div class="n">3</div><div><h3>Состав спринта</h3><p>Счётчики ролей, add на день 3, remove на день 7, завершение к составу на старте. Отмена остаётся в знаменателе.</p></div></article>
+        <article class="slice"><div class="n">4</div><div><h3>Классификация</h3><p>Ромб эпиков, цикл связей, метка tech поверх проектной головы, задача без головы → <code>unknown</code>.</p></div></article>
+        <article class="slice"><div class="n">5</div><div><h3>Часы в статусе</h3><p>Два параллельных тикета, масштаб дня, inherited и own в одном дне. Ноль прошедших рабочих дней → темп <code>null</code>.</p></div></article>
+        <article class="slice"><div class="n">6</div><div><h3>Остальные карточки</h3><p>Гигиена, список блокеров, люди с нулями, burndown только при полных SP, список эпиков.</p></div></article>
+        <article class="slice"><div class="n">7</div><div><h3>Сборка</h3><p>Слепок write-once, <code>edits.json</code> нетронут, смена <code>statusMap</code> без приёмки останавливает build. Текст «Как считается» показывает параметры фикстуры.</p></div></article>
+      </div>
+    </section>
+
+    <footer class="note">
+      Источник правды по продукту — <a href="plan.md">plan.md</a> и <a href="metric-catalog.md">metric-catalog.md</a>.
+      Эта страница их не заменяет: она показывает, какой модуль какой контракт держит.
+      Порядок работ первого шага — <a href="m1-plan.md">m1-plan.md</a>.
+    </footer>
+  </div>
+</body>
+</html>

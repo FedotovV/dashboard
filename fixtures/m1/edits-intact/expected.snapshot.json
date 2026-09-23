@@ -1,0 +1,71 @@
+{
+  "snapshotId": "card-expected",
+  "teamId": "card",
+  "asOf": "2026-09-09T16:00:00Z",
+  "timezone": "Europe/Moscow",
+  "catalogVersion": 1,
+  "metricVersions": {
+    "projectList": 1
+  },
+  "inputHashes": {
+    "calendar": "hand",
+    "workflow": "hand",
+    "taxonomy": "hand",
+    "scope": "hand",
+    "bundle": "hand"
+  },
+  "coverage": {
+    "timing": "full",
+    "unknownPct": 100,
+    "storyPoints": "full",
+    "assigneeMatchPct": 100,
+    "membership": "complete"
+  },
+  "sprint": {
+    "id": "s",
+    "start": "2026-09-07",
+    "end": "2026-09-18",
+    "metrics": [],
+    "issues": []
+  },
+  "period": {
+    "id": "2026-09",
+    "start": "2026-09-07",
+    "end": "2026-09-30",
+    "metrics": [
+      {
+        "id": "projectList",
+        "version": 1,
+        "unit": "epics",
+        "value": 2,
+        "excluded": [],
+        "warnings": [],
+        "params": {},
+        "population": [
+          "P-1",
+          "T-1"
+        ],
+        "detail": {
+          "rows": [
+            {
+              "key": "P-1",
+              "name": "P-1",
+              "status": null,
+              "featureLead": null,
+              "release": "2026-Q3",
+              "note": "Ждём макет"
+            },
+            {
+              "key": "T-1",
+              "name": "T-1",
+              "status": null,
+              "featureLead": null,
+              "release": null,
+              "note": null
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "snapshotId": "card-expected",
+  "teamId": "card",
+  "asOf": "2026-09-09T16:00:00Z",
+  "timezone": "Europe/Moscow",
+  "catalogVersion": 1,
+  "metricVersions": {
+    "burndown": 1
+  },
+  "inputHashes": {
+    "calendar": "hand",
+    "workflow": "hand",
+    "taxonomy": "hand",
+    "scope": "hand",
+    "bundle": "hand"
+  },
+  "coverage": {
+    "timing": "full",
+    "unknownPct": 100,
+    "storyPoints": "full",
+    "assigneeMatchPct": 100,
+    "membership": "complete"
+  },
+  "sprint": {
+    "id": "s",
+    "start": "2026-09-07",
+    "end": "2026-09-18",
+    "metrics": [
+      {
+        "id": "burndown",
+        "version": 1,
+        "unit": "points",
+        "value": 3,
+        "excluded": [],
+        "warnings": [],
+        "params": {
+          "storyPointsAtAdd": 8
+        },
+        "detail": {
+          "points": [
+            {
+              "date": "2026-09-07",
+              "ideal": 8.0,
+              "actual": 8
+            },
+            {
+              "date": "2026-09-08",
+              "ideal": 7.2727272727272725,
+              "actual": 3
+            },
+            {
+              "date": "2026-09-09",
+              "ideal": 6.545454545454545,
+              "actual": 3
+            }
+          ]
+        }
+      }
+    ],
+    "issues": [
+      {
+        "key": "D-1",
+        "summary": "Оценка выросла",
+        "status": "Done",
+        "scope": "committed",
+        "storyPoints": 8,
+        "assigneeId": "dev"
+      },
+      {
+        "key": "O-1",
+        "summary": "Открытая",
+        "status": "In Progress",
+        "scope": "committed",
+        "storyPoints": 3,
+        "assigneeId": "dev"
+      }
+    ]
+  }
+}

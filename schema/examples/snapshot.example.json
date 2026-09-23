@@ -12,7 +12,8 @@
     "calendar": "cal-1",
     "workflow": "wf-1",
     "taxonomy": "tax-1",
-    "scope": "scope-1"
+    "scope": "scope-1",
+    "bundle": "bundle-1"
   },
   "coverage": {
     "timing": "full",
@@ -34,9 +35,12 @@
         "population": ["CARD-101"],
         "excluded": [],
         "warnings": [],
-        "params": {}
+        "params": {},
+        "detail": { "byRole": { "active": 1 } },
+        "explain": "Счётчики текущего состава."
       }
     ],
+    "trend": { "previous": null, "sparkline": [] },
     "issues": [
       {
         "key": "CARD-101",
@@ -45,7 +49,9 @@
         "assigneeId": "ivanov",
         "storyPoints": 3,
         "scope": "committed",
-        "blockerReasons": []
+        "blockerReasons": [],
+        "dueDate": "2026-09-12",
+        "closedBeforeDue": null
       }
     ]
   }
