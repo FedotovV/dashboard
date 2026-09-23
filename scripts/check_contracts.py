@@ -52,6 +52,11 @@ def check_team_invariants(data: dict, label: str) -> list[str]:
             problems.append(
                 f"{label}: окно {hours} ч минус перерыв не равно hoursPerDay {calendar['hoursPerDay']}"
             )
+        break_start = calendar.get("breakStart")
+        if break_start and break_minutes:
+            break_at = hhmm_minutes(break_start)
+            if break_at < start or break_at + break_minutes > end:
+                problems.append(f"{label}: перерыв выходит за [workStart, workEnd)")
     if data["period"]["end"] < data["period"]["start"]:
         problems.append(f"{label}: period.end раньше period.start")
     people = [*data["team"]["members"], *data["team"].get("alumni", [])]

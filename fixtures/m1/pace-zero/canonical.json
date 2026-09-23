@@ -1,0 +1,51 @@
+{
+  "bundleId": "gold",
+  "asOf": "2026-09-08T07:00:00Z",
+  "sourceWatermark": "hand",
+  "issues": [
+    {
+      "id": "a-1",
+      "key": "A-1",
+      "summary": "Первый день",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    }
+  ],
+  "statusChanges": [
+    {
+      "issueId": "a-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-08T07:00:00Z",
+      "exitedAt": null
+    }
+  ],
+  "memberships": [
+    {
+      "issueId": "a-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    }
+  ],
+  "sprints": [
+    {
+      "id": "s",
+      "name": "Спринт",
+      "state": "active",
+      "start": "2026-09-07",
+      "end": "2026-09-18"
+    }
+  ],
+  "links": []
+}

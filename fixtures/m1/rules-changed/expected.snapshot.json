@@ -1,0 +1,50 @@
+{
+  "snapshotId": "card-expected",
+  "teamId": "card",
+  "asOf": "2026-09-09T16:00:00Z",
+  "timezone": "Europe/Moscow",
+  "catalogVersion": 1,
+  "metricVersions": {
+    "sprintFlow": 1
+  },
+  "inputHashes": {
+    "calendar": "hand",
+    "workflow": "hand",
+    "taxonomy": "hand",
+    "scope": "hand",
+    "bundle": "hand"
+  },
+  "coverage": {
+    "timing": "none",
+    "unknownPct": null,
+    "storyPoints": "off",
+    "assigneeMatchPct": null,
+    "membership": "incomplete"
+  },
+  "sprint": {
+    "id": "s",
+    "start": "2026-09-07",
+    "end": "2026-09-18",
+    "metrics": [
+      {
+        "id": "sprintFlow",
+        "version": 1,
+        "unit": "issues",
+        "value": null,
+        "excluded": [],
+        "warnings": [
+          "not-written"
+        ],
+        "params": {}
+      }
+    ],
+    "issues": [
+      {
+        "key": "Q-1",
+        "summary": "Очередь",
+        "status": "To Do",
+        "scope": "committed"
+      }
+    ]
+  }
+}

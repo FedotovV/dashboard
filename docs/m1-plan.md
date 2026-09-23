@@ -2,7 +2,7 @@
 
 Первый шаг реализации. M0 закрыт: схемы, каталог, гид и `scripts/check_contracts.py` уже в репозитории. Экран не начинаем, пока золотые пары «каноника → снимок» не зелёные. Иначе форма зашитого JSON станет второй спецификацией.
 
-Схема модулей: [architecture.html](architecture.html). Формулы: [metric-catalog.md](metric-catalog.md). Границы продукта: [plan.md](plan.md).
+Схема модулей: [architecture.html](architecture.html). Формулы: [metric-catalog.md](metric-catalog.md). Границы продукта: [plan.md](plan.md). Порядок кода, тестов и отчётов: [m1-implementation.md](m1-implementation.md).
 
 ## Выход шага
 

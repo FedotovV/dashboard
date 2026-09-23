@@ -1,0 +1,148 @@
+{
+  "bundleId": "gold",
+  "asOf": "2026-09-14T16:00:00Z",
+  "sourceWatermark": "hand",
+  "issues": [
+    {
+      "id": "c-1",
+      "key": "C-1",
+      "summary": "Старт",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "Done",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "x-1",
+      "key": "X-1",
+      "summary": "Отмена",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "Canceled",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "a-1",
+      "key": "A-1",
+      "summary": "Добавлена",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "r-1",
+      "key": "R-1",
+      "summary": "Снята",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "To Do",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    }
+  ],
+  "statusChanges": [
+    {
+      "issueId": "c-1",
+      "status": "Done",
+      "enteredAt": "2026-09-08T08:00:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "x-1",
+      "status": "Canceled",
+      "enteredAt": "2026-09-08T08:00:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "a-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-09T07:00:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "r-1",
+      "status": "To Do",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": null
+    }
+  ],
+  "memberships": [
+    {
+      "issueId": "c-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "x-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "a-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-09T07:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "r-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": "2026-09-13T07:00:00Z"
+    }
+  ],
+  "sprints": [
+    {
+      "id": "s-prev",
+      "name": "Прошлый",
+      "state": "closed",
+      "start": "2026-08-24",
+      "end": "2026-09-04"
+    },
+    {
+      "id": "s",
+      "name": "Спринт",
+      "state": "active",
+      "start": "2026-09-07",
+      "end": "2026-09-18"
+    }
+  ],
+  "links": []
+}

@@ -29,12 +29,13 @@
     "inputHashes": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["calendar", "workflow", "taxonomy", "scope"],
+      "required": ["calendar", "workflow", "taxonomy", "scope", "bundle"],
       "properties": {
         "calendar": { "type": "string" },
         "workflow": { "type": "string" },
         "taxonomy": { "type": "string" },
-        "scope": { "type": "string" }
+        "scope": { "type": "string" },
+        "bundle": { "type": "string", "description": "Хеш канонического JSON bundle." }
       }
     },
     "coverage": { "$ref": "#/$defs/coverage" },
@@ -81,7 +82,15 @@
           }
         },
         "warnings": { "type": "array", "items": { "type": "string" } },
-        "params": { "type": "object" }
+        "params": { "type": "object" },
+        "detail": {
+          "type": "object",
+          "description": "Остальные числа карточки. Набор ключей фиксирует тест метрики."
+        },
+        "explain": {
+          "type": "string",
+          "description": "Текст «Как считается» с параметрами этой установки."
+        }
       }
     },
     "sprintView": {
@@ -96,6 +105,7 @@
           "type": "array",
           "items": { "$ref": "#/$defs/metric" }
         },
+        "trend": { "$ref": "#/$defs/trend" },
         "issues": {
           "type": "array",
           "items": {
@@ -112,6 +122,11 @@
               "blockerReasons": {
                 "type": "array",
                 "items": { "type": "string" }
+              },
+              "dueDate": { "type": ["string", "null"], "format": "date" },
+              "closedBeforeDue": {
+                "type": ["boolean", "null"],
+                "description": "Дата закрытия в TZ команды строго раньше due. null — сравнения нет."
               }
             }
           }
@@ -130,6 +145,54 @@
           "type": "array",
           "items": { "$ref": "#/$defs/metric" }
         }
+      }
+    },
+    "trend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sparkline"],
+      "properties": {
+        "previous": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["snapshotId", "sprintId", "byRole"],
+              "properties": {
+                "snapshotId": { "type": "string" },
+                "sprintId": { "type": "string" },
+                "byRole": { "$ref": "#/$defs/byRole" }
+              }
+            }
+          ]
+        },
+        "sparkline": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["date", "done"],
+            "properties": {
+              "date": { "type": "string", "format": "date" },
+              "done": { "type": "integer", "minimum": 0 }
+            }
+          }
+        }
+      }
+    },
+    "byRole": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["active", "wait", "hold", "queue", "done", "canceled", "total"],
+      "properties": {
+        "active": { "type": "integer", "minimum": 0 },
+        "wait": { "type": "integer", "minimum": 0 },
+        "hold": { "type": "integer", "minimum": 0 },
+        "queue": { "type": "integer", "minimum": 0 },
+        "done": { "type": "integer", "minimum": 0 },
+        "canceled": { "type": "integer", "minimum": 0 },
+        "total": { "type": "integer", "minimum": 0 }
       }
     }
   }

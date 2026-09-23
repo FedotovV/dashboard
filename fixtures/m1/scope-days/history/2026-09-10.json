@@ -1,0 +1,22 @@
+{
+  "snapshotId": "card-2026-09-10",
+  "sprint": {
+    "id": "s",
+    "metrics": [
+      {
+        "id": "sprintFlow",
+        "detail": {
+          "byRole": {
+            "active": 2,
+            "wait": 0,
+            "hold": 0,
+            "queue": 1,
+            "done": 0,
+            "canceled": 0,
+            "total": 3
+          }
+        }
+      }
+    ]
+  }
+}

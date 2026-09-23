@@ -1,0 +1,163 @@
+{
+  "snapshotId": "card-expected",
+  "teamId": "card",
+  "asOf": "2026-09-14T16:00:00Z",
+  "timezone": "Europe/Moscow",
+  "catalogVersion": 1,
+  "metricVersions": {
+    "sprintFlow": 1,
+    "scopeChange": 1,
+    "completionVsCommitted": 1
+  },
+  "inputHashes": {
+    "calendar": "hand",
+    "workflow": "hand",
+    "taxonomy": "hand",
+    "scope": "hand",
+    "bundle": "hand"
+  },
+  "coverage": {
+    "timing": "full",
+    "unknownPct": 100,
+    "storyPoints": "full",
+    "assigneeMatchPct": 100,
+    "membership": "complete"
+  },
+  "sprint": {
+    "id": "s",
+    "start": "2026-09-07",
+    "end": "2026-09-18",
+    "metrics": [
+      {
+        "id": "sprintFlow",
+        "version": 1,
+        "unit": "issues",
+        "value": 3,
+        "excluded": [],
+        "warnings": [],
+        "params": {},
+        "population": [
+          "A-1",
+          "C-1",
+          "X-1"
+        ],
+        "detail": {
+          "byRole": {
+            "active": 1,
+            "wait": 0,
+            "hold": 0,
+            "queue": 0,
+            "done": 1,
+            "canceled": 1,
+            "total": 3
+          }
+        }
+      },
+      {
+        "id": "scopeChange",
+        "version": 1,
+        "unit": "issues",
+        "value": null,
+        "excluded": [],
+        "warnings": [],
+        "params": {},
+        "population": [
+          "C-1",
+          "X-1",
+          "A-1",
+          "R-1"
+        ],
+        "detail": {
+          "committed": 2,
+          "added": 1,
+          "removed": 1,
+          "committedKeys": [
+            "C-1",
+            "X-1"
+          ],
+          "addedKeys": [
+            "A-1"
+          ],
+          "removedKeys": [
+            "R-1"
+          ]
+        }
+      },
+      {
+        "id": "completionVsCommitted",
+        "version": 1,
+        "unit": "ratio",
+        "value": 0.5,
+        "excluded": [],
+        "warnings": [],
+        "params": {},
+        "population": [
+          "C-1"
+        ],
+        "detail": {
+          "done": 1,
+          "committed": 2
+        }
+      }
+    ],
+    "issues": [
+      {
+        "key": "A-1",
+        "summary": "Добавлена",
+        "status": "In Progress",
+        "scope": "added",
+        "storyPoints": 1,
+        "assigneeId": "dev"
+      },
+      {
+        "key": "C-1",
+        "summary": "Старт",
+        "status": "Done",
+        "scope": "committed",
+        "storyPoints": 1,
+        "assigneeId": "dev"
+      },
+      {
+        "key": "R-1",
+        "summary": "Снята",
+        "status": "To Do",
+        "scope": "removed",
+        "storyPoints": 1,
+        "assigneeId": "dev"
+      },
+      {
+        "key": "X-1",
+        "summary": "Отмена",
+        "status": "Canceled",
+        "scope": "committed",
+        "storyPoints": 1,
+        "assigneeId": "dev"
+      }
+    ],
+    "trend": {
+      "previous": {
+        "snapshotId": "card-2026-09-04",
+        "sprintId": "s-prev",
+        "byRole": {
+          "active": 0,
+          "wait": 0,
+          "hold": 0,
+          "queue": 1,
+          "done": 4,
+          "canceled": 0,
+          "total": 5
+        }
+      },
+      "sparkline": [
+        {
+          "date": "2026-09-10",
+          "done": 0
+        },
+        {
+          "date": "2026-09-14",
+          "done": 1
+        }
+      ]
+    }
+  }
+}

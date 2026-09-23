@@ -1,0 +1,277 @@
+{
+  "bundleId": "gold",
+  "asOf": "2026-09-09T16:00:00Z",
+  "sourceWatermark": "hand",
+  "issues": [
+    {
+      "id": "p-1",
+      "key": "P-1",
+      "summary": "Продукт",
+      "type": "Epic",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": null,
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "t-1",
+      "key": "T-1",
+      "summary": "Техника",
+      "type": "Epic",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": null,
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "d-1",
+      "key": "D-1",
+      "summary": "Ромб",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [
+        "other_tech"
+      ],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "a-1",
+      "key": "A-1",
+      "summary": "Цикл А",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "b-1",
+      "key": "B-1",
+      "summary": "Цикл Б",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "l-1",
+      "key": "L-1",
+      "summary": "Метка",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [
+        "other_tech"
+      ],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "u-1",
+      "key": "U-1",
+      "summary": "Без головы",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "k-1",
+      "key": "K-1",
+      "summary": "Блок",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    }
+  ],
+  "statusChanges": [
+    {
+      "issueId": "d-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "a-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "b-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "l-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "u-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "k-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": null
+    }
+  ],
+  "memberships": [
+    {
+      "issueId": "d-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "a-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "b-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "l-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "u-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "k-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    }
+  ],
+  "sprints": [
+    {
+      "id": "s",
+      "name": "Спринт",
+      "state": "active",
+      "start": "2026-09-07",
+      "end": "2026-09-18"
+    }
+  ],
+  "links": [
+    {
+      "fromId": "p-1",
+      "toId": "d-1",
+      "type": "Child-Issue"
+    },
+    {
+      "fromId": "t-1",
+      "toId": "d-1",
+      "type": "Child-Issue"
+    },
+    {
+      "fromId": "p-1",
+      "toId": "a-1",
+      "type": "Child-Issue"
+    },
+    {
+      "fromId": "a-1",
+      "toId": "b-1",
+      "type": "Child-Issue"
+    },
+    {
+      "fromId": "b-1",
+      "toId": "a-1",
+      "type": "Child-Issue"
+    },
+    {
+      "fromId": "p-1",
+      "toId": "l-1",
+      "type": "Child-Issue"
+    },
+    {
+      "fromId": "p-1",
+      "toId": "k-1",
+      "type": "Blocks"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "snapshotId": "card-expected",
+  "teamId": "card",
+  "asOf": "2026-09-08T16:00:00Z",
+  "timezone": "Europe/Moscow",
+  "catalogVersion": 1,
+  "metricVersions": {
+    "statusHours": 1
+  },
+  "inputHashes": {
+    "calendar": "hand",
+    "workflow": "hand",
+    "taxonomy": "hand",
+    "scope": "hand",
+    "bundle": "hand"
+  },
+  "coverage": {
+    "timing": "full",
+    "unknownPct": 100,
+    "storyPoints": "full",
+    "assigneeMatchPct": 100,
+    "membership": "complete"
+  },
+  "sprint": {
+    "id": "s",
+    "start": "2026-09-07",
+    "end": "2026-09-18",
+    "metrics": [],
+    "issues": []
+  },
+  "period": {
+    "id": "2026-09",
+    "start": "2026-09-08",
+    "end": "2026-09-30",
+    "metrics": [
+      {
+        "id": "statusHours",
+        "version": 1,
+        "unit": "ratio",
+        "value": 1,
+        "excluded": [],
+        "warnings": [],
+        "params": {
+          "nominalSeconds": 28800
+        },
+        "detail": {
+          "parallelism": 1.25,
+          "inheritedSeconds": 14400,
+          "ownSeconds": 14400,
+          "days": [
+            {
+              "personId": "dev",
+              "date": "2026-09-08",
+              "rawSeconds": 36000,
+              "scaledSeconds": 28800,
+              "inheritedSeconds": 14400,
+              "ownSeconds": 14400,
+              "outside": false
+            }
+          ]
+        },
+        "explain": "Часы в статусе, не списание. Номинал дня 28800 с. Версия 1."
+      }
+    ]
+  }
+}

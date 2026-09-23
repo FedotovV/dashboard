@@ -1,0 +1,81 @@
+{
+  "bundleId": "gold",
+  "asOf": "2026-09-10T16:00:00Z",
+  "sourceWatermark": "hand",
+  "issues": [
+    {
+      "id": "e-1",
+      "key": "E-1",
+      "summary": "До полуночи",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "Done",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": "2026-09-10",
+      "resolutionAt": "2026-09-09T20:30:00Z",
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "n-1",
+      "key": "N-1",
+      "summary": "После полуночи",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "Done",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": "2026-09-10",
+      "resolutionAt": "2026-09-09T21:30:00Z",
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    }
+  ],
+  "statusChanges": [
+    {
+      "issueId": "e-1",
+      "status": "Done",
+      "enteredAt": "2026-09-09T20:30:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "n-1",
+      "status": "Done",
+      "enteredAt": "2026-09-09T21:30:00Z",
+      "exitedAt": null
+    }
+  ],
+  "memberships": [
+    {
+      "issueId": "e-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "n-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    }
+  ],
+  "sprints": [
+    {
+      "id": "s",
+      "name": "Спринт",
+      "state": "active",
+      "start": "2026-09-07",
+      "end": "2026-09-18"
+    }
+  ],
+  "links": []
+}

@@ -16,13 +16,14 @@
 
 ### Build, Test & Validation Commands
 
-Приложения ещё нет. Не вызывать `npm`, `pytest` и Docker, пока соответствующих файлов нет.
-
-Проверка контракта (нужны PyYAML и `jsonschema`, в репозитории они не зафиксированы):
+Проверка контракта и движка:
 
 ```bash
 python3 scripts/check_contracts.py
+python3 -m pytest
 ```
+
+`pytest` не вызывать, пока в репозитории нет `pyproject.toml`. Docker и `npm` не вызывать: каталогов `web` и compose в M1 нет.
 
 Даты в YAML держать в кавычках.
 

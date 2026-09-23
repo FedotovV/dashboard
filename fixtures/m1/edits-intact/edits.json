@@ -1,0 +1,18 @@
+{
+  "teamId": "card",
+  "revision": 1,
+  "projectReleases": [
+    {
+      "epicId": "P-1",
+      "release": "2026-Q3"
+    }
+  ],
+  "projectNotes": [
+    {
+      "epicId": "P-1",
+      "text": "Ждём макет",
+      "author": "pm",
+      "at": "2026-09-09T09:00:00Z"
+    }
+  ]
+}
