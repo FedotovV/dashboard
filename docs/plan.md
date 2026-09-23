@@ -107,7 +107,7 @@ python3 scripts/check_contracts.py
 
 Модули config, metrics, snapshotstore, orchestrator `build`, фикстура из канонического JSON (не генератор «на глаз»).
 
-Схема модулей — [architecture.html](architecture.html). Порядок срезов, границы импорта и золотые пары — [m1-plan.md](m1-plan.md).
+Схема модулей — [architecture.html](architecture.html). Порядок срезов, границы импорта и золотые пары — [m1-plan.md](m1-plan.md). Релиз-ноутсы — [m1-release-notes.md](m1-release-notes.md).
 
 Золотые случаи, каждый — пара canonical → snapshot:
 
