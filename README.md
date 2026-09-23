@@ -7,6 +7,7 @@
 - [План первого шага, M1](docs/m1-plan.md)
 - [Пошаговая реализация M1](docs/m1-implementation.md)
 - [Релиз-ноутсы M1](docs/m1-release-notes.md)
+- [План экрана «Спринт», M2](docs/m2-plan.md)
 - [Каталог метрик](docs/metric-catalog.md)
 - [Сопоставление установки](docs/mapping-guide.md)
 - [Приёмка](docs/install-acceptance.md)
