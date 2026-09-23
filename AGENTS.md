@@ -21,7 +21,10 @@
 ```bash
 python3 scripts/check_contracts.py
 python3 -m pytest
+python3 -m dashboard.api.serve --snapshots var/snapshots --team card --host 127.0.0.1 --port 8765
 ```
+
+`serve` только после `build`. Хост отличный от `127.0.0.1` команда отвергает.
 
 `pytest` не вызывать, пока в репозитории нет `pyproject.toml`. Docker и `npm` не вызывать: каталогов `web` и compose в M1 нет.
 
@@ -34,7 +37,7 @@ python3 -m pytest
 - Цикл v1 — сумма интервалов роли `active`, не спан референса.
 - Неразобранная задача — `unknown`. Ребро таксономии — только parent→child.
 - Слепок write-once. Правки PM не содержат чисел метрик.
-- Пути модулей — таблица в `docs/plan.md` и схема в `docs/architecture.html`. Не создавать каталоги модуля до его вехи. M1 влит. Текущий шаг — план M2 в `docs/m2-plan.md`: каталоги `web` и `api` появляются только когда начинается реализация этого плана.
+- Пути модулей — таблица в `docs/plan.md` и схема в `docs/architecture.html`. Не создавать каталоги модуля до его вехи. Экран M2 — `docs/m2-plan.md`. `web` и `src/dashboard/api` читают слепок и не считают формулы.
 - Искать по `docs/`, `schema/`, `scripts/`. Игнорировать `.git/`.
 
 ### Dos and Don’ts
