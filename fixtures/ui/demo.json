@@ -1,0 +1,828 @@
+{
+  "about": "Редактируемый стенд экрана. Правьте этот файл и снова запустите python3 -m dashboard.api.preview. Повторный запуск scripts/generate_ui_demo.py перезапишет файл.",
+  "team": {
+    "version": 1,
+    "catalogVersion": 1,
+    "team": {
+      "id": "ui-demo",
+      "name": "Демо стенд",
+      "locale": "ru",
+      "pm": "Крылова Наталья",
+      "teamLead": "Морозов Дмитрий",
+      "members": [
+        {
+          "id": "ivanov",
+          "name": "Иванов Иван",
+          "jiraUsername": "ivanov",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "petrova",
+          "name": "Петрова Анна",
+          "jiraUsername": "petrova",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "smirnov",
+          "name": "Смирнов Пётр",
+          "jiraUsername": "smirnov",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "orlova",
+          "name": "Орлова Мария",
+          "jiraUsername": "orlova",
+          "role": "qa",
+          "allocation": 0.5
+        },
+        {
+          "id": "volkov",
+          "name": "Волков Сергей",
+          "jiraUsername": "volkov",
+          "role": "dev",
+          "allocation": 1,
+          "absences": [
+            {
+              "start": "2026-08-03",
+              "end": "2026-08-14"
+            }
+          ]
+        },
+        {
+          "id": "sokolova",
+          "name": "Соколова Елена",
+          "jiraUsername": "sokolova",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "morozov",
+          "name": "Морозов Дмитрий",
+          "jiraUsername": "morozov",
+          "role": "lead",
+          "allocation": 1,
+          "featureLeadOf": [
+            "UI-100"
+          ]
+        },
+        {
+          "id": "kuznetsova",
+          "name": "Кузнецова Ольга",
+          "jiraUsername": "kuznetsova",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "lebedev",
+          "name": "Лебедев Николай",
+          "jiraUsername": "lebedev",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "pavlova",
+          "name": "Павлова Ирина",
+          "jiraUsername": "pavlova",
+          "role": "qa",
+          "allocation": 1
+        }
+      ],
+      "alumni": []
+    },
+    "calendar": {
+      "timezone": "Europe/Moscow",
+      "workdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "workStart": "10:00",
+      "workEnd": "19:00",
+      "breakMinutes": 60,
+      "breakStart": "14:00",
+      "hoursPerDay": 8,
+      "holidays": [],
+      "extraWorkdays": []
+    },
+    "period": {
+      "id": "2026-09",
+      "start": "2026-09-01",
+      "end": "2026-09-30"
+    },
+    "sources": {
+      "mode": "fixture",
+      "jira": {
+        "deployment": "server",
+        "baseUrl": "https://jira.example.com",
+        "boardId": "12",
+        "sprintId": "s-current",
+        "authEnv": "JIRA_TOKEN",
+        "fields": {
+          "storyPoints": "customfield_10016",
+          "epicLink": "customfield_10014"
+        }
+      }
+    },
+    "workflow": {
+      "usesDueDate": true,
+      "statusMap": [
+        {
+          "status": "To Do",
+          "category": "todo",
+          "role": "queue"
+        },
+        {
+          "status": "In Progress",
+          "category": "indeterminate",
+          "role": "active"
+        },
+        {
+          "status": "Review",
+          "category": "indeterminate",
+          "role": "wait"
+        },
+        {
+          "status": "On-hold",
+          "category": "indeterminate",
+          "role": "hold"
+        },
+        {
+          "status": "Done",
+          "category": "done",
+          "role": "terminal"
+        },
+        {
+          "status": "Canceled",
+          "category": "done",
+          "role": "terminal",
+          "outcome": "canceled"
+        }
+      ]
+    },
+    "taxonomy": {
+      "priority": [
+        "project",
+        "tech"
+      ],
+      "epics": {
+        "project": [
+          "UI-100"
+        ],
+        "tech": [
+          "UI-200"
+        ]
+      },
+      "linkTypes": [
+        "Child-Issue"
+      ],
+      "rules": [],
+      "otherSubtype": {
+        "prodLabel": "prod_op",
+        "techLabel": "other_tech"
+      }
+    },
+    "scope": {
+      "issueTypes": [
+        "Story",
+        "Task",
+        "Bug"
+      ],
+      "projectKeys": [
+        "UI"
+      ],
+      "countSubtasks": false
+    },
+    "metrics": {
+      "cycleTime": {
+        "minStaySeconds": 900
+      },
+      "hygiene": {
+        "highPriorities": [
+          "High"
+        ],
+        "maxAgeDays": 90
+      },
+      "classification": {
+        "unknownWarnPct": 15
+      }
+    }
+  },
+  "bundle": {
+    "bundleId": "ui-demo",
+    "asOf": "2026-09-16T16:00:00Z",
+    "sourceWatermark": "ui-demo",
+    "issues": [
+      {
+        "id": "ui-1",
+        "key": "UI-1",
+        "summary": "Проверить отпуск в календаре",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "Done",
+        "assigneeAccountId": "ivanov",
+        "priority": "Medium",
+        "storyPoints": 5,
+        "storyPointsAtAdd": 5,
+        "dueDate": "2026-09-15",
+        "resolutionAt": "2026-09-08T15:00:00Z",
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-2",
+        "key": "UI-2",
+        "summary": "Показать человека без задач",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "Done",
+        "assigneeAccountId": "petrova",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-09",
+        "resolutionAt": "2026-09-09T21:30:00Z",
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-3",
+        "key": "UI-3",
+        "summary": "Согласовать текст ошибки",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "Canceled",
+        "assigneeAccountId": "smirnov",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": "2026-09-09T09:00:00Z",
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-4",
+        "key": "UI-4",
+        "summary": "Пустое состояние списка",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "In Progress",
+        "assigneeAccountId": "orlova",
+        "priority": "Medium",
+        "storyPoints": 3,
+        "storyPointsAtAdd": 3,
+        "dueDate": "2026-09-10",
+        "resolutionAt": null,
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-5",
+        "key": "UI-5",
+        "summary": "Собрать подпись к burndown",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "On-hold",
+        "assigneeAccountId": "volkov",
+        "priority": "Medium",
+        "storyPoints": 2,
+        "storyPointsAtAdd": 2,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-6",
+        "key": "UI-6",
+        "summary": "Закрыть хвост ревью",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "In Progress",
+        "assigneeAccountId": null,
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-7",
+        "key": "UI-7",
+        "summary": "Не терять заметку после сборки",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "To Do",
+        "assigneeAccountId": "sokolova",
+        "priority": "High",
+        "storyPoints": 8,
+        "storyPointsAtAdd": 8,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-8",
+        "key": "UI-8",
+        "summary": "Показать срок на карточке",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "In Progress",
+        "assigneeAccountId": "morozov",
+        "priority": "Medium",
+        "storyPoints": null,
+        "storyPointsAtAdd": 3,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-9",
+        "key": "UI-9",
+        "summary": "Короткий автопереход статуса",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "To Do",
+        "assigneeAccountId": "kuznetsova",
+        "priority": "Medium",
+        "storyPoints": 3,
+        "storyPointsAtAdd": 3,
+        "dueDate": null,
+        "resolutionAt": null,
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-10",
+        "key": "UI-10",
+        "summary": "Описать правило отмены",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "In Progress",
+        "assigneeAccountId": "lebedev",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-05-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-11",
+        "key": "UI-11",
+        "summary": "Убрать лишний запрос при открытии",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "In Progress",
+        "assigneeAccountId": "ivanov",
+        "priority": "Medium",
+        "storyPoints": 2,
+        "storyPointsAtAdd": 2,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-12",
+        "key": "UI-12",
+        "summary": "Вернуть задачу из паузы",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "To Do",
+        "assigneeAccountId": "volkov",
+        "priority": "Medium",
+        "storyPoints": 8,
+        "storyPointsAtAdd": 8,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-13",
+        "key": "UI-13",
+        "summary": "Сверить итог с составом на старте",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "In Progress",
+        "assigneeAccountId": "ivanov",
+        "priority": "Medium",
+        "storyPoints": 8,
+        "storyPointsAtAdd": 3,
+        "dueDate": "2026-09-17",
+        "resolutionAt": null,
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-15",
+        "key": "UI-15",
+        "summary": "Добавить фильтр по исполнителю",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "Review",
+        "assigneeAccountId": "petrova",
+        "priority": "Medium",
+        "storyPoints": 8,
+        "storyPointsAtAdd": 8,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-16",
+        "key": "UI-16",
+        "summary": "Починить сохранение черновика",
+        "type": "Story",
+        "projectKey": "UI",
+        "status": "Done",
+        "assigneeAccountId": "ivanov",
+        "priority": "Medium",
+        "storyPoints": 3,
+        "storyPointsAtAdd": 3,
+        "dueDate": "2026-09-20",
+        "resolutionAt": "2026-09-08T07:08:00Z",
+        "created": "2026-09-07T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "ui-100",
+        "key": "UI-100",
+        "summary": "Путь платежа",
+        "type": "Epic",
+        "projectKey": "UI",
+        "status": "In Progress",
+        "assigneeAccountId": "morozov",
+        "priority": "Medium",
+        "storyPoints": null,
+        "storyPointsAtAdd": null,
+        "dueDate": null,
+        "resolutionAt": null,
+        "created": "2026-08-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      }
+    ],
+    "statusChanges": [
+      {
+        "issueId": "ui-1",
+        "status": "In Progress",
+        "enteredAt": "2026-09-08T07:00:00Z",
+        "exitedAt": "2026-09-08T07:10:00Z"
+      },
+      {
+        "issueId": "ui-1",
+        "status": "To Do",
+        "enteredAt": "2026-09-08T07:10:00Z",
+        "exitedAt": "2026-09-08T08:00:00Z"
+      },
+      {
+        "issueId": "ui-1",
+        "status": "In Progress",
+        "enteredAt": "2026-09-08T08:00:00Z",
+        "exitedAt": "2026-09-08T10:00:00Z"
+      },
+      {
+        "issueId": "ui-1",
+        "status": "Done",
+        "enteredAt": "2026-09-08T10:00:00Z",
+        "exitedAt": "2026-09-08T13:00:00Z"
+      },
+      {
+        "issueId": "ui-1",
+        "status": "In Progress",
+        "enteredAt": "2026-09-08T13:00:00Z",
+        "exitedAt": "2026-09-08T15:00:00Z"
+      },
+      {
+        "issueId": "ui-1",
+        "status": "Done",
+        "enteredAt": "2026-09-08T15:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-2",
+        "status": "In Progress",
+        "enteredAt": "2026-09-08T07:00:00Z",
+        "exitedAt": "2026-09-08T10:00:00Z"
+      },
+      {
+        "issueId": "ui-2",
+        "status": "Review",
+        "enteredAt": "2026-09-08T12:00:00Z",
+        "exitedAt": "2026-09-08T14:00:00Z"
+      },
+      {
+        "issueId": "ui-2",
+        "status": "Done",
+        "enteredAt": "2026-09-09T21:30:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-3",
+        "status": "In Progress",
+        "enteredAt": "2026-09-09T07:00:00Z",
+        "exitedAt": "2026-09-09T09:00:00Z"
+      },
+      {
+        "issueId": "ui-3",
+        "status": "Canceled",
+        "enteredAt": "2026-09-09T09:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-4",
+        "status": "In Progress",
+        "enteredAt": "2026-09-09T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-5",
+        "status": "On-hold",
+        "enteredAt": "2026-09-09T08:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-6",
+        "status": "In Progress",
+        "enteredAt": "2026-09-09T09:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-7",
+        "status": "To Do",
+        "enteredAt": "2026-09-07T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-8",
+        "status": "In Progress",
+        "enteredAt": "2026-09-10T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-9",
+        "status": "To Do",
+        "enteredAt": "2026-09-07T08:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-10",
+        "status": "In Progress",
+        "enteredAt": "2026-09-08T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-11",
+        "status": "In Progress",
+        "enteredAt": "2026-09-10T08:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-12",
+        "status": "To Do",
+        "enteredAt": "2026-09-07T09:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-13",
+        "status": "In Progress",
+        "enteredAt": "2026-09-11T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-15",
+        "status": "Review",
+        "enteredAt": "2026-09-14T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "ui-16",
+        "status": "In Progress",
+        "enteredAt": "2026-09-08T07:00:00Z",
+        "exitedAt": "2026-09-08T07:08:00Z"
+      },
+      {
+        "issueId": "ui-16",
+        "status": "Done",
+        "enteredAt": "2026-09-08T07:08:00Z",
+        "exitedAt": null
+      }
+    ],
+    "memberships": [
+      {
+        "issueId": "ui-1",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-2",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-3",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-4",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-5",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-6",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-7",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-8",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-9",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-10",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-13",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-15",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-16",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-11",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-10T07:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "ui-12",
+        "sprintId": "s-current",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": "2026-09-14T07:00:00Z"
+      }
+    ],
+    "sprints": [
+      {
+        "id": "s-prev",
+        "name": "Спринт 11",
+        "state": "closed",
+        "start": "2026-08-24",
+        "end": "2026-09-04"
+      },
+      {
+        "id": "s-current",
+        "name": "Спринт 12",
+        "state": "active",
+        "start": "2026-09-07",
+        "end": "2026-09-18"
+      }
+    ],
+    "links": [
+      {
+        "fromId": "ui-100",
+        "toId": "ui-1",
+        "type": "Child-Issue"
+      },
+      {
+        "fromId": "ui-100",
+        "toId": "ui-13",
+        "type": "Child-Issue"
+      }
+    ]
+  },
+  "history": [
+    {
+      "date": "2026-09-04",
+      "document": {
+        "snapshotId": "ui-demo-2026-09-04",
+        "sprint": {
+          "id": "s-prev",
+          "metrics": [
+            {
+              "id": "sprintFlow",
+              "detail": {
+                "byRole": {
+                  "active": 0,
+                  "wait": 0,
+                  "hold": 0,
+                  "queue": 0,
+                  "done": 7,
+                  "canceled": 1,
+                  "total": 8
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-09-10",
+      "document": {
+        "snapshotId": "ui-demo-2026-09-10",
+        "sprint": {
+          "id": "s-current",
+          "metrics": [
+            {
+              "id": "sprintFlow",
+              "detail": {
+                "byRole": {
+                  "active": 4,
+                  "wait": 1,
+                  "hold": 1,
+                  "queue": 2,
+                  "done": 1,
+                  "canceled": 0,
+                  "total": 9
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

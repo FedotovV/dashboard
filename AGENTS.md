@@ -22,9 +22,10 @@
 python3 scripts/check_contracts.py
 python3 -m pytest
 python3 -m dashboard.api.serve --snapshots var/snapshots --team card --host 127.0.0.1 --port 8765
+python3 -m dashboard.api.preview
 ```
 
-`serve` только после `build`. Хост отличный от `127.0.0.1` команда отвергает.
+`serve` только после `build`. Хост отличный от `127.0.0.1` команда отвергает. `preview` читает `fixtures/ui/demo.json`, заменяет песочницу `var/ui` и открывает экран. Этот JSON правят руками; `scripts/generate_ui_demo.py` его перезаписывает.
 
 `pytest` не вызывать, пока в репозитории нет `pyproject.toml`. Docker и `npm` не вызывать: каталогов `web` и compose в M1 нет.
 
