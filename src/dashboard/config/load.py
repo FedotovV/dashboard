@@ -174,6 +174,7 @@ def _build(data: dict, calendar: Calendar) -> TeamConfig:
         deployment=data["sources"]["jira"]["deployment"],
         sprint_id=(data["sources"]["jira"].get("sprintId") or None),
         auth_env=data["sources"]["jira"].get("authEnv"),
+        jira_base_url=(data["sources"]["jira"].get("baseUrl") or None),
         story_points_field=story_points if story_points else None,
         uses_due_date=data["workflow"]["usesDueDate"],
         status_map=tuple(

@@ -169,6 +169,7 @@ def _document(computed, config, bundle_hash: str) -> dict:
         "metricVersions": {metric.id: metric.version for metric in metrics},
         "inputHashes": hashes,
         "coverage": computed.coverage,
+        "jiraBaseUrl": config.jira_base_url,
         "sprint": {
             "id": computed.sprint_id,
             "start": computed.sprint_start.isoformat(),

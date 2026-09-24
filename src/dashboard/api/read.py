@@ -73,6 +73,7 @@ def sprint_view(document: dict) -> dict:
         "timezone": document["timezone"],
         "teamId": document["teamId"],
         "coverage": document["coverage"],
+        "jiraBaseUrl": document.get("jiraBaseUrl"),
         "sprint": document["sprint"],
     }
 

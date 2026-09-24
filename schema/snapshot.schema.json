@@ -39,6 +39,10 @@
       }
     },
     "coverage": { "$ref": "#/$defs/coverage" },
+    "jiraBaseUrl": {
+      "type": ["string", "null"],
+      "description": "База Jira. Ключ задачи открывается как {jiraBaseUrl}/browse/{key}."
+    },
     "sprint": { "$ref": "#/$defs/sprintView" },
     "period": { "$ref": "#/$defs/periodView" }
   },

@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from dashboard.config.model import Member, TeamConfig
 from dashboard.metrics.parse import Bundle, Issue
 from dashboard.metrics.results import Metric
-from dashboard.metrics.select import SprintSet, changes_for, rule_at
+from dashboard.metrics.ru_calendar import chart_days
+from dashboard.metrics.select import SprintSet, changes_for, rule_at, status_at
 from dashboard.metrics.time import local_date
 
 BLOCKER_RANK = {"overdue": 0, "hold": 1, "no-assignee": 2}
@@ -101,14 +102,7 @@ def person_load(bundle: Bundle, config: TeamConfig, sprint: SprintSet, as_of: da
     for member in config.members:
         if not _on_roster(member, today):
             continue
-        keys = []
-        for issue, _membership in sprint.current:
-            rule = rule_at(issue, changes_for(bundle, issue.id, as_of), as_of, config)
-            if rule is None or rule.role == "terminal":
-                continue
-            if _member(issue, config) == member:
-                keys.append(issue.key)
-        rows.append({"personId": member.id, "openKeys": keys})
+        rows.append(_person_row(bundle, config, sprint, as_of, member))
     return Metric(
         id="personLoad",
         unit="people",
@@ -117,6 +111,74 @@ def person_load(bundle: Bundle, config: TeamConfig, sprint: SprintSet, as_of: da
         params={},
         detail={"rows": rows},
     )
+
+
+def _person_row(bundle: Bundle, config: TeamConfig, sprint: SprintSet, as_of: datetime, member: Member) -> dict:
+    counts = {"backlog": 0, "inProgress": 0, "paused": 0, "testing": 0, "done": 0, "canceled": 0, "unknown": 0}
+    keys = []
+    issues = []
+    points = 0.0
+    open_points = 0.0
+    points_missing = 0
+    for issue, _membership in sprint.current:
+        if _member(issue, config) != member:
+            continue
+        changes = changes_for(bundle, issue.id, as_of)
+        rule = rule_at(issue, changes, as_of, config)
+        role = None if rule is None else rule.role
+        bucket = _person_bucket(rule)
+        counts[bucket] += 1
+        if rule is not None and rule.role != "terminal":
+            keys.append(issue.key)
+        story_points = None if config.story_points_field is None else issue.story_points
+        if config.story_points_field is not None and story_points is None:
+            points_missing += 1
+        if isinstance(story_points, (int, float)) and not isinstance(story_points, bool):
+            points += story_points
+            if role != "terminal":
+                open_points += story_points
+        issues.append(
+            {
+                "key": issue.key,
+                "summary": issue.summary,
+                "status": status_at(issue, changes, as_of),
+                "role": role,
+                "storyPoints": story_points,
+            }
+        )
+    return {
+        "personId": member.id,
+        "name": member.name,
+        "openKeys": keys,
+        "total": len(issues),
+        "backlog": counts["backlog"],
+        "inProgress": counts["inProgress"],
+        "paused": counts["paused"],
+        "testing": counts["testing"],
+        "done": counts["done"],
+        "canceled": counts["canceled"],
+        "unknown": counts["unknown"],
+        "storyPoints": None if config.story_points_field is None else points,
+        "openStoryPoints": None if config.story_points_field is None else open_points,
+        "pointsMissing": points_missing,
+        "issues": issues,
+    }
+
+
+def _person_bucket(rule) -> str:
+    if rule is None:
+        return "unknown"
+    if rule.role == "queue":
+        return "backlog"
+    if rule.role == "active":
+        return "inProgress"
+    if rule.role == "hold":
+        return "paused"
+    if rule.role == "wait":
+        return "testing"
+    if rule.role == "terminal":
+        return "canceled" if rule.outcome == "canceled" else "done"
+    return "unknown"
 
 
 def burndown_metric(
@@ -140,11 +202,13 @@ def burndown_metric(
         )
     today = local_date(as_of, config.calendar.timezone)
     last = min(sprint.sprint.end, today)
-    span = (sprint.sprint.end - sprint.sprint.start).days
+    workdays = chart_days(sprint.sprint.start, sprint.sprint.end, config.calendar)
+    steps = len(workdays) - 1
     points = []
-    day = sprint.sprint.start
-    while day <= last:
-        fraction = 0 if span == 0 else (day - sprint.sprint.start).days / span
+    for index, day in enumerate(workdays):
+        if day > last:
+            break
+        fraction = 0 if steps <= 0 else index / steps
         burned_sum = sum(points_at for when, points_at in burned if when <= day)
         points.append(
             {
@@ -153,7 +217,6 @@ def burndown_metric(
                 "actual": total - burned_sum,
             }
         )
-        day += timedelta(days=1)
     value = total if not points else points[-1]["actual"]
     return Metric(
         id="burndown",

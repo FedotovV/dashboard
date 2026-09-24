@@ -34,6 +34,23 @@ def test_demo_file_fills_the_sprint_screen(tmp_path: Path):
     assert 'data-widget="previous"' in page
     assert "14400 с" in page
     assert "нет открытых" in page
+    assert "asOf" not in page
+    assert "Europe/Moscow" not in page
+    assert "<h2>Команда</h2>" in page
+    assert "Иванов" in page
+    assert 'href="https://jira.example.com/browse/UI-4"' in page
+    assert "Что вошло в число" in page
+    assert "не оценка команды" in page
+    assert "Y — количество SP" in page
+    dates = [point["date"] for point in metrics["burndown"]["detail"]["points"]]
+    assert "2026-09-12" not in dates
+    assert "2026-09-13" not in dates
+    assert dates[0] == "2026-09-07"
+    assert dates[-1] == "2026-09-16"
+    ivanov = people[0]
+    assert ivanov["name"] == "Иванов Иван"
+    assert "total" in ivanov
+    assert "storyPoints" in ivanov
     trend = page[page.index('data-widget="trend"'):page.index('data-widget="issues"')]
     assert "2026-09-12" not in trend
 

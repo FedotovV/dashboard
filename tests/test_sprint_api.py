@@ -24,6 +24,7 @@ def test_sprint_view_copies_the_file_and_does_not_compute(tmp_path: Path, monkey
         "timezone": document["timezone"],
         "teamId": document["teamId"],
         "coverage": document["coverage"],
+        "jiraBaseUrl": document["jiraBaseUrl"],
         "sprint": document["sprint"],
     }
     brief = metric_brief(document, "cycleTime")
