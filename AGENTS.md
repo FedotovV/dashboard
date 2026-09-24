@@ -21,7 +21,7 @@
 ```bash
 python3 scripts/check_contracts.py
 python3 -m pytest
-python3 -m dashboard.api.serve --snapshots var/snapshots --team card --host 127.0.0.1 --port 8765
+python3 -m dashboard.api.serve --snapshots var/snapshots --team card --edits var/edits.json --host 127.0.0.1 --port 8765
 python3 -m dashboard.api.preview
 ```
 
@@ -38,7 +38,7 @@ python3 -m dashboard.api.preview
 - Цикл v1 — сумма интервалов роли `active`, не спан референса.
 - Неразобранная задача — `unknown`. Ребро таксономии — только parent→child.
 - Слепок write-once. Правки PM не содержат чисел метрик.
-- Пути модулей — таблица в `docs/plan.md` и схема в `docs/architecture.html`. Не создавать каталоги модуля до его вехи. Экран M2 — `docs/m2-plan.md`. `web` и `src/dashboard/api` читают слепок и не считают формулы.
+- Пути модулей — таблица в `docs/plan.md` и схема в `docs/architecture.html`. Не создавать каталоги модуля до его вехи. Экран M2 — `docs/m2-plan.md`. Экран M3 — `docs/m3-plan.md`. `web` и `src/dashboard/api` читают слепок и не считают формулы. `PUT /api/edits` пишет только файл правок.
 - Искать по `docs/`, `schema/`, `scripts/`. Игнорировать `.git/`.
 
 ### Dos and Don’ts

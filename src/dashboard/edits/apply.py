@@ -49,23 +49,33 @@ def edits_from_dict(data: dict) -> Edits:
     )
 
 
+def annotate_rows(rows: list[dict], edits: Edits, team_id: str, *, replace: bool = False) -> list[str]:
+    """Подставляет релиз и заметку в строки эпиков. Чужой id остаётся предупреждением."""
+    if edits.team_id != team_id:
+        return ["edits-team-mismatch"]
+    if replace:
+        for row in rows:
+            row["release"] = None
+            row["note"] = None
+    indexed = {row["key"]: row for row in rows}
+    warnings: list[str] = []
+    for release in edits.releases:
+        row = indexed.get(release.epic_id)
+        if row is None:
+            warnings.append(f"unknown-epic:{release.epic_id}")
+            continue
+        row["release"] = release.release
+    for note in sorted(edits.notes, key=lambda item: item.at):
+        row = indexed.get(note.epic_id)
+        if row is None:
+            warnings.append(f"unknown-epic:{note.epic_id}")
+            continue
+        row["note"] = note.text
+    return warnings
+
+
 def apply_edits(metrics: list[Metric], edits: Edits, team_id: str) -> None:
     metric = next((item for item in metrics if item.id == "projectList"), None)
     if metric is None or metric.detail is None:
         return
-    if edits.team_id != team_id:
-        metric.warnings.append("edits-team-mismatch")
-        return
-    rows = {row["key"]: row for row in metric.detail["rows"]}
-    for release in edits.releases:
-        row = rows.get(release.epic_id)
-        if row is None:
-            metric.warnings.append(f"unknown-epic:{release.epic_id}")
-            continue
-        row["release"] = release.release
-    for note in sorted(edits.notes, key=lambda item: item.at):
-        row = rows.get(note.epic_id)
-        if row is None:
-            metric.warnings.append(f"unknown-epic:{note.epic_id}")
-            continue
-        row["note"] = note.text
+    metric.warnings.extend(annotate_rows(metric.detail["rows"], edits, team_id))

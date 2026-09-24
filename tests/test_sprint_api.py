@@ -36,8 +36,16 @@ def test_unknown_metric_is_missing(tmp_path: Path):
     path = build_case("scope-days", tmp_path)
     document = load_snapshot(path)
     with pytest.raises(RouteError) as caught:
-        metric_brief(document, "statusHours")
+        metric_brief(document, "riskScore")
     assert caught.value.status == 404
+
+
+def test_period_metric_brief_has_no_value(tmp_path: Path):
+    path = build_case("scope-days", tmp_path)
+    document = load_snapshot(path)
+    brief = metric_brief(document, "statusHours")
+    assert set(brief) == {"id", "version", "explain", "params"}
+    assert "value" not in brief
 
 
 def test_latest_file_is_chosen_by_date(tmp_path: Path):
