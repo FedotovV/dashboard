@@ -95,6 +95,7 @@ class TeamConfig:
     deployment: str
     sprint_id: str | None
     auth_env: str | None
+    jira_base_url: str | None
     story_points_field: str | None
     uses_due_date: bool
     status_map: tuple[StatusRule, ...]

@@ -1,7 +1,7 @@
 :root {
   color: #1c2430;
-  background: #f4f1ea;
-  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  background: #f3f0e8;
+  font-family: ui-sans-serif, "Segoe UI", sans-serif;
   line-height: 1.45;
 }
 
@@ -75,8 +75,20 @@ section {
 
 .num {
   display: block;
-  font-family: ui-sans-serif, sans-serif;
+  font-variant-numeric: tabular-nums;
   font-size: 28px;
+}
+
+.num[data-attention="true"],
+[data-attention="true"] {
+  color: #8a3b12;
+}
+
+.num[data-attention="true"],
+dd[data-attention="true"] {
+  background: #f6e4d8;
+  border-radius: 4px;
+  padding: 0 6px;
 }
 
 .key {
@@ -119,8 +131,97 @@ svg {
   border: 1px solid #d5cfc3;
 }
 
+svg .axis {
+  fill: #4d463c;
+  font-size: 12px;
+}
+
+.footnote, .hint, .axes, .who, .task-meta {
+  color: #4d463c;
+  font-size: 14px;
+}
+
+.footnote {
+  max-width: 68ch;
+}
+
+.hint {
+  margin: 0 0 12px;
+}
+
+.hint summary {
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.people {
+  grid-template-columns: 1fr;
+}
+
+.person h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.stats div {
+  margin: 0;
+}
+
+.stats dt {
+  font-size: 12px;
+  color: #4d463c;
+}
+
+.stats dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  font-size: 18px;
+}
+
+.mix {
+  display: flex;
+  height: 8px;
+  overflow: hidden;
+  background: #efeae2;
+  border-radius: 99px;
+  margin: 8px 0;
+}
+
+.mix-backlog { background: #c4b8a8; }
+.mix-progress { background: #1c2430; }
+.mix-testing { background: #7d8ea3; }
+.mix-paused { background: #8a3b12; }
+.mix-done { background: #8f9a84; }
+.mix-canceled { background: #b08968; }
+.mix-unknown { background: #d5cfc3; }
+
+.tasks {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.task-name {
+  display: block;
+}
+
+a {
+  color: #1c3d6e;
+}
+
+ol li[data-attention="true"],
+ul li[data-attention="true"] {
+  background: #f6e4d8;
+}
+
 @media (max-width: 720px) {
-  .grid, .roles {
+  .grid, .roles, .stats {
     grid-template-columns: 1fr 1fr;
   }
 }

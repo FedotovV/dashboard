@@ -19,6 +19,7 @@ def test_example_team_loads_without_reading_secrets():
     assert config.deployment == "server"
     assert config.story_points_field == "customfield_10016"
     assert config.min_stay_seconds == 900
+    assert config.jira_base_url == "https://jira.example.com"
 
 
 def test_no_points_field_is_off_and_break_is_centered():

@@ -8,9 +8,12 @@ from __future__ import annotations
 
 import json
 import random
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+from dashboard.metrics.ru_calendar import RU_NON_WORKING_2026  # noqa: E402
 DEST = ROOT / "fixtures" / "ui" / "demo.json"
 
 PEOPLE = (
@@ -295,7 +298,7 @@ def _team() -> dict:
             "breakMinutes": 60,
             "breakStart": "14:00",
             "hoursPerDay": 8,
-            "holidays": [],
+            "holidays": [day.isoformat() for day in sorted(RU_NON_WORKING_2026)],
             "extraWorkdays": [],
         },
         "period": {"id": "2026-09", "start": "2026-09-01", "end": "2026-09-30"},

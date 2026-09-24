@@ -69,6 +69,77 @@ def test_person_load_keeps_zero_and_skips_absence():
     assert metric.value == 2
 
 
+def test_person_row_counts_roles_and_points():
+    done = issue("P-1", assignee_account_id="dev", status="Done", story_points=2, story_points_at_add=2)
+    working = issue("P-2", assignee_account_id="dev", status="In Progress", story_points=3, story_points_at_add=3)
+    queued = issue("P-3", assignee_account_id="dev", status="To Do", story_points=1, story_points_at_add=1)
+    paused = issue("P-4", assignee_account_id="dev", status="On-hold", story_points=None, story_points_at_add=1)
+    review = issue("P-5", assignee_account_id="dev", status="Review", story_points=5, story_points_at_add=5)
+    canceled = issue("P-6", assignee_account_id="dev", status="Canceled", story_points=8, story_points_at_add=8)
+    data = bundle(
+        [done, working, queued, paused, review, canceled],
+        [
+            change("P-1", "Done", "2026-09-08T08:00:00Z", None),
+            change("P-2", "In Progress", "2026-09-09T07:00:00Z", None),
+            change("P-3", "To Do", "2026-09-07T07:00:00Z", None),
+            change("P-4", "On-hold", "2026-09-09T07:00:00Z", None),
+            change("P-5", "Review", "2026-09-09T10:00:00Z", None),
+            change("P-6", "Canceled", "2026-09-08T12:00:00Z", None),
+        ],
+        as_of=at("2026-09-09T16:00:00Z"),
+    )
+    metric = next(item for item in compute(data, team(), as_of=data.as_of).sprint_metrics if item.id == "personLoad")
+    row = metric.detail["rows"][0]
+    assert row["openKeys"] == ["P-2", "P-3", "P-4", "P-5"]
+    assert row["total"] == 6
+    assert row["backlog"] == 1
+    assert row["inProgress"] == 1
+    assert row["paused"] == 1
+    assert row["testing"] == 1
+    assert row["done"] == 1
+    assert row["canceled"] == 1
+    assert row["storyPoints"] == 19
+    assert row["openStoryPoints"] == 9
+    assert row["pointsMissing"] == 1
+    assert [item["key"] for item in row["issues"]] == ["P-1", "P-2", "P-3", "P-4", "P-5", "P-6"]
+
+
+def test_burndown_skips_weekends_and_russian_holidays():
+    from datetime import date
+
+    from dashboard.config.model import Calendar
+    from dashboard.metrics.ru_calendar import chart_workday
+
+    data = bundle(
+        [issue("D-1", status="Done", story_points=5, story_points_at_add=5)],
+        [change("D-1", "Done", "2026-09-08T08:00:00Z", None)],
+        as_of=at("2026-09-14T16:00:00Z"),
+    )
+    # bundle() sprint is Sep 7–18. 14 Sep is Monday, so Saturday 12 and Sunday 13 must be absent.
+    metric = next(item for item in compute(data, team(), as_of=data.as_of).sprint_metrics if item.id == "burndown")
+    dates = [point["date"] for point in metric.detail["points"]]
+    assert dates == ["2026-09-07", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11", "2026-09-14"]
+    assert "2026-09-12" not in dates
+    assert "2026-09-13" not in dates
+    calendar = team().calendar
+    assert chart_workday(date(2026, 1, 9), calendar) is False
+    assert chart_workday(date(2026, 11, 4), calendar) is False
+    assert chart_workday(date(2026, 3, 9), calendar) is False
+    weekend = Calendar(
+        timezone=calendar.timezone,
+        workdays=calendar.workdays,
+        work_start=calendar.work_start,
+        work_end=calendar.work_end,
+        break_minutes=calendar.break_minutes,
+        break_start=calendar.break_start,
+        hours_per_day=calendar.hours_per_day,
+        holidays=calendar.holidays,
+        extra_workdays=frozenset({date(2026, 9, 12)}),
+    )
+    assert chart_workday(date(2026, 9, 12), weekend) is True
+    assert chart_workday(date(2026, 5, 1), weekend) is False
+
+
 def test_burndown_uses_points_at_add_not_the_later_estimate():
     done = issue("D-1", status="Done", story_points=8, story_points_at_add=5)
     open_issue = issue("O-1", status="In Progress", story_points=3, story_points_at_add=3)

@@ -41,7 +41,9 @@ def test_points_moved_keeps_the_burndown_dates_from_the_snapshot(tmp_path: Path)
     assert 'data-widget="burndown"' in page
     for point in burndown["detail"]["points"]:
         assert point["date"] in page
-    assert "Остаток 3" in page
+    widget = page[page.index('data-widget="burndown"'):]
+    assert "Остаток" in widget
+    assert f">{burndown['value']}<" in widget
 
 
 def test_no_points_hides_burndown_and_story_point_column(tmp_path: Path):
@@ -83,6 +85,10 @@ def test_empty_person_stays_and_blockers_keep_snapshot_order(tmp_path: Path):
     assert page.index('data-reason="overdue"') < page.index('data-reason="hold"')
     assert 'data-person="idle"' in page
     assert "нет открытых" in page
+    assert '<h2>Команда</h2>' in page
+    assert 'href="https://jira.example.com/browse/B-1"' in page
+    assert page.index('data-reason="overdue"') < page.index('data-reason="hold"')
+    assert 'data-attention="true"' in page[page.index('data-widget="blockers"'):page.index('data-widget="people"')]
 
 
 def test_incomplete_membership_does_not_invent_scope(tmp_path: Path):
@@ -140,6 +146,21 @@ def test_incomplete_membership_does_not_invent_scope(tmp_path: Path):
     assert 'data-widget="previous"' not in page
     assert 'data-widget="burndown"' not in page
     assert _card_number(page, "committed") == "—"
+
+
+def test_screen_hides_timezone_links_issues_and_names_the_team(tmp_path: Path):
+    page = _page(build_case("points-moved", tmp_path))
+    assert "asOf" not in page
+    assert "Europe/Moscow" not in page
+    assert "<h2>Команда</h2>" in page
+    assert "<h2>Люди</h2>" not in page
+    assert 'href="https://jira.example.com/browse/D-1"' in page
+    assert "Что вошло в число" in page
+    assert "Как читать" in page
+    assert "Y — количество SP" in page
+    assert "дни спринта" in page
+    assert 'data-widget="hygiene"' in page
+    assert "не оценка команды" in page
 
 
 def test_screen_sources_do_not_calculate():

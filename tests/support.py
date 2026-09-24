@@ -82,6 +82,7 @@ def team(**kwargs) -> TeamConfig:
         deployment="server",
         sprint_id="s",
         auth_env="JIRA_TOKEN",
+        jira_base_url=None,
         story_points_field="customfield_10016",
         uses_due_date=True,
         status_map=status_map(),
