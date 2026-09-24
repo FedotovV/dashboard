@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import copy
 import json
 from datetime import date
 from pathlib import Path
 
+from dashboard.edits.apply import Edits, annotate_rows
 from dashboard.snapshotstore.write import SnapshotError, validate_snapshot
 
 SCREEN_METRICS = (
@@ -18,6 +20,11 @@ SCREEN_METRICS = (
     "blockers",
     "personLoad",
     "burndown",
+)
+PERIOD_METRICS = (
+    "classification",
+    "statusHours",
+    "projectList",
 )
 
 
@@ -78,15 +85,57 @@ def sprint_view(document: dict) -> dict:
     }
 
 
+def team_view(document: dict, edits: Edits | None = None) -> dict:
+    period = copy.deepcopy(document.get("period") or {"id": "", "start": "", "end": "", "metrics": []})
+    if edits is not None:
+        _overlay_edits(period, edits, document["teamId"])
+    sprint = document.get("sprint") or {}
+    return {
+        "asOf": document["asOf"],
+        "timezone": document["timezone"],
+        "teamId": document["teamId"],
+        "coverage": document["coverage"],
+        "jiraBaseUrl": document.get("jiraBaseUrl"),
+        "period": period,
+        "trend": sprint.get("trend"),
+        "completion": _metric(sprint, "completionVsCommitted"),
+        "people": _metric(sprint, "personLoad"),
+        "issues": sprint.get("issues") or [],
+    }
+
+
 def metric_brief(document: dict, metric_id: str) -> dict:
-    if metric_id not in SCREEN_METRICS:
+    if metric_id not in SCREEN_METRICS and metric_id not in PERIOD_METRICS:
         raise RouteError(404, "метрики нет на этом экране")
-    for metric in document["sprint"].get("metrics") or []:
-        if metric.get("id") == metric_id:
-            return {
-                "id": metric_id,
-                "version": metric.get("version"),
-                "explain": metric.get("explain") or "",
-                "params": metric.get("params") or {},
-            }
+    for section in ("sprint", "period"):
+        for metric in (document.get(section) or {}).get("metrics") or []:
+            if metric.get("id") == metric_id:
+                return {
+                    "id": metric_id,
+                    "version": metric.get("version"),
+                    "explain": metric.get("explain") or "",
+                    "params": metric.get("params") or {},
+                }
     raise RouteError(404, "метрики нет в слепке")
+
+
+def _metric(sprint: dict, metric_id: str) -> dict | None:
+    for metric in sprint.get("metrics") or []:
+        if metric.get("id") == metric_id:
+            return metric
+    return None
+
+
+def _overlay_edits(period: dict, edits: Edits, team_id: str) -> None:
+    for metric in period.get("metrics") or []:
+        if metric.get("id") != "projectList":
+            continue
+        detail = metric.setdefault("detail", {})
+        rows = detail.setdefault("rows", [])
+        kept = [
+            item
+            for item in metric.get("warnings") or []
+            if item != "edits-team-mismatch" and not str(item).startswith("unknown-epic:")
+        ]
+        kept.extend(annotate_rows(rows, edits, team_id, replace=True))
+        metric["warnings"] = kept

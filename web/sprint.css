@@ -220,8 +220,77 @@ ul li[data-attention="true"] {
   background: #f6e4d8;
 }
 
+nav {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+nav a[aria-current="page"] {
+  color: #1c2430;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hours {
+  display: grid;
+  grid-template-columns: 148px 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+svg.ring {
+  width: 148px;
+  height: 148px;
+  background: transparent;
+  border: none;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #4d463c;
+}
+
+.swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+}
+
+.swatch-own { background: #1c2430; }
+.swatch-inherited { background: #8a6a3b; }
+
+form.edits {
+  display: grid;
+  gap: 8px;
+  max-width: 420px;
+  margin-top: 16px;
+}
+
+form.edits label {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+}
+
+form.edits input,
+form.edits textarea {
+  font: inherit;
+  padding: 6px 8px;
+  border: 1px solid #d5cfc3;
+  background: #fffdf8;
+}
+
+.path {
+  color: #4d463c;
+}
+
 @media (max-width: 720px) {
-  .grid, .roles, .stats {
+  .grid, .roles, .stats, .hours {
     grid-template-columns: 1fr 1fr;
   }
 }

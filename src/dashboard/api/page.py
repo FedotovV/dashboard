@@ -59,10 +59,9 @@ MIX = (
 
 
 def render_sprint(view: dict) -> str:
-    shell = SHELL.read_text()
-    style = STYLE.read_text()
     body = "\n".join(
         [
+            _nav("sprint"),
             _header(view),
             _coverage(view),
             _hygiene(view),
@@ -77,7 +76,23 @@ def render_sprint(view: dict) -> str:
             '<p class="foot">Числа взяты из слепка. Сборка с этого экрана не запускается.</p>',
         ]
     )
-    return shell.replace("/*STYLE*/", style).replace("<!--CONTENT-->", body)
+    return _shell(body, "Спринт")
+
+
+def _shell(body: str, title: str) -> str:
+    shell = SHELL.read_text()
+    style = STYLE.read_text()
+    return (
+        shell.replace("/*STYLE*/", style)
+        .replace("<!--CONTENT-->", body)
+        .replace("<title>Спринт</title>", f"<title>{title}</title>")
+    )
+
+
+def _nav(current: str) -> str:
+    sprint = ' aria-current="page"' if current == "sprint" else ""
+    period = ' aria-current="page"' if current == "period" else ""
+    return f'<nav><a href="/"{sprint}>Спринт</a><a href="/period"{period}>Период</a></nav>'
 
 
 def _header(view: dict) -> str:

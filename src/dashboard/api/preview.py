@@ -35,7 +35,25 @@ def refresh(data_path: Path, work: Path) -> BuildResult:
     bundle_path = work / "bundle.json"
     team_path.write_text(json.dumps(team, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     bundle_path.write_text(json.dumps(data["bundle"], ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    return build(BuildRequest(team_path=team_path, bundle_path=bundle_path, out_dir=out))
+    edits_path = work / "edits.json"
+    if not edits_path.exists():
+        edits_path.write_text(
+            json.dumps(
+                {"teamId": team_id, "revision": 1, "projectReleases": [], "projectNotes": []},
+                ensure_ascii=False,
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+    return build(
+        BuildRequest(
+            team_path=team_path,
+            bundle_path=bundle_path,
+            out_dir=out,
+            edits_path=edits_path,
+        )
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -60,7 +78,14 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     team_id = json.loads(args.data.read_text(encoding="utf-8"))["team"]["team"]["id"]
     print(f"http://{args.host}:{args.port}/")
-    server = make_server(args.work / "snapshots", team_id, args.host, args.port)
+    print(f"http://{args.host}:{args.port}/period")
+    server = make_server(
+        args.work / "snapshots",
+        team_id,
+        args.host,
+        args.port,
+        edits_path=args.work / "edits.json",
+    )
     try:
         server.serve_forever()
     except KeyboardInterrupt:

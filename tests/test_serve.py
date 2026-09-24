@@ -46,8 +46,9 @@ def test_serve_reads_twice_without_touching_bytes(tmp_path: Path):
         first = _get(f"http://127.0.0.1:{port}/")
         second = _get(f"http://127.0.0.1:{port}/")
         metric = _get(f"http://127.0.0.1:{port}/api/metrics/cycleTime")
+        hours = _get(f"http://127.0.0.1:{port}/api/metrics/statusHours")
         try:
-            urllib.request.urlopen(f"http://127.0.0.1:{port}/api/metrics/statusHours")
+            urllib.request.urlopen(f"http://127.0.0.1:{port}/api/metrics/riskScore")
             raise AssertionError("чужая метрика открылась")
         except urllib.error.HTTPError as exc:
             assert exc.code == 404
@@ -66,6 +67,7 @@ def test_serve_reads_twice_without_touching_bytes(tmp_path: Path):
     assert "riskScore" not in first
     assert "<button" not in first
     assert "value" not in metric
+    assert "value" not in hours
     assert path.read_bytes() == before
 
 
