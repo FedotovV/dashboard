@@ -104,6 +104,8 @@ def test_incomplete_membership_does_not_invent_scope():
     assert "coverage.membership = incomplete" in page
     assert "состав на старте не собран" in page
     assert "всего минус старт" not in page
+    assert 'data-widget="previous"' not in page
+    assert 'data-widget="burndown"' not in page
     assert _card_number(page, "committed") == "—"
 
 
@@ -142,8 +144,36 @@ def test_empty_person_stays_and_blockers_keep_snapshot_order(tmp_path: Path):
 
 def test_no_points_hides_story_point_column(tmp_path: Path):
     page = _page(build_case("no-points", tmp_path))
+    assert 'data-widget="burndown"' not in page
     assert 'data-column="storyPoints"' not in page
     assert "0 SP" not in page
+    assert ">5<" not in page
+
+
+def test_points_moved_keeps_the_burndown_dates_from_the_snapshot(tmp_path: Path):
+    path = build_case("points-moved", tmp_path)
+    document = load_snapshot(path)
+    burndown = next(item for item in document["sprint"]["metrics"] if item["id"] == "burndown")
+    page = _render(sprint_view(document))
+    assert burndown["value"] == 3
+    assert 'data-widget="burndown"' in page
+    for point in burndown["detail"]["points"]:
+        assert point["date"] in page
+    widget = page[page.index('data-widget="burndown"'):]
+    assert "Остаток" in widget
+    assert "Y — количество SP" in widget
+    assert "дни спринта" in widget
+    assert f">{burndown['value']}<" in widget
+
+
+def test_scope_days_trend_skips_days_without_a_snapshot(tmp_path: Path):
+    page = _page(build_case("scope-days", tmp_path, history=True))
+    trend = page[page.index('data-widget="trend"'):page.index('data-widget="issues"')]
+    assert "2026-09-10" in trend
+    assert "2026-09-14" in trend
+    assert "2026-09-11" not in trend
+    assert 'data-widget="previous"' in page
+    assert "s-prev" in page
 
 
 def test_frontend_sources_do_not_calculate():
