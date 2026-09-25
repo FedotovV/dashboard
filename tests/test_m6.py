@@ -90,6 +90,7 @@ def test_rejected_writes_keep_the_file(tmp_path: Path):
             _with(document, lambda item: item.update({"ui": {"hide": ["insights"]}})),
             _with(document, lambda item: item["sources"]["jira"].update({"baseUrl": f"https://user:{TOKEN}@jira.example.com"})),
             _with(document, lambda item: item["team"].update({"pm": TOKEN})),
+            _with(document, lambda item: item["team"].update({"pm": f"lead {TOKEN} extra"})),
             _with(document, lambda item: item["sources"].update({"confluence": {"token": "abc"}})),
             _with(document, _live_without_sprint),
             _with(document, lambda item: item["sources"]["jira"].update({"deployment": "cloud"})),
