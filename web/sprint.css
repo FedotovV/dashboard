@@ -289,8 +289,58 @@ form.edits textarea {
   color: #4d463c;
 }
 
+form.setup {
+  display: grid;
+  gap: 8px;
+}
+
+form.setup section {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #d5cfc3;
+}
+
+form.setup label {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+}
+
+form.setup input,
+form.setup select {
+  font: inherit;
+  padding: 6px 8px;
+  border: 1px solid #d5cfc3;
+  background: #fffdf8;
+  max-width: 420px;
+}
+
+form.setup button {
+  font: inherit;
+  width: fit-content;
+  margin-top: 12px;
+  padding: 8px 12px;
+  border: 1px solid #1c2430;
+  background: #1c2430;
+  color: #f3f0e8;
+}
+
+.setup-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.problems {
+  margin: 0 0 12px;
+  padding-left: 18px;
+}
+
 @media (max-width: 720px) {
-  .grid, .roles, .stats, .hours {
+  .grid, .roles, .stats, .hours, .setup-row {
     grid-template-columns: 1fr 1fr;
   }
 }

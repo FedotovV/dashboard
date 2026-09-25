@@ -92,7 +92,9 @@ def _shell(body: str, title: str) -> str:
 def _nav(current: str) -> str:
     sprint = ' aria-current="page"' if current == "sprint" else ""
     period = ' aria-current="page"' if current == "period" else ""
-    return f'<nav><a href="/"{sprint}>Спринт</a><a href="/period"{period}>Период</a></nav>'
+    setup = ' aria-current="page"' if current == "setup" else ""
+    extra = f'<a href="/setup"{setup}>Настройка</a>' if current == "setup" else ""
+    return f'<nav><a href="/"{sprint}>Спринт</a><a href="/period"{period}>Период</a>{extra}</nav>'
 
 
 def _header(view: dict) -> str:
