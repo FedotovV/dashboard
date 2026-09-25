@@ -379,6 +379,93 @@ svg.spark {
   margin: 0 0 8px;
 }
 
+.banner {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border: 1px solid var(--brass);
+  border-radius: 12px;
+  background: var(--card);
+}
+
+.hours {
+  display: grid;
+  grid-template-columns: 148px 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+svg.ring {
+  width: 148px;
+  height: 148px;
+  background: transparent;
+  border: none;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+}
+
+.swatch-own { background: var(--ink); }
+.swatch-inherited { background: var(--brass); }
+
+.path { color: var(--muted); }
+
+form.edits,
+form.setup {
+  display: grid;
+  gap: 8px;
+  max-width: 420px;
+  margin-top: 16px;
+}
+
+form.edits label,
+form.setup label {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+}
+
+form.edits input,
+form.edits textarea,
+form.setup input,
+form.setup select {
+  font: inherit;
+  color: inherit;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+form.edits button,
+form.setup button[type="submit"] {
+  font: inherit;
+  width: fit-content;
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+  cursor: pointer;
+}
+
+.problems {
+  margin: 0;
+  color: var(--brass);
+}
+
 @media (max-width: 720px) {
   .grid, .roles, .stats {
     grid-template-columns: 1fr 1fr;

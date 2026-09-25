@@ -9,9 +9,13 @@ const frontend = new URL(".", import.meta.url).pathname;
 const dir = mkdtempSync(join(tmpdir(), "dash-render-"));
 const outfile = join(dir, "screen.cjs");
 
+const screen = process.argv[2] || "sprint";
+const entry = screen === "period" ? "src/period-entry.jsx" : "src/sprint-entry.jsx";
+const exportName = screen === "period" ? "renderPeriod" : "renderSprint";
+
 await build({
   absWorkingDir: frontend,
-  entryPoints: ["src/sprint-entry.jsx"],
+  entryPoints: [entry],
   bundle: true,
   format: "cjs",
   platform: "node",
@@ -22,5 +26,5 @@ await build({
 
 const mod = require(outfile);
 const view = JSON.parse(readFileSync(0, "utf8"));
-process.stdout.write(mod.renderSprint(view));
+process.stdout.write(mod[exportName](view));
 rmSync(dir, { recursive: true, force: true });
