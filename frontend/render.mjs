@@ -10,8 +10,14 @@ const dir = mkdtempSync(join(tmpdir(), "dash-render-"));
 const outfile = join(dir, "screen.cjs");
 
 const screen = process.argv[2] || "sprint";
-const entry = screen === "period" ? "src/period-entry.jsx" : "src/sprint-entry.jsx";
-const exportName = screen === "period" ? "renderPeriod" : "renderSprint";
+const entry = {
+  period: "src/period-entry.jsx",
+  setup: "src/setup-entry.jsx",
+}[screen] || "src/sprint-entry.jsx";
+const exportName = {
+  period: "renderPeriod",
+  setup: "renderSetup",
+}[screen] || "renderSprint";
 
 await build({
   absWorkingDir: frontend,

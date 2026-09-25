@@ -6,6 +6,35 @@ export async function loadTeam() {
   return readJson("/api/team");
 }
 
+export async function loadSetup() {
+  return readJson("/api/setup");
+}
+
+export async function saveSetup(document, token) {
+  const headers = { "Content-Type": "application/json" };
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+  const response = await fetch("/api/setup", {
+    method: "POST",
+    headers,
+    body: JSON.stringify(document),
+  });
+  const text = await response.text();
+  let parsed = null;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    parsed = null;
+  }
+  if (!response.ok) {
+    const error = new Error(parsed?.error || text.trim() || "team.yaml не записан");
+    error.problems = parsed?.problems || [error.message];
+    throw error;
+  }
+  return parsed;
+}
+
 export async function saveEdit(fields) {
   const body = new URLSearchParams();
   for (const [key, value] of Object.entries(fields)) {
