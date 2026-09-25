@@ -1,11 +1,13 @@
 import { coverageNotes } from "./api.js";
 import { Blockers } from "./widgets/Blockers.jsx";
+import { Burndown } from "./widgets/Burndown.jsx";
 import { Flow } from "./widgets/Flow.jsx";
 import { Hygiene } from "./widgets/Hygiene.jsx";
 import { Issues } from "./widgets/Issues.jsx";
 import { People } from "./widgets/People.jsx";
 import { Scope } from "./widgets/Scope.jsx";
 import { Timing } from "./widgets/Timing.jsx";
+import { Trend } from "./widgets/Trend.jsx";
 
 export function SprintScreen({ sprint, error }) {
   if (error) {
@@ -31,6 +33,8 @@ export function SprintScreen({ sprint, error }) {
       <Timing view={sprint} />
       <Blockers view={sprint} />
       <People view={sprint} />
+      <Burndown view={sprint} />
+      <Trend view={sprint} />
       <Issues view={sprint} />
     </>
   );

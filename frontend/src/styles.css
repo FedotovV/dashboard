@@ -333,6 +333,52 @@ th, td {
   vertical-align: top;
 }
 
+.remainder {
+  margin: 8px 0;
+}
+
+svg.chart {
+  width: 100%;
+  height: auto;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+svg.spark {
+  height: 72px;
+  margin: 8px 0;
+}
+
+.axis {
+  fill: var(--muted);
+  font-size: 12px;
+}
+
+.frame {
+  stroke: var(--muted);
+}
+
+.ideal,
+.actual {
+  fill: none;
+}
+
+.ideal {
+  stroke: var(--muted);
+  stroke-dasharray: 4 3;
+}
+
+.actual {
+  stroke: var(--ink);
+}
+
+.axes {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+
 @media (max-width: 720px) {
   .grid, .roles, .stats {
     grid-template-columns: 1fr 1fr;
