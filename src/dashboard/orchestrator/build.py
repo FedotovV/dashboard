@@ -9,7 +9,7 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
 
-from dashboard.config.hash import digest, input_hashes, rule_hash
+from dashboard.config.hash import FORMULA_VERSIONS, digest, input_hashes, rule_hash
 from dashboard.config.load import ConfigError, load_team
 from dashboard.edits.apply import apply_edits, edits_from_dict
 from dashboard.metrics.engine import History, HistoryPoint, compute
@@ -82,8 +82,9 @@ def build(request: BuildRequest) -> BuildResult:
         write_new(document, dest)
         code = BuildResult(0, "слепок записан", dest)
     _assert_edits(request.edits_path, edits_bytes)
-    if request.accept_recompute and request.manifest_path is not None:
-        _write_manifest(request.manifest_path, config)
+    if request.manifest_path is not None:
+        timings = [] if request.accept_recompute else _timings(bundle_raw, config)
+        _write_manifest(request.manifest_path, config, timings)
     return code
 
 
@@ -191,15 +192,41 @@ def _utc(instant: datetime) -> str:
     return instant.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def _write_manifest(path: Path, config) -> None:
+def _write_manifest(path: Path, config, timings: list) -> None:
     payload = {
         "teamId": config.team_id,
         "ruleHash": rule_hash(config),
         "catalogVersion": config.catalog_version,
-        "timings": [],
+        "timings": timings,
     }
     _validate(SCHEMA / "manifest.schema.json", payload)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
+
+
+def _timings(bundle: dict, config) -> list[dict]:
+    by_issue: dict[str, list] = {}
+    for row in bundle.get("statusChanges") or []:
+        by_issue.setdefault(row["issueId"], []).append(row)
+    sealed = []
+    current_hash = rule_hash(config)
+    for issue in bundle.get("issues") or []:
+        rule = config.status(issue.get("status") or "")
+        if rule is None or rule.role != "terminal":
+            continue
+        intervals = sorted(by_issue.get(issue["id"], []), key=lambda item: item["enteredAt"])
+        complete = bool(intervals) and intervals[0]["enteredAt"] == issue.get("created")
+        sealed.append(
+            {
+                "changelogComplete": complete,
+                "formulaVersion": FORMULA_VERSIONS["cycleTime"],
+                "issueId": issue["id"],
+                "ruleHash": current_hash,
+                "terminal": True,
+            }
+        )
+    sealed.sort(key=lambda item: item["issueId"])
+    return sealed
 
 
 def _validate(schema_path: Path, instance: dict) -> None:

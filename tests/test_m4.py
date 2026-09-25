@@ -27,9 +27,8 @@ ROOT = Path(__file__).resolve().parents[1]
 M1 = ROOT / "fixtures" / "m1"
 FILE_CASE = ROOT / "fixtures" / "m4" / "file-sprint"
 CONNECTORS = ROOT / "src" / "dashboard" / "connectors"
-BANNED = (
-    "urllib",
-    "http",
+NETWORK = ("urllib", "http", "socket", "requests")
+FORBIDDEN = (
     "socket",
     "requests",
     "dashboard.metrics",
@@ -50,16 +49,17 @@ def test_connectors_do_not_import_network_or_metrics():
             elif isinstance(node, ast.ImportFrom) and node.module:
                 modules = [node.module]
             for module in modules:
-                assert not module.startswith(BANNED), (path.name, module)
+                assert not module.startswith(FORBIDDEN), (path.name, module)
+                if path.name != "http.py":
+                    assert not module.startswith(NETWORK), (path.name, module)
 
 
-def test_live_mode_writes_nothing(tmp_path: Path):
+def test_live_without_token_writes_nothing(tmp_path: Path):
     team = _team_with_mode(tmp_path, "live")
     bundle = tmp_path / "bundle.json"
-    result = collect(CollectRequest(team, FILE_CASE / "raw", bundle))
+    result = collect(CollectRequest(team, FILE_CASE / "raw", bundle, environ={}))
     assert result.code == 2
-    assert "live" in result.message
-    assert "сеть" in result.message
+    assert "токен" in result.message
     assert not bundle.exists()
 
 
@@ -179,9 +179,9 @@ def test_file_import_reads_cloud_account_and_sprint_name(tmp_path: Path):
     ]
 
 
-def test_live_function_does_not_return_a_bundle(tmp_path: Path):
+def test_live_without_address_does_not_return_a_bundle(tmp_path: Path):
     with pytest.raises(CollectError):
-        collect_bundle("live", tmp_path, {"jira": {"deployment": "server"}})
+        collect_bundle("live", tmp_path, {"jira": {"deployment": "server"}}, environ={})
 
 
 @pytest.mark.parametrize("case", FORMULA_CASES)
