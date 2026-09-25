@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { loadSprint, loadTeam } from "./api.js";
+import { loadSetup, loadSprint, loadTeam } from "./api.js";
 import { PeriodScreen } from "./PeriodScreen.jsx";
+import { SetupScreen } from "./SetupScreen.jsx";
 import { SprintScreen } from "./SprintScreen.jsx";
 import { applyTheme, readTheme } from "./theme.js";
 
@@ -12,6 +13,9 @@ export function App() {
   const [team, setTeam] = useState(null);
   const [teamError, setTeamError] = useState("");
   const [teamStamp, setTeamStamp] = useState(0);
+  const [setup, setSetup] = useState(null);
+  const [setupError, setSetupError] = useState("");
+  const [setupStamp, setSetupStamp] = useState(0);
 
   useEffect(() => {
     applyTheme(theme);
@@ -57,6 +61,28 @@ export function App() {
     };
   }, [screen, teamStamp]);
 
+  useEffect(() => {
+    if (screen !== "setup") {
+      return undefined;
+    }
+    let active = true;
+    loadSetup()
+      .then((payload) => {
+        if (active) {
+          setSetup(payload);
+          setSetupError("");
+        }
+      })
+      .catch((exc) => {
+        if (active) {
+          setSetupError(exc.message || "настройка не открылась");
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, [screen, setupStamp]);
+
   const teamId = sprint?.teamId || team?.teamId || "";
   return (
     <div className="app">
@@ -85,7 +111,16 @@ export function App() {
             onSaved={() => setTeamStamp((value) => value + 1)}
           />
         ) : null}
-        {screen === "setup" ? <Later title="Настройка" /> : null}
+        {screen === "setup" ? (
+          <SetupScreen
+            view={setup}
+            error={setupError}
+            onSaved={(next) => {
+              setSetup(next);
+              setSetupStamp((value) => value + 1);
+            }}
+          />
+        ) : null}
         <p className="foot">Числа из слепка. Сборка с этого экрана не запускается.</p>
       </main>
     </div>
@@ -107,16 +142,5 @@ function ThemeButton({ theme, id, onTheme, children }) {
     <button type="button" className={on ? "on" : ""} aria-pressed={on} onClick={() => onTheme(id)}>
       {children}
     </button>
-  );
-}
-
-function Later({ title }) {
-  return (
-    <div className="top">
-      <div>
-        <h1>{title}</h1>
-        <p className="sub">Экран ещё не собран.</p>
-      </div>
-    </div>
   );
 }

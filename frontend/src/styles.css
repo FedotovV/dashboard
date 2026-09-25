@@ -466,8 +466,26 @@ form.setup button[type="submit"] {
   color: var(--brass);
 }
 
+.setup-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+form.setup button[type="button"] {
+  font: inherit;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
 @media (max-width: 720px) {
-  .grid, .roles, .stats {
+  .grid, .roles, .stats, .setup-row {
     grid-template-columns: 1fr 1fr;
   }
 }

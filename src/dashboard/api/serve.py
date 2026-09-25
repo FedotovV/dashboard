@@ -254,6 +254,7 @@ def make_server(
                 self._send(exc.status, "text/html; charset=utf-8", body)
                 return
             if parsed.path == "/api/setup":
+                view["writeTokenRequired"] = required_token is not None
                 self._send(200, "application/json; charset=utf-8", _json(view))
                 return
             view["saved"] = (parse_qs(parsed.query).get("saved") or [""])[0] == "1"
