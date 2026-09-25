@@ -107,6 +107,45 @@ def test_incomplete_membership_does_not_invent_scope():
     assert _card_number(page, "committed") == "—"
 
 
+def test_empty_person_stays_and_blockers_keep_snapshot_order(tmp_path: Path):
+    from dashboard.orchestrator.build import BuildRequest, build
+    from tests.test_sprint_page import _blockers_bundle
+
+    team = tmp_path / "team.yaml"
+    text = (FIXTURES / "scope-days" / "team.yaml").read_text()
+    member = (
+        "    - id: idle\n"
+        "      name: Свободен\n"
+        "      jiraUsername: idle\n"
+        "      role: dev\n"
+        "      allocation: 1\n"
+    )
+    team.write_text(text.replace("  alumni: []\n", member + "  alumni: []\n", 1))
+    bundle = tmp_path / "canonical.json"
+    bundle.write_text(json.dumps(_blockers_bundle(), ensure_ascii=False))
+    result = build(BuildRequest(team_path=team, bundle_path=bundle, out_dir=tmp_path / "out"))
+    assert result.code == 0, result.message
+    document = load_snapshot(result.path)
+    blockers = next(item for item in document["sprint"]["metrics"] if item["id"] == "blockers")
+    assert [item["issueKey"] for item in blockers["detail"]["items"]] == ["B-1", "B-2"]
+    page = _render(sprint_view(document))
+    blockers_html = page[page.index('data-widget="blockers"'):page.index('data-widget="people"')]
+    assert blockers_html.index('data-reason="overdue"') < blockers_html.index('data-reason="hold"')
+    assert 'data-person="idle"' in page
+    assert "нет открытых" in page
+    assert "<h2>Команда</h2>" in page
+    assert 'href="https://jira.example.com/browse/B-1"' in page
+    assert "riskScore" not in page
+    assert 'data-widget="hygiene"' in page
+    assert "не оценка команды" in page
+
+
+def test_no_points_hides_story_point_column(tmp_path: Path):
+    page = _page(build_case("no-points", tmp_path))
+    assert 'data-column="storyPoints"' not in page
+    assert "0 SP" not in page
+
+
 def test_frontend_sources_do_not_calculate():
     root = ROOT / "frontend" / "src"
     text = "\n".join(path.read_text(encoding="utf-8") for path in root.rglob("*") if path.is_file()).lower()
