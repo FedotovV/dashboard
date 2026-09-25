@@ -140,6 +140,8 @@ python3 scripts/check_contracts.py
 
 `collect` для фикстуры и fileimport, `build`, `serve` на localhost. Чистый клон одной командой совпадает с золотым снимком.
 
+Порядок команды и формат выгрузки — [m4-plan.md](m4-plan.md). Релиз-ноутсы — [m4-release-notes.md](m4-release-notes.md).
+
 ### M5. Один Jira
 
 Либо Cloud, либо Server/Data Center — тот, к которому появится доступ. Записанный ответ API и fileimport дают один снимок. Инкремент manifest. Один контейнер, токены снаружи. Confluence, мессенджер, GitLab, вторая команда, планировщик, OIDC и отдельная база не начинаются в этой вехе.

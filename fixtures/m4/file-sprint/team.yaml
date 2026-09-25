@@ -1,0 +1,69 @@
+version: 1
+catalogVersion: 1
+team:
+  id: card
+  name: Карта
+  locale: ru
+  members:
+    - id: dev
+      name: Разработчик
+      jiraUsername: dev
+      role: dev
+      allocation: 1
+  alumni: []
+calendar:
+  timezone: Europe/Moscow
+  workdays: [1, 2, 3, 4, 5]
+  workStart: "10:00"
+  workEnd: "19:00"
+  breakMinutes: 60
+  breakStart: "14:00"
+  hoursPerDay: 8
+  holidays: []
+  extraWorkdays: []
+period:
+  id: 2026-09
+  start: "2026-09-07"
+  end: "2026-09-30"
+sources:
+  mode: file
+  jira:
+    deployment: server
+    baseUrl: https://jira.example.com
+    boardId: "1"
+    sprintId: "s"
+    authEnv: JIRA_TOKEN
+    fields:
+      storyPoints: customfield_10016
+      epicLink: customfield_10014
+workflow:
+  usesDueDate: true
+  statusMap:
+    - { status: "To Do", category: todo, role: queue }
+    - { status: "In Progress", category: indeterminate, role: active }
+    - { status: "Review", category: indeterminate, role: wait }
+    - { status: "On-hold", category: indeterminate, role: hold }
+    - { status: "Done", category: done, role: terminal }
+    - { status: "Canceled", category: done, role: terminal, outcome: canceled }
+taxonomy:
+  priority: [project, tech]
+  epics:
+    project: ["P-1"]
+    tech: ["T-1"]
+  linkTypes: ["Child-Issue"]
+  rules: []
+  otherSubtype:
+    prodLabel: prod_op
+    techLabel: other_tech
+scope:
+  issueTypes: ["Story", "Task", "Bug"]
+  projectKeys: ["CARD"]
+  countSubtasks: false
+metrics:
+  cycleTime:
+    minStaySeconds: 900
+  hygiene:
+    highPriorities: ["High"]
+    maxAgeDays: 90
+  classification:
+    unknownWarnPct: 15

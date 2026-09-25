@@ -1,0 +1,250 @@
+{
+  "bundleId": "file-sprint",
+  "asOf": "2026-09-10T16:00:00Z",
+  "sourceWatermark": "file-sprint",
+  "issues": [
+    {
+      "id": "c-1",
+      "key": "C-1",
+      "summary": "Ребёнок",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [
+        "other_tech"
+      ],
+      "parentId": "p-1",
+      "subtask": false
+    },
+    {
+      "id": "d-1",
+      "key": "D-1",
+      "summary": "Оценка выросла",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "Done",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 8,
+      "storyPointsAtAdd": 5,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "e-1",
+      "key": "E-1",
+      "summary": "До полуночи",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "Done",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": "2026-09-10",
+      "resolutionAt": "2026-09-09T20:30:00Z",
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "n-1",
+      "key": "N-1",
+      "summary": "После полуночи",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "Done",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": "2026-09-10",
+      "resolutionAt": "2026-09-09T21:30:00Z",
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "p-1",
+      "key": "P-1",
+      "summary": "Эпик",
+      "type": "Epic",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": null,
+      "priority": null,
+      "storyPoints": null,
+      "storyPointsAtAdd": null,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "r-1",
+      "key": "R-1",
+      "summary": "Убрали",
+      "type": "Story",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 2,
+      "storyPointsAtAdd": 2,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": null,
+      "subtask": false
+    },
+    {
+      "id": "sub-1",
+      "key": "SUB-1",
+      "summary": "Подзадача",
+      "type": "Sub-task",
+      "projectKey": "CARD",
+      "status": "In Progress",
+      "assigneeAccountId": "dev",
+      "priority": "Medium",
+      "storyPoints": 1,
+      "storyPointsAtAdd": 1,
+      "dueDate": null,
+      "resolutionAt": null,
+      "created": "2026-09-07T07:00:00Z",
+      "labels": [],
+      "parentId": "c-1",
+      "subtask": true
+    }
+  ],
+  "statusChanges": [
+    {
+      "issueId": "c-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "d-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": "2026-09-08T08:00:00Z"
+    },
+    {
+      "issueId": "d-1",
+      "status": "Done",
+      "enteredAt": "2026-09-08T08:00:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "e-1",
+      "status": "To Do",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": "2026-09-09T20:30:00Z"
+    },
+    {
+      "issueId": "e-1",
+      "status": "Done",
+      "enteredAt": "2026-09-09T20:30:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "n-1",
+      "status": "To Do",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": "2026-09-09T21:30:00Z"
+    },
+    {
+      "issueId": "n-1",
+      "status": "Done",
+      "enteredAt": "2026-09-09T21:30:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "p-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "r-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": null
+    },
+    {
+      "issueId": "sub-1",
+      "status": "In Progress",
+      "enteredAt": "2026-09-07T07:00:00Z",
+      "exitedAt": null
+    }
+  ],
+  "memberships": [
+    {
+      "issueId": "c-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "d-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "e-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "n-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": null
+    },
+    {
+      "issueId": "r-1",
+      "sprintId": "s",
+      "addedAt": "2026-09-07T06:00:00Z",
+      "removedAt": "2026-09-11T09:00:00Z"
+    }
+  ],
+  "sprints": [
+    {
+      "id": "s",
+      "name": "Спринт",
+      "state": "active",
+      "start": "2026-09-07",
+      "end": "2026-09-18"
+    }
+  ],
+  "links": [
+    {
+      "fromId": "d-1",
+      "toId": "e-1",
+      "type": "Blocks"
+    },
+    {
+      "fromId": "p-1",
+      "toId": "c-1",
+      "type": "Child-Issue"
+    }
+  ]
+}
