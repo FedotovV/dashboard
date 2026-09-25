@@ -1,4 +1,4 @@
-"""fixture читает уже канонический JSON. file собирает его из выгрузки. live сеть не открывает."""
+"""fixture читает уже канонический JSON. file и live собирают один и тот же bundle из тел Jira."""
 
 from __future__ import annotations
 
@@ -11,9 +11,19 @@ class CollectError(ValueError):
     """Сырьё нельзя собрать в bundle."""
 
 
-def collect_bundle(mode: str, source: Path, sources: dict) -> dict:
+def collect_bundle(
+    mode: str,
+    source: Path,
+    sources: dict,
+    *,
+    transport=None,
+    now: datetime | None = None,
+    environ: dict | None = None,
+) -> dict:
     if mode == "live":
-        raise CollectError("режим live не входит в этот шаг, сеть не открывается")
+        from dashboard.connectors.jira import fetch_server
+
+        return fetch_server(sources, transport=transport, now=now, environ=environ)
     if mode == "fixture":
         return _fixture(source)
     if mode == "file":
@@ -36,14 +46,21 @@ def _fixture(source: Path) -> dict:
 def _file(source: Path, sources: dict) -> dict:
     if not source.is_dir():
         raise CollectError("для режима file нужен каталог выгрузки")
+    return bundle_from_bodies(
+        _read_json(source / "meta.json"),
+        _read_json(source / "search.json"),
+        _read_json(source / "changelogs.json"),
+        _read_json(source / "sprints.json"),
+        sources,
+    )
+
+
+def bundle_from_bodies(meta: dict, search: dict, changelogs: dict, sprints_raw, sources: dict) -> dict:
+    """Один разбор для файла и для записанного ответа API."""
     jira = sources.get("jira") or {}
     deployment = jira.get("deployment")
     if deployment not in ("cloud", "server"):
         raise CollectError("sources.jira.deployment должен быть cloud или server")
-    meta = _read_json(source / "meta.json")
-    search = _read_json(source / "search.json")
-    changelogs = _read_json(source / "changelogs.json")
-    sprints_raw = _read_json(source / "sprints.json")
     if not isinstance(meta, dict) or not meta.get("bundleId") or not meta.get("asOf"):
         raise CollectError("meta.json должен содержать bundleId и asOf")
     if not isinstance(search, dict) or not isinstance(search.get("issues"), list):

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 
 from dashboard.orchestrator.build import BuildRequest, BuildResult, build
@@ -18,11 +19,23 @@ class RunRequest:
     edits_path: Path | None = None
     manifest_path: Path | None = None
     accept_recompute: bool = False
+    transport: object | None = None
+    now: datetime | None = None
+    environ: dict | None = None
 
 
 def run(request: RunRequest) -> BuildResult:
     bundle_path = request.bundle_path or (request.out_dir / "_collect" / "canonical.json")
-    collected = collect(CollectRequest(request.team_path, request.source, bundle_path))
+    collected = collect(
+        CollectRequest(
+            request.team_path,
+            request.source,
+            bundle_path,
+            transport=request.transport,
+            now=request.now,
+            environ=request.environ,
+        )
+    )
     if collected.code != 0:
         return BuildResult(collected.code, collected.message)
     return build(

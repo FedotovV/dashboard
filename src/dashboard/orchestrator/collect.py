@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 
 import yaml
@@ -21,6 +22,9 @@ class CollectRequest:
     team_path: Path
     source: Path
     bundle_path: Path
+    transport: object | None = None
+    now: datetime | None = None
+    environ: dict | None = None
 
 
 @dataclass
@@ -37,7 +41,14 @@ def collect(request: CollectRequest) -> CollectResult:
         raw = yaml.safe_load(request.team_path.read_text())
         sources = raw.get("sources") or {}
         mode = sources.get("mode") or "fixture"
-        bundle = collect_bundle(mode, request.source, sources)
+        bundle = collect_bundle(
+            mode,
+            request.source,
+            sources,
+            transport=request.transport,
+            now=request.now,
+            environ=request.environ,
+        )
         _validate(bundle)
     except (ConfigError, CollectError, OSError, yaml.YAMLError, ValueError) as exc:
         return CollectResult(2, str(exc))
