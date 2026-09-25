@@ -305,7 +305,7 @@ def _secrets(value, banned: set[str], problems: list[str], path: str) -> None:
         return
     if not isinstance(value, str):
         return
-    if value in banned:
+    if any(secret in value for secret in banned):
         problems.append(f"{path}: значение переменной authEnv попало в файл")
     if "://" not in value:
         return

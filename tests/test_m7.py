@@ -14,7 +14,7 @@ from pathlib import Path
 import yaml
 
 from dashboard.api.__main__ import main as serve_main
-from dashboard.api.serve import ServeError, make_server, require_bind
+from dashboard.api.serve import ServeError, browser_write_allowed, make_server, require_bind
 from tests.sprint_support import build_case
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -112,6 +112,81 @@ def test_bearer_and_form_token_write_without_storing_the_secret(tmp_path: Path):
     assert snapshot.read_bytes() == before_snapshot
 
 
+def test_browser_write_allows_the_same_host_and_rejects_another_site():
+    assert browser_write_allowed(None, None, "127.0.0.1:8765", "127.0.0.1") is True
+    assert browser_write_allowed("http://127.0.0.1:8765", "same-origin", "127.0.0.1:8765", "127.0.0.1") is True
+    assert browser_write_allowed("http://localhost:8765", "same-origin", "localhost:8765", "127.0.0.1") is True
+    assert browser_write_allowed("https://evil.example", None, "127.0.0.1:8765", "127.0.0.1") is False
+    assert browser_write_allowed("null", None, "127.0.0.1:8765", "127.0.0.1") is False
+    assert browser_write_allowed(None, "cross-site", "127.0.0.1:8765", "127.0.0.1") is False
+    assert browser_write_allowed(None, None, "evil.example", "127.0.0.1") is False
+    assert browser_write_allowed("http://127.0.0.1:9", None, "127.0.0.1:8765", "127.0.0.1") is False
+    assert browser_write_allowed("http://10.1.1.1:8765", "same-origin", "10.1.1.1:8765", "0.0.0.0") is True
+    assert browser_write_allowed("https://evil.example", None, "10.1.1.1:8765", "0.0.0.0") is False
+
+
+def test_cross_site_write_keeps_the_files(tmp_path: Path):
+    config, edits, snapshot = _files(tmp_path)
+    before_config = config.read_bytes()
+    server = make_server(
+        snapshot.parent.parent,
+        "card",
+        "127.0.0.1",
+        0,
+        edits_path=edits,
+        config_path=config,
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    port = server.server_address[1]
+    form = {"Content-Type": "application/x-www-form-urlencoded"}
+    try:
+        assert "card" in _get_host(port, "/api/sprint", "127.0.0.1")
+        evil = _request_host(
+            port,
+            "/api/edits",
+            urllib.parse.urlencode({"epicId": "P-1", "text": "чужая", "author": "pm"}).encode(),
+            "127.0.0.1",
+            "POST",
+            {**form, "Origin": "https://evil.example"},
+        )
+        assert evil.status == 403
+        assert "Запись с другого сайта не принимается." in evil.text
+        fetch = _request_host(
+            port,
+            "/api/setup",
+            urllib.parse.urlencode({"jira.baseUrl": "https://evil.example"}).encode(),
+            "127.0.0.1",
+            "POST",
+            {**form, "Sec-Fetch-Site": "cross-site"},
+        )
+        assert fetch.status == 403
+        rebound = _request_host(
+            port,
+            "/api/edits",
+            json.dumps(_edits_body(2)).encode(),
+            "127.0.0.1",
+            "PUT",
+            {"Content-Type": "application/json", "Host": "evil.example"},
+        )
+        assert rebound.status == 403
+        same = _request_host(
+            port,
+            "/api/edits",
+            urllib.parse.urlencode({"epicId": "P-1", "text": "своя", "author": "pm"}).encode(),
+            "127.0.0.1",
+            "POST",
+            {**form, "Origin": f"http://127.0.0.1:{port}"},
+        )
+        assert same.status == 200
+    finally:
+        _stop(server, thread)
+    stored = edits.read_text(encoding="utf-8")
+    assert "своя" in stored
+    assert "чужая" not in stored
+    assert config.read_bytes() == before_config
+
+
 def test_localhost_write_stays_open_when_a_token_exists(tmp_path: Path):
     config, edits, snapshot = _files(tmp_path)
     server = make_server(
@@ -153,6 +228,8 @@ def test_compose_file_keeps_the_token_outside():
     dockerfile = (ROOT / "Dockerfile").read_text(encoding="utf-8")
     assert "DASHBOARD_TOKEN" not in dockerfile
     assert "JIRA_TOKEN=" not in dockerfile
+    assert "USER dashboard" in dockerfile
+    assert "useradd" in dockerfile
 
 
 def _files(tmp_path: Path):
@@ -231,6 +308,11 @@ def _request(port: int, path: str, body: bytes, authorization: str | None, metho
     if authorization:
         headers["Authorization"] = authorization
     request = urllib.request.Request(f"http://{HOST}:{port}{path}", data=body, method=method, headers=headers)
+    return _read(request)
+
+
+def _request_host(port: int, path: str, body: bytes, host: str, method: str, headers: dict[str, str]):
+    request = urllib.request.Request(f"http://{host}:{port}{path}", data=body, method=method, headers=headers)
     return _read(request)
 
 

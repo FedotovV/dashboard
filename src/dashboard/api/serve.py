@@ -63,6 +63,64 @@ def bearer_token(header: str | None) -> str | None:
     return rest.strip()
 
 
+def browser_write_allowed(
+    origin: str | None,
+    fetch_site: str | None,
+    host_header: str | None,
+    bind_host: str,
+) -> bool:
+    """Чужой сайт не пишет team.yaml и правки. Клиент без Origin на localhost по-прежнему пишет."""
+    if (fetch_site or "").strip().lower() == "cross-site":
+        return False
+    request_host = _split_host(host_header)
+    if bind_host == "127.0.0.1" and (request_host is None or request_host[0].lower() not in {"127.0.0.1", "localhost"}):
+        return False
+    if origin is None or not origin.strip():
+        return True
+    if origin.strip().lower() == "null":
+        return False
+    parts = urlparse(origin.strip())
+    if parts.scheme != "http" or not parts.hostname or parts.username or parts.password or request_host is None:
+        return False
+    origin_port = parts.port if parts.port is not None else 80
+    return parts.hostname.lower() == request_host[0].lower() and origin_port == request_host[1]
+
+
+def _split_host(host_header: str | None) -> tuple[str, int] | None:
+    if host_header is None:
+        return None
+    text = host_header.strip()
+    if not text:
+        return None
+    if text.startswith("["):
+        end = text.find("]")
+        if end < 0:
+            return None
+        hostname = text[1:end]
+        rest = text[end + 1 :]
+        if not rest:
+            return hostname, 80
+        if not rest.startswith(":"):
+            return None
+        return _port(hostname, rest[1:])
+    if ":" not in text:
+        return text, 80
+    hostname, _, raw_port = text.rpartition(":")
+    return _port(hostname, raw_port)
+
+
+def _port(hostname: str, raw_port: str) -> tuple[str, int] | None:
+    if not hostname:
+        return None
+    try:
+        port = int(raw_port)
+    except ValueError:
+        return None
+    if port < 1 or port > 65535:
+        return None
+    return hostname, port
+
+
 def make_server(
     snapshots: Path,
     team_id: str,
@@ -261,6 +319,14 @@ def make_server(
             self._send(exc.status, "application/json; charset=utf-8", _problem(exc))
 
         def _gate(self, form: bool, form_token: str | None) -> bool:
+            if not browser_write_allowed(
+                self.headers.get("Origin"),
+                self.headers.get("Sec-Fetch-Site"),
+                self.headers.get("Host"),
+                host,
+            ):
+                self._cross_site(form)
+                return False
             if required_token is None:
                 return True
             header = bearer_token(self.headers.get("Authorization"))
@@ -272,6 +338,20 @@ def make_server(
                 return True
             self._unauthorized(form)
             return False
+
+        def _cross_site(self, form: bool) -> None:
+            if form:
+                body = (
+                    "<!DOCTYPE html><html lang=\"ru\"><meta charset=\"utf-8\">"
+                    "<title>Запись</title><p>Запись с другого сайта не принимается.</p>"
+                ).encode()
+                self._send(403, "text/html; charset=utf-8", body)
+                return
+            self._send(
+                403,
+                "application/json; charset=utf-8",
+                _json({"error": "запись с другого сайта не принимается"}),
+            )
 
         def _unauthorized(self, form: bool) -> None:
             if form:
