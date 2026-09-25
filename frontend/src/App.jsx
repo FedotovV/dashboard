@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { coverageNotes, loadSprint } from "./api.js";
+import { loadSprint } from "./api.js";
+import { SprintScreen } from "./SprintScreen.jsx";
 import { applyTheme, readTheme } from "./theme.js";
 
 export function App() {
@@ -73,28 +74,6 @@ function ThemeButton({ theme, id, onTheme, children }) {
     <button type="button" className={on ? "on" : ""} aria-pressed={on} onClick={() => onTheme(id)}>
       {children}
     </button>
-  );
-}
-
-function SprintScreen({ sprint, error }) {
-  if (error) {
-    return <p className="sub">{error}</p>;
-  }
-  if (!sprint) {
-    return <p className="sub">Читаем слепок.</p>;
-  }
-  const body = sprint.sprint || {};
-  const notes = coverageNotes(sprint.coverage);
-  return (
-    <>
-      <div className="top">
-        <div>
-          <h1>{body.id}</h1>
-          <p className="sub">{body.start} — {body.end}</p>
-        </div>
-        {notes.length > 0 ? <p className="note">{notes.join(" ")}</p> : null}
-      </div>
-    </>
   );
 }
 

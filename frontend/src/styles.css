@@ -146,3 +146,87 @@ h1 {
   color: var(--muted);
   font-size: 12px;
 }
+
+section {
+  margin: 22px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+section > h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.grid,
+.roles {
+  display: grid;
+  gap: 12px;
+}
+
+.grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.roles {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  min-width: 0;
+}
+
+.card h2 {
+  margin: 2px 0 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.num {
+  display: block;
+  font-size: 28px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.num[data-attention="true"],
+li[data-attention="true"] {
+  color: var(--brass);
+}
+
+.key {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.hint {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.hint summary {
+  cursor: pointer;
+}
+
+.completion,
+.explain {
+  margin: 12px 0 0;
+  font-size: 14px;
+}
+
+.card ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.card li {
+  margin: 4px 0;
+}
