@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import hmac
 import json
 import os
 from datetime import datetime, timezone
@@ -27,6 +29,40 @@ def require_localhost(host: str) -> None:
         raise ServeError("serve слушает только 127.0.0.1")
 
 
+def token_from_env(name: str | None, environ: dict) -> str | None:
+    if not name:
+        return None
+    value = environ.get(name)
+    if not isinstance(value, str):
+        return None
+    value = value.strip()
+    return value or None
+
+
+def require_bind(host: str, write_token: str | None) -> str | None:
+    if host == "127.0.0.1":
+        return None
+    if not write_token:
+        raise ServeError("нелокальный адрес требует токен на запись")
+    return write_token
+
+
+def same_secret(presented: str, expected: str) -> bool:
+    return hmac.compare_digest(
+        hashlib.sha256(presented.encode("utf-8")).digest(),
+        hashlib.sha256(expected.encode("utf-8")).digest(),
+    )
+
+
+def bearer_token(header: str | None) -> str | None:
+    if header is None:
+        return None
+    scheme, _, rest = header.strip().partition(" ")
+    if scheme.lower() != "bearer":
+        return ""
+    return rest.strip()
+
+
 def make_server(
     snapshots: Path,
     team_id: str,
@@ -36,8 +72,9 @@ def make_server(
     edits_path: Path | None = None,
     config_path: Path | None = None,
     manifest_path: Path | None = None,
+    write_token: str | None = None,
 ) -> ThreadingHTTPServer:
-    require_localhost(host)
+    required_token = require_bind(host, write_token)
 
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self) -> None:  # noqa: N802
@@ -59,6 +96,7 @@ def make_server(
                 if parsed.path == "/period":
                     view = team_view(document, read_edits(edits_path))
                     view["editsEnabled"] = edits_path is not None
+                    view["writeTokenRequired"] = required_token is not None
                     body = render_period(view).encode("utf-8")
                     self._send(200, "text/html; charset=utf-8", body)
                     return
@@ -120,11 +158,16 @@ def make_server(
                 return
             try:
                 raw = self._read_body()
+                form_token = None
                 if form:
                     fields = {
                         key: values[-1]
                         for key, values in parse_qs(raw.decode("utf-8"), keep_blank_values=True).items()
                     }
+                    form_token = fields.pop("token", None)
+                if not self._gate(form, form_token):
+                    return
+                if form:
                     document = merge_form(edits_path, team_id, fields, datetime.now(timezone.utc))
                     self.send_response(303)
                     self.send_header("Location", "/period")
@@ -156,6 +199,7 @@ def make_server(
                 self._send(200, "application/json; charset=utf-8", _json(view))
                 return
             view["saved"] = (parse_qs(parsed.query).get("saved") or [""])[0] == "1"
+            view["writeTokenRequired"] = required_token is not None
             self._send(200, "text/html; charset=utf-8", render_setup(view).encode("utf-8"))
 
         def _setup_write(self, form: bool) -> None:
@@ -165,11 +209,16 @@ def make_server(
             document = None
             try:
                 raw = self._read_body()
+                form_token = None
                 if form:
                     fields = {
                         key: values[-1]
                         for key, values in parse_qs(raw.decode("utf-8"), keep_blank_values=True).items()
                     }
+                    form_token = fields.pop("token", None)
+                if not self._gate(form, form_token):
+                    return
+                if form:
                     document = apply_form(read_team(config_path), fields)
                 else:
                     document = json.loads(raw.decode("utf-8"))
@@ -204,11 +253,40 @@ def make_server(
                         "needsAcceptRecompute": False,
                         "problems": exc.problems,
                         "saved": False,
+                        "writeTokenRequired": required_token is not None,
                     }
                 ).encode("utf-8")
                 self._send(exc.status, "text/html; charset=utf-8", body)
                 return
             self._send(exc.status, "application/json; charset=utf-8", _problem(exc))
+
+        def _gate(self, form: bool, form_token: str | None) -> bool:
+            if required_token is None:
+                return True
+            header = bearer_token(self.headers.get("Authorization"))
+            if header is None:
+                presented = (form_token or "").strip() if form else ""
+            else:
+                presented = header
+            if same_secret(presented, required_token):
+                return True
+            self._unauthorized(form)
+            return False
+
+        def _unauthorized(self, form: bool) -> None:
+            if form:
+                body = (
+                    "<!DOCTYPE html><html lang=\"ru\"><meta charset=\"utf-8\">"
+                    "<title>Токен</title><p>Нужен токен записи.</p>"
+                ).encode()
+                self._send(401, "text/html; charset=utf-8", body, authenticate=True)
+                return
+            self._send(
+                401,
+                "application/json; charset=utf-8",
+                _json({"error": "нужен токен записи"}),
+                authenticate=True,
+            )
 
         def _read_body(self) -> bytes:
             length = int(self.headers.get("Content-Length") or 0)
@@ -216,8 +294,10 @@ def make_server(
                 raise EditsError(413, "тело слишком большое")
             return self.rfile.read(length)
 
-        def _send(self, status: int, content_type: str, body: bytes) -> None:
+        def _send(self, status: int, content_type: str, body: bytes, authenticate: bool = False) -> None:
             self.send_response(status)
+            if authenticate:
+                self.send_header("WWW-Authenticate", "Bearer")
             self.send_header("Content-Type", content_type)
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()

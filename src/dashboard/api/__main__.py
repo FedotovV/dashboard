@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
-from dashboard.api.serve import ServeError, make_server, require_localhost
+from dashboard.api.serve import ServeError, make_server, require_bind, token_from_env
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -18,9 +19,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--date", default=None)
+    parser.add_argument("--token-env", default=None)
     args = parser.parse_args(argv)
+    token = token_from_env(args.token_env, os.environ)
     try:
-        require_localhost(args.host)
+        require_bind(args.host, token)
     except ServeError as exc:
         print(exc)
         return 2
@@ -33,6 +36,7 @@ def main(argv: list[str] | None = None) -> int:
         args.edits,
         args.config,
         args.manifest,
+        token,
     )
     if args.date:
         print(f"http://{args.host}:{args.port}/?date={args.date}")

@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
 from dashboard.api.__main__ import main as serve_main
-from dashboard.api.serve import ServeError, make_server, require_localhost
+from dashboard.api.serve import ServeError, make_server, require_bind, token_from_env
 from dashboard.orchestrator.__main__ import main as build_main
 from dashboard.orchestrator.collect import CollectRequest, collect
 from dashboard.orchestrator.run import RunRequest, run
@@ -29,7 +30,7 @@ def main(argv: list[str] | None = None) -> int:
     build_parser.add_argument("--manifest", type=Path)
     build_parser.add_argument("--accept-recompute", action="store_true")
 
-    serve_parser = commands.add_parser("serve", help="экраны на 127.0.0.1")
+    serve_parser = commands.add_parser("serve", help="экраны; адрес кроме 127.0.0.1 требует токен записи")
     serve_parser.add_argument("--snapshots", type=Path, required=True)
     serve_parser.add_argument("--team", required=True)
     serve_parser.add_argument("--edits", type=Path, default=None)
@@ -38,6 +39,7 @@ def main(argv: list[str] | None = None) -> int:
     serve_parser.add_argument("--host", default="127.0.0.1")
     serve_parser.add_argument("--port", type=int, default=8765)
     serve_parser.add_argument("--date", default=None)
+    serve_parser.add_argument("--token-env", default=None)
 
     run_parser = commands.add_parser("run", help="collect и build, по флагу ещё serve")
     run_parser.add_argument("--team", type=Path, required=True)
@@ -51,6 +53,7 @@ def main(argv: list[str] | None = None) -> int:
     run_parser.add_argument("--host", default="127.0.0.1")
     run_parser.add_argument("--port", type=int, default=8765)
     run_parser.add_argument("--date", default=None)
+    run_parser.add_argument("--token-env", default=None)
 
     args = parser.parse_args(argv)
     if args.command == "collect":
@@ -76,10 +79,13 @@ def main(argv: list[str] | None = None) -> int:
             forwarded.extend(["--manifest", str(args.manifest)])
         if args.date:
             forwarded.extend(["--date", args.date])
+        if args.token_env:
+            forwarded.extend(["--token-env", args.token_env])
         return serve_main(forwarded)
+    token = token_from_env(getattr(args, "token_env", None), os.environ)
     try:
         if args.serve:
-            require_localhost(args.host)
+            require_bind(args.host, token)
     except ServeError as exc:
         print(exc)
         return 2
@@ -106,6 +112,7 @@ def main(argv: list[str] | None = None) -> int:
         args.edits,
         args.team,
         args.manifest,
+        token,
     )
     if args.date:
         print(f"http://{args.host}:{args.port}/?date={args.date}")
