@@ -36,7 +36,12 @@ def refresh(data_path: Path, work: Path) -> BuildResult:
     team_path.write_text(json.dumps(team, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     bundle_path.write_text(json.dumps(data["bundle"], ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     edits_path = work / "edits.json"
-    if not edits_path.exists():
+    if "edits" in data:
+        edits_path.write_text(
+            json.dumps(data["edits"], ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+    elif not edits_path.exists():
         edits_path.write_text(
             json.dumps(
                 {"teamId": team_id, "revision": 1, "projectReleases": [], "projectNotes": []},

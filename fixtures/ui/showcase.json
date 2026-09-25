@@ -1,0 +1,1202 @@
+{
+  "about": "Команда «Платёжная карта». Прошлый спринт закрыт 4 сентября. Сейчас 17 сентября 2026, 18:00 МСК: текущий спринт кончается завтра. Запуск: python3 -m dashboard.api.preview --data fixtures/ui/showcase.json",
+  "team": {
+    "version": 1,
+    "catalogVersion": 1,
+    "team": {
+      "id": "paycard",
+      "name": "Платёжная карта",
+      "locale": "ru",
+      "pm": "Крылова Наталья",
+      "teamLead": "Морозов Дмитрий",
+      "members": [
+        {
+          "id": "sokolova",
+          "name": "Соколова Елена",
+          "jiraUsername": "sokolova",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "ivanov",
+          "name": "Иванов Иван",
+          "jiraUsername": "ivanov",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "petrova",
+          "name": "Петрова Анна",
+          "jiraUsername": "petrova",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "smirnov",
+          "name": "Смирнов Пётр",
+          "jiraUsername": "smirnov",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "volkov",
+          "name": "Волков Сергей",
+          "jiraUsername": "volkov",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "lebedev",
+          "name": "Лебедев Николай",
+          "jiraUsername": "lebedev",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "morozov",
+          "name": "Морозов Дмитрий",
+          "jiraUsername": "morozov",
+          "role": "lead",
+          "allocation": 1,
+          "featureLeadOf": [
+            "PAY-100"
+          ]
+        },
+        {
+          "id": "kuznetsova",
+          "name": "Кузнецова Ольга",
+          "jiraUsername": "kuznetsova",
+          "role": "dev",
+          "allocation": 1
+        },
+        {
+          "id": "orlova",
+          "name": "Орлова Мария",
+          "jiraUsername": "orlova",
+          "role": "qa",
+          "allocation": 0.5
+        },
+        {
+          "id": "pavlova",
+          "name": "Павлова Ирина",
+          "jiraUsername": "pavlova",
+          "role": "qa",
+          "allocation": 1
+        },
+        {
+          "id": "novikova",
+          "name": "Новикова Дарья",
+          "jiraUsername": "novikova",
+          "role": "dev",
+          "allocation": 1
+        }
+      ],
+      "alumni": []
+    },
+    "calendar": {
+      "timezone": "Europe/Moscow",
+      "workdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "workStart": "10:00",
+      "workEnd": "19:00",
+      "breakMinutes": 60,
+      "breakStart": "14:00",
+      "hoursPerDay": 8,
+      "holidays": [
+        "2026-01-01",
+        "2026-01-02",
+        "2026-01-03",
+        "2026-01-04",
+        "2026-01-05",
+        "2026-01-06",
+        "2026-01-07",
+        "2026-01-08",
+        "2026-01-09",
+        "2026-02-23",
+        "2026-03-08",
+        "2026-03-09",
+        "2026-05-01",
+        "2026-05-09",
+        "2026-05-11",
+        "2026-06-12",
+        "2026-11-04",
+        "2026-12-31"
+      ],
+      "extraWorkdays": []
+    },
+    "period": {
+      "id": "2026-09",
+      "start": "2026-09-01",
+      "end": "2026-09-30"
+    },
+    "sources": {
+      "mode": "fixture",
+      "jira": {
+        "deployment": "server",
+        "baseUrl": "https://jira.example.com",
+        "boardId": "24",
+        "sprintId": "Спринт 24",
+        "authEnv": "JIRA_TOKEN",
+        "fields": {
+          "storyPoints": "customfield_10016",
+          "epicLink": "customfield_10014"
+        }
+      }
+    },
+    "workflow": {
+      "usesDueDate": true,
+      "statusMap": [
+        {
+          "status": "To Do",
+          "category": "todo",
+          "role": "queue"
+        },
+        {
+          "status": "In Progress",
+          "category": "indeterminate",
+          "role": "active"
+        },
+        {
+          "status": "Review",
+          "category": "indeterminate",
+          "role": "wait"
+        },
+        {
+          "status": "On-hold",
+          "category": "indeterminate",
+          "role": "hold"
+        },
+        {
+          "status": "Done",
+          "category": "done",
+          "role": "terminal"
+        },
+        {
+          "status": "Canceled",
+          "category": "done",
+          "role": "terminal",
+          "outcome": "canceled"
+        }
+      ]
+    },
+    "taxonomy": {
+      "priority": [
+        "project",
+        "tech"
+      ],
+      "epics": {
+        "project": [
+          "PAY-100"
+        ],
+        "tech": [
+          "PAY-200"
+        ]
+      },
+      "linkTypes": [
+        "Child-Issue"
+      ],
+      "rules": [
+        {
+          "category": "other",
+          "when": {
+            "label": "регламент"
+          }
+        }
+      ],
+      "otherSubtype": {
+        "prodLabel": "prod_op",
+        "techLabel": "other_tech"
+      }
+    },
+    "scope": {
+      "issueTypes": [
+        "Story",
+        "Task",
+        "Bug"
+      ],
+      "projectKeys": [
+        "PAY"
+      ],
+      "countSubtasks": false
+    },
+    "metrics": {
+      "cycleTime": {
+        "minStaySeconds": 900
+      },
+      "hygiene": {
+        "highPriorities": [
+          "High"
+        ],
+        "maxAgeDays": 90
+      },
+      "classification": {
+        "unknownWarnPct": 15
+      }
+    }
+  },
+  "bundle": {
+    "bundleId": "paycard-2026-09-17",
+    "asOf": "2026-09-17T15:00:00Z",
+    "sourceWatermark": "showcase",
+    "issues": [
+      {
+        "id": "pay-1",
+        "key": "PAY-1",
+        "summary": "Провести платёж до конца дня",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "Done",
+        "assigneeAccountId": "sokolova",
+        "priority": "Medium",
+        "storyPoints": 8,
+        "storyPointsAtAdd": 8,
+        "dueDate": "2026-09-18",
+        "resolutionAt": "2026-09-08T15:00:00Z",
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-2",
+        "key": "PAY-2",
+        "summary": "Показать маску карты",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "Done",
+        "assigneeAccountId": "ivanov",
+        "priority": "Medium",
+        "storyPoints": 5,
+        "storyPointsAtAdd": 5,
+        "dueDate": "2026-09-16",
+        "resolutionAt": "2026-09-14T08:00:00Z",
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-3",
+        "key": "PAY-3",
+        "summary": "Закрыть сверку раньше срока",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "Done",
+        "assigneeAccountId": "petrova",
+        "priority": "Medium",
+        "storyPoints": 8,
+        "storyPointsAtAdd": 8,
+        "dueDate": "2026-09-18",
+        "resolutionAt": "2026-09-11T09:00:00Z",
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-4",
+        "key": "PAY-4",
+        "summary": "Сохранить чек",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "Done",
+        "assigneeAccountId": "sokolova",
+        "priority": "Medium",
+        "storyPoints": 5,
+        "storyPointsAtAdd": 5,
+        "dueDate": "2026-09-14",
+        "resolutionAt": "2026-09-11T12:00:00Z",
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-5",
+        "key": "PAY-5",
+        "summary": "Выпустить экран оплаты",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "Done",
+        "assigneeAccountId": "morozov",
+        "priority": "Medium",
+        "storyPoints": 8,
+        "storyPointsAtAdd": 8,
+        "dueDate": "2026-09-17",
+        "resolutionAt": "2026-09-16T13:00:00Z",
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-6",
+        "key": "PAY-6",
+        "summary": "Отменённый эксперимент со скидкой",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "Canceled",
+        "assigneeAccountId": "smirnov",
+        "priority": "Medium",
+        "storyPoints": 3,
+        "storyPointsAtAdd": 3,
+        "dueDate": "2026-09-18",
+        "resolutionAt": "2026-09-09T09:00:00Z",
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [
+          "prod_op"
+        ],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-7",
+        "key": "PAY-7",
+        "summary": "Просроченный повтор платежа",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "In Progress",
+        "assigneeAccountId": "ivanov",
+        "priority": "Medium",
+        "storyPoints": 2,
+        "storyPointsAtAdd": 2,
+        "dueDate": "2026-09-15",
+        "resolutionAt": null,
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-8",
+        "key": "PAY-8",
+        "summary": "Пауза: ждём ответ банка",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "On-hold",
+        "assigneeAccountId": "smirnov",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-9",
+        "key": "PAY-9",
+        "summary": "Платёж без исполнителя",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "In Progress",
+        "assigneeAccountId": null,
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-10",
+        "key": "PAY-10",
+        "summary": "Высокий приоритет ещё в очереди",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "To Do",
+        "assigneeAccountId": "volkov",
+        "priority": "High",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-11",
+        "key": "PAY-11",
+        "summary": "Старая задача мая",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "In Progress",
+        "assigneeAccountId": "lebedev",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-05-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-12",
+        "key": "PAY-12",
+        "summary": "Нет текущей оценки",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "In Progress",
+        "assigneeAccountId": "morozov",
+        "priority": "Medium",
+        "storyPoints": null,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-13",
+        "key": "PAY-13",
+        "summary": "Ревью возврата",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "Review",
+        "assigneeAccountId": "petrova",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-14",
+        "key": "PAY-14",
+        "summary": "Очередь без срока",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "To Do",
+        "assigneeAccountId": "kuznetsova",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": null,
+        "resolutionAt": null,
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [
+          "регламент"
+        ],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-15",
+        "key": "PAY-15",
+        "summary": "Добить хвост оплаты",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "In Progress",
+        "assigneeAccountId": "sokolova",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-16",
+        "key": "PAY-16",
+        "summary": "Короткий автопереход",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "Done",
+        "assigneeAccountId": "pavlova",
+        "priority": "Medium",
+        "storyPoints": 2,
+        "storyPointsAtAdd": 2,
+        "dueDate": "2026-09-18",
+        "resolutionAt": "2026-09-08T07:08:00Z",
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-17",
+        "key": "PAY-17",
+        "summary": "Добавлена после старта",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "In Progress",
+        "assigneeAccountId": "kuznetsova",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-18",
+        "key": "PAY-18",
+        "summary": "Добавлена на ревью",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "Review",
+        "assigneeAccountId": "orlova",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-19",
+        "key": "PAY-19",
+        "summary": "Снята из спринта",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "To Do",
+        "assigneeAccountId": "volkov",
+        "priority": "Medium",
+        "storyPoints": 2,
+        "storyPointsAtAdd": 2,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-20",
+        "key": "PAY-20",
+        "summary": "Нет тайминга статуса",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "In Progress",
+        "assigneeAccountId": "sokolova",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": null,
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-22",
+        "key": "PAY-22",
+        "summary": "Закрыта без истории статуса",
+        "type": "Story",
+        "projectKey": "PAY",
+        "status": "Done",
+        "assigneeAccountId": "pavlova",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": "2026-09-16T14:00:00Z",
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-21",
+        "key": "PAY-21",
+        "summary": "Час человека вне состава",
+        "type": "Bug",
+        "projectKey": "PAY",
+        "status": "Done",
+        "assigneeAccountId": "vneshtat",
+        "priority": "Medium",
+        "storyPoints": 1,
+        "storyPointsAtAdd": 1,
+        "dueDate": "2026-09-18",
+        "resolutionAt": "2026-09-16T09:00:00Z",
+        "created": "2026-09-01T06:00:00Z",
+        "labels": [
+          "other_tech"
+        ],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-100",
+        "key": "PAY-100",
+        "summary": "Оплата картой",
+        "type": "Epic",
+        "projectKey": "PAY",
+        "status": "In Progress",
+        "assigneeAccountId": "morozov",
+        "priority": "Medium",
+        "storyPoints": null,
+        "storyPointsAtAdd": 0,
+        "dueDate": null,
+        "resolutionAt": null,
+        "created": "2026-08-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      },
+      {
+        "id": "pay-200",
+        "key": "PAY-200",
+        "summary": "Наблюдаемость",
+        "type": "Epic",
+        "projectKey": "PAY",
+        "status": "In Progress",
+        "assigneeAccountId": "lebedev",
+        "priority": "Medium",
+        "storyPoints": null,
+        "storyPointsAtAdd": 0,
+        "dueDate": null,
+        "resolutionAt": null,
+        "created": "2026-08-01T06:00:00Z",
+        "labels": [],
+        "parentId": null,
+        "subtask": false
+      }
+    ],
+    "statusChanges": [
+      {
+        "issueId": "pay-1",
+        "status": "In Progress",
+        "enteredAt": "2026-09-08T07:00:00Z",
+        "exitedAt": "2026-09-08T10:00:00Z"
+      },
+      {
+        "issueId": "pay-1",
+        "status": "Done",
+        "enteredAt": "2026-09-08T10:00:00Z",
+        "exitedAt": "2026-09-08T13:00:00Z"
+      },
+      {
+        "issueId": "pay-1",
+        "status": "In Progress",
+        "enteredAt": "2026-09-08T13:00:00Z",
+        "exitedAt": "2026-09-08T15:00:00Z"
+      },
+      {
+        "issueId": "pay-1",
+        "status": "Done",
+        "enteredAt": "2026-09-08T15:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-2",
+        "status": "In Progress",
+        "enteredAt": "2026-09-09T07:00:00Z",
+        "exitedAt": "2026-09-09T13:00:00Z"
+      },
+      {
+        "issueId": "pay-2",
+        "status": "Done",
+        "enteredAt": "2026-09-14T08:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-3",
+        "status": "In Progress",
+        "enteredAt": "2026-09-08T07:00:00Z",
+        "exitedAt": "2026-09-08T12:00:00Z"
+      },
+      {
+        "issueId": "pay-3",
+        "status": "Review",
+        "enteredAt": "2026-09-08T12:00:00Z",
+        "exitedAt": "2026-09-11T09:00:00Z"
+      },
+      {
+        "issueId": "pay-3",
+        "status": "Done",
+        "enteredAt": "2026-09-11T09:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-4",
+        "status": "In Progress",
+        "enteredAt": "2026-09-10T07:00:00Z",
+        "exitedAt": "2026-09-11T12:00:00Z"
+      },
+      {
+        "issueId": "pay-4",
+        "status": "Done",
+        "enteredAt": "2026-09-11T12:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-5",
+        "status": "In Progress",
+        "enteredAt": "2026-09-14T07:00:00Z",
+        "exitedAt": "2026-09-16T13:00:00Z"
+      },
+      {
+        "issueId": "pay-5",
+        "status": "Done",
+        "enteredAt": "2026-09-16T13:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-6",
+        "status": "In Progress",
+        "enteredAt": "2026-09-08T07:00:00Z",
+        "exitedAt": "2026-09-09T09:00:00Z"
+      },
+      {
+        "issueId": "pay-6",
+        "status": "Canceled",
+        "enteredAt": "2026-09-09T09:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-7",
+        "status": "In Progress",
+        "enteredAt": "2026-09-09T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-8",
+        "status": "In Progress",
+        "enteredAt": "2026-09-09T07:00:00Z",
+        "exitedAt": "2026-09-10T08:00:00Z"
+      },
+      {
+        "issueId": "pay-8",
+        "status": "On-hold",
+        "enteredAt": "2026-09-10T08:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-9",
+        "status": "In Progress",
+        "enteredAt": "2026-09-15T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-10",
+        "status": "To Do",
+        "enteredAt": "2026-09-07T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-11",
+        "status": "In Progress",
+        "enteredAt": "2026-08-20T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-12",
+        "status": "In Progress",
+        "enteredAt": "2026-09-16T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-13",
+        "status": "In Progress",
+        "enteredAt": "2026-09-14T07:00:00Z",
+        "exitedAt": "2026-09-16T11:00:00Z"
+      },
+      {
+        "issueId": "pay-13",
+        "status": "Review",
+        "enteredAt": "2026-09-16T11:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-14",
+        "status": "To Do",
+        "enteredAt": "2026-09-07T09:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-15",
+        "status": "In Progress",
+        "enteredAt": "2026-09-16T08:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-16",
+        "status": "In Progress",
+        "enteredAt": "2026-09-08T07:00:00Z",
+        "exitedAt": "2026-09-08T07:08:00Z"
+      },
+      {
+        "issueId": "pay-16",
+        "status": "Done",
+        "enteredAt": "2026-09-08T07:08:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-17",
+        "status": "In Progress",
+        "enteredAt": "2026-09-10T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-18",
+        "status": "Review",
+        "enteredAt": "2026-09-15T07:00:00Z",
+        "exitedAt": null
+      },
+      {
+        "issueId": "pay-19",
+        "status": "To Do",
+        "enteredAt": "2026-09-07T07:00:00Z",
+        "exitedAt": "2026-09-11T07:00:00Z"
+      },
+      {
+        "issueId": "pay-21",
+        "status": "In Progress",
+        "enteredAt": "2026-09-16T07:00:00Z",
+        "exitedAt": "2026-09-16T09:00:00Z"
+      },
+      {
+        "issueId": "pay-21",
+        "status": "Done",
+        "enteredAt": "2026-09-16T09:00:00Z",
+        "exitedAt": null
+      }
+    ],
+    "memberships": [
+      {
+        "issueId": "pay-1",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-2",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-3",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-4",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-5",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-6",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-7",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-8",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-9",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-10",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-11",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-12",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-13",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-14",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-15",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-16",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-20",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-22",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-17",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-10T07:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-18",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-14T07:00:00Z",
+        "removedAt": null
+      },
+      {
+        "issueId": "pay-19",
+        "sprintId": "Спринт 24",
+        "addedAt": "2026-09-07T06:00:00Z",
+        "removedAt": "2026-09-11T07:00:00Z"
+      }
+    ],
+    "sprints": [
+      {
+        "id": "Спринт 23",
+        "name": "Спринт 23",
+        "state": "closed",
+        "start": "2026-08-24",
+        "end": "2026-09-04"
+      },
+      {
+        "id": "Спринт 24",
+        "name": "Спринт 24",
+        "state": "active",
+        "start": "2026-09-07",
+        "end": "2026-09-18"
+      }
+    ],
+    "links": [
+      {
+        "fromId": "pay-100",
+        "toId": "pay-1",
+        "type": "Child-Issue"
+      },
+      {
+        "fromId": "pay-100",
+        "toId": "pay-2",
+        "type": "Child-Issue"
+      },
+      {
+        "fromId": "pay-100",
+        "toId": "pay-5",
+        "type": "Child-Issue"
+      },
+      {
+        "fromId": "pay-100",
+        "toId": "pay-7",
+        "type": "Child-Issue"
+      },
+      {
+        "fromId": "pay-100",
+        "toId": "pay-12",
+        "type": "Child-Issue"
+      },
+      {
+        "fromId": "pay-100",
+        "toId": "pay-15",
+        "type": "Child-Issue"
+      },
+      {
+        "fromId": "pay-200",
+        "toId": "pay-8",
+        "type": "Child-Issue"
+      },
+      {
+        "fromId": "pay-200",
+        "toId": "pay-11",
+        "type": "Child-Issue"
+      },
+      {
+        "fromId": "pay-200",
+        "toId": "pay-13",
+        "type": "Child-Issue"
+      }
+    ]
+  },
+  "edits": {
+    "teamId": "paycard",
+    "revision": 1,
+    "projectReleases": [
+      {
+        "epicId": "PAY-100",
+        "release": "2026.09"
+      },
+      {
+        "epicId": "PAY-999",
+        "release": "чужой"
+      }
+    ],
+    "projectNotes": [
+      {
+        "epicId": "PAY-100",
+        "text": "Релиз в пятницу. Хвост: просроченный платёж и пауза банка.",
+        "author": "Крылова Наталья",
+        "at": "2026-09-17T12:00:00Z"
+      }
+    ]
+  },
+  "history": [
+    {
+      "date": "2026-09-04",
+      "document": {
+        "snapshotId": "paycard-2026-09-04",
+        "sprint": {
+          "id": "Спринт 23",
+          "metrics": [
+            {
+              "id": "sprintFlow",
+              "detail": {
+                "byRole": {
+                  "active": 0,
+                  "wait": 0,
+                  "hold": 0,
+                  "queue": 0,
+                  "done": 14,
+                  "canceled": 1,
+                  "total": 15
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-09-08",
+      "document": {
+        "snapshotId": "paycard-2026-09-08",
+        "sprint": {
+          "id": "Спринт 24",
+          "metrics": [
+            {
+              "id": "sprintFlow",
+              "detail": {
+                "byRole": {
+                  "active": 6,
+                  "wait": 1,
+                  "hold": 1,
+                  "queue": 3,
+                  "done": 1,
+                  "canceled": 0,
+                  "total": 12
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-09-10",
+      "document": {
+        "snapshotId": "paycard-2026-09-10",
+        "sprint": {
+          "id": "Спринт 24",
+          "metrics": [
+            {
+              "id": "sprintFlow",
+              "detail": {
+                "byRole": {
+                  "active": 6,
+                  "wait": 1,
+                  "hold": 1,
+                  "queue": 3,
+                  "done": 3,
+                  "canceled": 0,
+                  "total": 14
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-09-15",
+      "document": {
+        "snapshotId": "paycard-2026-09-15",
+        "sprint": {
+          "id": "Спринт 24",
+          "metrics": [
+            {
+              "id": "sprintFlow",
+              "detail": {
+                "byRole": {
+                  "active": 6,
+                  "wait": 1,
+                  "hold": 1,
+                  "queue": 3,
+                  "done": 5,
+                  "canceled": 0,
+                  "total": 16
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
