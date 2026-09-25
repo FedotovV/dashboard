@@ -1,0 +1,136 @@
+{
+  "issues": [
+    {
+      "id": "c-1",
+      "key": "C-1",
+      "fields": {
+        "summary": "Ребёнок",
+        "issuetype": { "name": "Story", "subtask": false },
+        "project": { "key": "CARD" },
+        "status": { "name": "In Progress" },
+        "assignee": { "name": "dev" },
+        "priority": { "name": "Medium" },
+        "customfield_10016": 1,
+        "customfield_10014": "P-1",
+        "duedate": null,
+        "resolutiondate": null,
+        "created": "2026-09-07T10:00:00.000+0300",
+        "labels": ["other_tech"],
+        "issuelinks": [
+          {
+            "type": { "name": "Child-Issue" },
+            "inwardIssue": { "id": "p-1", "key": "P-1" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "d-1",
+      "key": "D-1",
+      "fields": {
+        "summary": "Оценка выросла",
+        "issuetype": { "name": "Story", "subtask": false },
+        "project": { "key": "CARD" },
+        "status": { "name": "Done" },
+        "assignee": { "name": "dev" },
+        "priority": { "name": "Medium" },
+        "customfield_10016": 8,
+        "duedate": null,
+        "resolutiondate": null,
+        "created": "2026-09-07T10:00:00.000+0300",
+        "labels": [],
+        "issuelinks": [
+          {
+            "type": { "name": "Blocks" },
+            "outwardIssue": { "id": "e-1", "key": "E-1" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "e-1",
+      "key": "E-1",
+      "fields": {
+        "summary": "До полуночи",
+        "issuetype": { "name": "Story", "subtask": false },
+        "project": { "key": "CARD" },
+        "status": { "name": "Done" },
+        "assignee": { "name": "dev" },
+        "priority": { "name": "Medium" },
+        "customfield_10016": 1,
+        "duedate": "2026-09-10",
+        "resolutiondate": "2026-09-09T23:30:00.000+0300",
+        "created": "2026-09-07T10:00:00.000+0300",
+        "labels": []
+      }
+    },
+    {
+      "id": "n-1",
+      "key": "N-1",
+      "fields": {
+        "summary": "После полуночи",
+        "issuetype": { "name": "Story", "subtask": false },
+        "project": { "key": "CARD" },
+        "status": { "name": "Done" },
+        "assignee": { "name": "dev" },
+        "priority": { "name": "Medium" },
+        "customfield_10016": 1,
+        "duedate": "2026-09-10",
+        "resolutiondate": "2026-09-10T00:30:00.000+0300",
+        "created": "2026-09-07T10:00:00.000+0300",
+        "labels": []
+      }
+    },
+    {
+      "id": "p-1",
+      "key": "P-1",
+      "fields": {
+        "summary": "Эпик",
+        "issuetype": { "name": "Epic", "subtask": false },
+        "project": { "key": "CARD" },
+        "status": { "name": "In Progress" },
+        "assignee": null,
+        "priority": null,
+        "duedate": null,
+        "resolutiondate": null,
+        "created": "2026-09-07T10:00:00.000+0300",
+        "labels": []
+      }
+    },
+    {
+      "id": "r-1",
+      "key": "R-1",
+      "fields": {
+        "summary": "Убрали",
+        "issuetype": { "name": "Story", "subtask": false },
+        "project": { "key": "CARD" },
+        "status": { "name": "In Progress" },
+        "assignee": { "name": "dev" },
+        "priority": { "name": "Medium" },
+        "customfield_10016": 2,
+        "duedate": null,
+        "resolutiondate": null,
+        "created": "2026-09-07T10:00:00.000+0300",
+        "labels": []
+      }
+    },
+    {
+      "id": "sub-1",
+      "key": "SUB-1",
+      "fields": {
+        "summary": "Подзадача",
+        "issuetype": { "name": "Sub-task", "subtask": true },
+        "project": { "key": "CARD" },
+        "status": { "name": "In Progress" },
+        "assignee": { "name": "dev" },
+        "priority": { "name": "Medium" },
+        "customfield_10016": 1,
+        "parent": { "id": "c-1", "key": "C-1" },
+        "duedate": null,
+        "resolutiondate": null,
+        "created": "2026-09-07T10:00:00.000+0300",
+        "labels": []
+      }
+    }
+  ]
+}
