@@ -57,7 +57,7 @@ export function App() {
     };
   }, [screen, teamStamp]);
 
-  const teamId = sprint?.teamId || "";
+  const teamId = sprint?.teamId || team?.teamId || "";
   return (
     <div className="app">
       <aside>
