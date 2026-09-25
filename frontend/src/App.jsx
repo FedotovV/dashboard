@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { loadSprint } from "./api.js";
+import { loadSprint, loadTeam } from "./api.js";
+import { PeriodScreen } from "./PeriodScreen.jsx";
 import { SprintScreen } from "./SprintScreen.jsx";
 import { applyTheme, readTheme } from "./theme.js";
 
@@ -8,6 +9,9 @@ export function App() {
   const [screen, setScreen] = useState("sprint");
   const [sprint, setSprint] = useState(null);
   const [error, setError] = useState("");
+  const [team, setTeam] = useState(null);
+  const [teamError, setTeamError] = useState("");
+  const [teamStamp, setTeamStamp] = useState(0);
 
   useEffect(() => {
     applyTheme(theme);
@@ -31,7 +35,29 @@ export function App() {
     };
   }, []);
 
-  const teamId = sprint?.teamId || "";
+  useEffect(() => {
+    if (screen !== "period") {
+      return undefined;
+    }
+    let active = true;
+    loadTeam()
+      .then((payload) => {
+        if (active) {
+          setTeam(payload);
+          setTeamError("");
+        }
+      })
+      .catch((exc) => {
+        if (active) {
+          setTeamError(exc.message || "слепок не открылся");
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, [screen, teamStamp]);
+
+  const teamId = sprint?.teamId || team?.teamId || "";
   return (
     <div className="app">
       <aside>
@@ -51,7 +77,14 @@ export function App() {
       </aside>
       <main>
         {screen === "sprint" ? <SprintScreen sprint={sprint} error={error} /> : null}
-        {screen === "period" ? <Later title="Период" /> : null}
+        {screen === "period" ? (
+          <PeriodScreen
+            team={team}
+            error={teamError}
+            onOpenSprint={() => setScreen("sprint")}
+            onSaved={() => setTeamStamp((value) => value + 1)}
+          />
+        ) : null}
         {screen === "setup" ? <Later title="Настройка" /> : null}
         <p className="foot">Числа из слепка. Сборка с этого экрана не запускается.</p>
       </main>

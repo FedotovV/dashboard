@@ -14,3 +14,8 @@ export function metricOf(view, metricId) {
   const metrics = view?.sprint?.metrics || [];
   return metrics.find((item) => item?.id === metricId) ?? null;
 }
+
+export function periodMetric(view, metricId) {
+  const metrics = view?.period?.metrics || [];
+  return metrics.find((item) => item?.id === metricId) ?? null;
+}
