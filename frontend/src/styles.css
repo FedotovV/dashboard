@@ -1,0 +1,148 @@
+:root,
+[data-theme="light"] {
+  --ink: #1c2430;
+  --muted: #5e6670;
+  --line: #e4ddd2;
+  --bg: #f6f3ec;
+  --card: #fffdf8;
+  --side: #fbf8f3;
+  --brass: #8a5a2b;
+  --nav: #efe6d4;
+}
+
+[data-theme="dark"] {
+  --ink: #f3efe6;
+  --muted: #9aa3ae;
+  --line: #2c3542;
+  --bg: #10141a;
+  --card: #181e27;
+  --side: #141a22;
+  --brass: #d7b072;
+  --nav: #222a36;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, "Segoe UI", "Liberation Sans", sans-serif;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+aside {
+  background: var(--side);
+  border-right: 1px solid var(--line);
+  padding: 22px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  margin: 0 0 22px;
+  font-weight: 600;
+}
+
+.brand small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+nav button {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: var(--muted);
+  padding: 9px 10px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
+
+nav button.on {
+  color: var(--ink);
+  background: var(--nav);
+}
+
+.themes {
+  margin-top: auto;
+  display: flex;
+  gap: 6px;
+}
+
+.themes button {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  padding: 8px 0;
+  border-radius: 8px;
+  color: var(--muted);
+  border: 1px solid transparent;
+}
+
+.themes button.on {
+  color: var(--ink);
+  background: var(--nav);
+  border-color: var(--line);
+}
+
+main {
+  padding: 20px 22px 16px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.sub {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.note {
+  max-width: 440px;
+  text-align: right;
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+.mark { color: var(--brass); }
+
+.foot {
+  margin-top: auto;
+  color: var(--muted);
+  font-size: 12px;
+}

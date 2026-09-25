@@ -33,7 +33,7 @@ python3 -m dashboard.api.preview
 
 `serve` только после `build`. Хост отличный от `127.0.0.1` команда отвергает. `preview` читает `fixtures/ui/demo.json`, заменяет песочницу `var/ui` и открывает экран. Этот JSON правят руками; `scripts/generate_ui_demo.py` его перезаписывает.
 
-`pytest` не вызывать, пока в репозитории нет `pyproject.toml`. Образ описан в `Dockerfile`. `npm` не используется.
+`pytest` не вызывать, пока в репозитории нет `pyproject.toml`. Образ описан в `Dockerfile`. `npm` используется только в `frontend/`: `npm install`, затем `npm run dev`. Прокси `/api` идёт на `127.0.0.1:8765`.
 
 Даты в YAML держать в кавычках.
 
