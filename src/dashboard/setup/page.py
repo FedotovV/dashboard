@@ -34,7 +34,7 @@ def render_setup(view: dict) -> str:
         [
             _nav("setup"),
             _header(view),
-            _form(document),
+            _form(document, bool(view.get("writeTokenRequired"))),
             '<p class="foot">Секрет в файл не пишется: только имя переменной authEnv. Сборка с этого экрана не запускается.</p>',
         ]
     )
@@ -77,7 +77,7 @@ def _state_note(view: dict) -> str:
     return "Manifest не подключён. Запись меняет только team.yaml."
 
 
-def _form(document: dict) -> str:
+def _form(document: dict, write_token_required: bool = False) -> str:
     team = document["team"]
     calendar = document["calendar"]
     period = document["period"]
@@ -178,8 +178,15 @@ def _form(document: dict) -> str:
     return (
         '<form class="setup" method="post" action="/api/setup">'
         + "".join(sections)
+        + _token_field(write_token_required)
         + '<button type="submit">Записать team.yaml</button></form>'
     )
+
+
+def _token_field(required: bool) -> str:
+    if not required:
+        return ""
+    return '<label>Токен записи <input type="password" name="token" autocomplete="off"></label>'
 
 
 def _section(title: str, parts: list[str]) -> str:

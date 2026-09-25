@@ -280,12 +280,16 @@ def _epics(view: dict) -> str:
         )
     form = ""
     if view.get("editsEnabled"):
-        form = """
+        token = ""
+        if view.get("writeTokenRequired"):
+            token = '<label>Токен записи <input type="password" name="token" autocomplete="off"></label>'
+        form = f"""
 <form class="edits" method="post" action="/api/edits">
   <label>Эпик <input name="epicId" required></label>
   <label>Релиз <input name="release"></label>
   <label>Заметка <textarea name="text" rows="3"></textarea></label>
   <label>Автор <input name="author" required></label>
+  {token}
   <input type="submit" value="Сохранить пометку">
 </form>
 """

@@ -1,0 +1,29 @@
+services:
+  dashboard:
+    build: .
+    environment:
+      JIRA_TOKEN: ${JIRA_TOKEN:-}
+      DASHBOARD_TOKEN: ${DASHBOARD_TOKEN:?}
+    ports:
+      - "127.0.0.1:8765:8765"
+    volumes:
+      - ${DASHBOARD_CONFIG:?}:/config/team.yaml:ro
+      - ${DASHBOARD_DATA:-./var}:/data
+    command:
+      - serve
+      - --snapshots
+      - /data/snapshots
+      - --team
+      - ${DASHBOARD_TEAM:?}
+      - --config
+      - /config/team.yaml
+      - --edits
+      - /data/edits.json
+      - --manifest
+      - /data/manifest.json
+      - --host
+      - "0.0.0.0"
+      - --port
+      - "8765"
+      - --token-env
+      - DASHBOARD_TOKEN
