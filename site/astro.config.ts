@@ -17,6 +17,8 @@ import astrowind from './vendor/integration';
 
 import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter';
 
+import react from '@astrojs/react';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const hasExternalScripts = false;
@@ -74,13 +76,11 @@ export default defineConfig({
         ],
       },
     }),
-
     ...whenExternalScripts(() =>
       partytown({
         config: { forward: ['dataLayer.push'] },
       })
     ),
-
     compress({
       // csso off on purpose: its parser doesn't understand the media range
       // syntax Tailwind v4 emits for breakpoints (`@media (width>=48rem)`) and
@@ -97,10 +97,10 @@ export default defineConfig({
       SVG: false,
       Logger: 1,
     }),
-
     astrowind({
       config: './src/config.yaml',
     }),
+    react(),
   ],
 
   image: {

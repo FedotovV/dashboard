@@ -1,0 +1,22 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import Header from '~/components/widgets/Header.astro';
+
+import { dashboardHeaderData } from '~/navigation';
+
+import type { MetaData } from '~/types';
+
+export interface Props {
+  metadata?: MetaData;
+}
+
+const { metadata } = Astro.props;
+---
+
+<Layout metadata={metadata}>
+  <Header {...dashboardHeaderData} isSticky showToggleTheme position="left" />
+  <main class="flex-1">
+    <slot />
+  </main>
+  <p class="text-center text-sm text-muted py-8 px-4">Числа из слепка. Сборка с этого экрана не запускается.</p>
+</Layout>
