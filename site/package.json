@@ -24,13 +24,18 @@
     "@astro-community/astro-embed-twitter": "^0.5.11",
     "@astro-community/astro-embed-vimeo": "^0.3.12",
     "@astro-community/astro-embed-youtube": "^0.5.10",
+    "@astrojs/react": "^7.0.1",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "astro": "^7.3.1",
     "astro-icon": "^1.1.5",
     "astro-seo": "^1.2.0",
     "limax": "4.2.3",
     "lodash.merge": "^4.6.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "unpic": "^4.2.2"
   },
   "devDependencies": {

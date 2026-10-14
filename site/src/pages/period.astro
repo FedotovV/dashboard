@@ -1,0 +1,12 @@
+---
+import DashboardLayout from '~/layouts/DashboardLayout.astro';
+import DashboardScreen from '~/components/dashboard/DashboardScreen';
+
+const metadata = {
+  title: 'Период',
+};
+---
+
+<DashboardLayout metadata={metadata}>
+  <DashboardScreen client:load kind="period" />
+</DashboardLayout>

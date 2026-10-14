@@ -1,5 +1,14 @@
 import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
 
+export const dashboardHeaderData = {
+  links: [
+    { text: 'Спринт', href: getPermalink('/sprint') },
+    { text: 'Период', href: getPermalink('/period') },
+    { text: 'Настройка', href: getPermalink('/setup') },
+  ],
+  actions: [],
+};
+
 export const headerData = {
   links: [
     {
