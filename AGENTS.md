@@ -6,6 +6,8 @@
 
 Источник правды: `docs/plan.md`, `docs/metric-catalog.md`, схемы в `schema/`. README на них только ссылается.
 
+Сайт на AstroWind лежит в `site/`. Для файлов внутри `site/` действуют `site/AGENTS.md` и инструкции `site/.agents/skills/`. Пути в этих инструкциях считаются от `site/`. Числа дашборда этот сайт не считает: запросы на `/api` в режиме разработки уходят на `http://127.0.0.1:8765`.
+
 ### Agent Role
 
 Агент реализует текущую веху из плана и не расширяет продукт.
@@ -33,7 +35,7 @@ python3 -m dashboard.api.preview
 
 `serve` только после `build`. Хост отличный от `127.0.0.1` команда отвергает. `preview` читает `fixtures/ui/demo.json`, заменяет песочницу `var/ui` и открывает экран. Этот JSON правят руками; `scripts/generate_ui_demo.py` его перезаписывает.
 
-`pytest` не вызывать, пока в репозитории нет `pyproject.toml`. Образ описан в `Dockerfile`. `npm` используется только в `frontend/`: `npm install`, затем `npm run dev`. Прокси `/api` идёт на `127.0.0.1:8765`.
+`pytest` не вызывать, пока в репозитории нет `pyproject.toml`. Образ описан в `Dockerfile`. `npm` в `frontend/`: `npm install`, затем `npm run dev`. Прокси `/api` идёт на `127.0.0.1:8765`. Сайт AstroWind: из `site/` те же `npm install` и `npm run dev`, адрес `http://127.0.0.1:4321`, прокси `/api` тот же.
 
 Даты в YAML держать в кавычках.
 
@@ -45,7 +47,7 @@ python3 -m dashboard.api.preview
 - Неразобранная задача — `unknown`. Ребро таксономии — только parent→child.
 - Слепок write-once. Правки PM не содержат чисел метрик.
 - Пути модулей — таблица в `docs/plan.md` и схема в `docs/architecture.html`. Не создавать каталоги модуля до его вехи. Экран M2 — `docs/m2-plan.md`. Экран M3 — `docs/m3-plan.md`. `web` и `src/dashboard/api` читают слепок и не считают формулы. `PUT /api/edits` пишет только файл правок.
-- Искать по `docs/`, `schema/`, `scripts/`. Игнорировать `.git/`.
+- Искать по `docs/`, `schema/`, `scripts/`. Игнорировать `.git/`. В `site/` ближайший `AGENTS.md` — `site/AGENTS.md`.
 
 ### Dos and Don’ts
 
